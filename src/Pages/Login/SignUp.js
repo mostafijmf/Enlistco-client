@@ -19,8 +19,8 @@ const SignUp = () => {
     const navigate = useNavigate();
 
     if (user) {
-        navigate('/form/userContact')
-    }
+        navigate('/new-entry');
+    };
 
     const handleSignUp = async event => {
         event.preventDefault();
@@ -29,17 +29,6 @@ const SignUp = () => {
         const confirmPassword = confirmPasswordRef.current.value;
         if (password === confirmPassword) {
             await createUserWithEmailAndPassword(email, password);
-
-            fetch('http://localhost:5000/users', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({email})
-            })
-            .then(res => res.json())
-            .then(data => {});
-
             setPassMessage('');
         }
         else {
@@ -48,7 +37,7 @@ const SignUp = () => {
     };
 
     return (
-        <div className="sm:py-10 py-6 flex justify-center items-center bg-slate-100">
+        <div className="h-screen flex justify-center items-center bg-slate-100">
             <div className='lg:w-1/3 mx-4 bg-white sm:px-10 px-5 sm:py-8 py-6 rounded-xl border shadow-lg'>
                 <h1 className='text-center text-4xl font-semibold mb-5'>Sign Up</h1>
                 <form onSubmit={handleSignUp}>
@@ -65,11 +54,11 @@ const SignUp = () => {
                         <input ref={passwordRef} required id='password' type="password" placeholder="Minimum 6 characters" className="input text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                     </div>
                     <div className='mt-5'>
-                        <label htmlFor='password' className='font-medium text-lg'>
+                        <label htmlFor='confirmPassword' className='font-medium text-lg'>
                             Confirm Password
                             <span className='text-orange-600 ml-1'>*</span>
                         </label>
-                        <input ref={confirmPasswordRef} required id='password' type="password" placeholder="Confirm minimum 6 characters" className="input text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                        <input ref={confirmPasswordRef} required id='confirmPassword' type="password" placeholder="Confirm minimum 6 characters" className="input text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                     </div>
                     {
                         passMessage ? <p className='text-sm text-red-600 mt-3'>{passMessage}</p> : ''

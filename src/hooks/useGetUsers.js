@@ -5,12 +5,17 @@ import auth from '../firebase.init';
 const useGetUsers = () => {
     const [user] = useAuthState(auth);
     const [usersData, setUsersData] = useState([]);
-
+    
     useEffect(()=>{
         const email = user?.email;
         if(email){
-            const url = `http://localhost:5000/users/${email}`;
-            fetch(url)
+            const url = `https://boiling-beach-14928.herokuapp.com/users/${email}`;
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
             .then(res => res.json())
             .then(data => setUsersData(data));
         }

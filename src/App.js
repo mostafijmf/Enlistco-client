@@ -1,5 +1,4 @@
 import './App.css';
-import Header from './Pages/Shared/Header';
 import { Routes, Route } from "react-router-dom";
 import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
@@ -9,34 +8,70 @@ import UserProfile from './Pages/UserData/UserProfile';
 import HelpCenter from './Pages/Shared/HelpCenter';
 import NotFound from './Pages/Shared/NotFound';
 import Dashboard from './Pages/Dashboard/Dashboard';
-import UserApplication from './Pages/UserData/UserApplication';
 import UserContact from './Pages/UserData/UserContact';
 import UserJobExperience from './Pages/UserData/UserJobExperience';
 import UserEducation from './Pages/UserData/UserEducation';
+import EmployerContact from './Pages/Employer/EmployerContact';
+import JobDescription from './Pages/Employer/JobDescription';
+import ApplicationOptions from './Pages/Employer/ApplicationOptions';
+import MyApplication from './Pages/Dashboard/MyApplication';
+import Applied from './Pages/UserData/Applied';
+import JobPost from './Pages/Employer/JobPost';
+import NewEntry from './Pages/Login/NewEntry';
+import ManageUsers from './Pages/Admin/ManageUsers';
+import ManageJobPost from './Pages/Admin/ManageJobPost';
+import RequireAdmin from './Pages/Login/RequireAdmin';
 
 function App() {
   return (
     <div className="App">
-      <Header></Header>
-      <main>
         <Routes>
           <Route path='/' element={<Home></Home>}></Route>
+
+          <Route path='/new-entry' element={
+            <RequireAuth>
+              <NewEntry></NewEntry>
+            </RequireAuth>
+          }></Route>
+
+          {/* ---------------Dashboard--------------- */}
           <Route path='/dashboard' element={
             <RequireAuth>
               <Dashboard></Dashboard>
-            </RequireAuth>
-          }>
+            </RequireAuth>}>
+            <Route path='/dashboard/manage-users' element={
+              <RequireAdmin>
+                <ManageUsers></ManageUsers>
+              </RequireAdmin>
+            }></Route>
+            <Route path='/dashboard/manage-job-post' element={
+              <RequireAdmin>
+                <ManageJobPost></ManageJobPost>
+              </RequireAdmin>
+            }></Route>
             <Route path='/dashboard/userProfile' element={
               <RequireAuth>
                 <UserProfile></UserProfile>
               </RequireAuth>
             }></Route>
-            <Route path='/dashboard/userApplication' element={
+            <Route path='/dashboard/myApplication' element={
               <RequireAuth>
-                <UserApplication></UserApplication>
-              </RequireAuth>
-            }></Route>
+                <MyApplication></MyApplication>
+              </RequireAuth>}>
+              <Route path='/dashboard/myApplication/applied' element={
+                <RequireAuth>
+                  <Applied></Applied>
+                </RequireAuth>
+              }></Route>
+              <Route path='/dashboard/myApplication/post' element={
+                <RequireAuth>
+                  <JobPost></JobPost>
+                </RequireAuth>
+              }></Route>
+            </Route>
           </Route>
+
+          {/* ---------------user form--------------- */}
           <Route path='/form/userContact' element={
             <RequireAuth>
               <UserContact></UserContact>
@@ -52,12 +87,30 @@ function App() {
               <UserEducation></UserEducation>
             </RequireAuth>
           }></Route>
+
+          {/* ---------------employer job form--------------- */}
+          <Route path='/employer/contact' element={
+            <RequireAuth>
+              <EmployerContact></EmployerContact>
+            </RequireAuth>
+          }></Route>
+          <Route path='/employer/jobDesciption' element={
+            <RequireAuth>
+              <JobDescription></JobDescription>
+            </RequireAuth>
+          }></Route>
+          <Route path='/employer/ApplicationOptions' element={
+            <RequireAuth>
+              <ApplicationOptions></ApplicationOptions>
+            </RequireAuth>
+          }></Route>
+
+
           <Route path='/helpCenter' element={<HelpCenter></HelpCenter>}></Route>
           <Route path='/login' element={<Login></Login>}></Route>
           <Route path='/signUp' element={<SignUp></SignUp>}></Route>
           <Route path='/*' element={<NotFound></NotFound>}></Route>
         </Routes>
-      </main>
     </div>
   );
 }

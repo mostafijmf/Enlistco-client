@@ -36,9 +36,9 @@ const UserEducation = () => {
         const jobExp = JSON.parse(localStorage.getItem('jobExp'));
 
         const email = user?.email;
-        const url = `http://localhost:5000/users/${email}`;
+        const url = `https://boiling-beach-14928.herokuapp.com/seeker/${email}`;
         await fetch(url, {
-            method: 'PATCH',
+            method: 'PUT',
             headers: {
                 'content-type': 'application/json'
             },
@@ -52,7 +52,7 @@ const UserEducation = () => {
     };
 
     return (
-        <div class="flex justify-center bg-slate-100">
+        <div className="flex justify-center items-center h-screen bg-slate-100">
             <div className='lg:w-1/2 md:w-3/5 sm:w-4/5 w-11/12 bg-white sm:px-10 px-5 sm:py-8 py-5 h-max mt-8 mb-10 rounded-xl border shadow-lg'>
                 <h1 className='text-center md:text-4xl sm:text-3xl text-2xl font-semibold mb-5'>Add Education</h1>
                 <form onSubmit={hanleEducation}>
@@ -89,7 +89,7 @@ const UserEducation = () => {
                     </div>
                     <div className='mt-6 flex justify-between'>
                         <button onClick={()=>navigate('/')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8'>Skip</button>
-                        <button className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8' type="submit">Next</button>
+                        <button className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8' type="submit">Submit</button>
                     </div>
                 </form>
             </div>

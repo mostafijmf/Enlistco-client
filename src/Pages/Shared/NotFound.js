@@ -1,7 +1,9 @@
 import React from 'react';
+import Header from './Header';
 
 const NotFound = () => {
-    return (
+    return (<>
+        <Header></Header>
         <section className='flex justify-center items-center h-96'>
             <div className='text-center'>
                 <span className='flex justify-center text-gray-400'>
@@ -13,7 +15,7 @@ const NotFound = () => {
                 <h1 className='text-4xl text-gray-400'>Result not found...</h1>
             </div>
         </section>
-    );
+    </>);
 };
 
 export default NotFound;

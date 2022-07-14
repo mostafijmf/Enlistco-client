@@ -1,27 +1,22 @@
-// import React from 'react';
-// import { useAuthState } from 'react-firebase-hooks/auth';
-// import { Navigate, useLocation } from 'react-router-dom';
-// import auth from '../../firebase.init';
-// import useGetUsers from '../../hooks/useGetUsers';
-// import Spinner from '../Shared/Spinner';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-// const NewEntry = ({children}) => {
-//     const [user, loading] = useAuthState(auth);
-//     const location = useLocation();
-//     const [usersData, setUsersData] = useGetUsers([]);
-//     const {firstName, resume, exJobTitle} = usersData[0]
-//     console.log(firstName, resume, exJobTitle)
-//     if (loading) {
-//         return <div className='h-screen w-full flex items-center justify-center'>
-//             <Spinner></Spinner>
-//         </div>
-//     };
+const NewEntry = () => {
+    const navigate = useNavigate();
 
-//     if (firstName, resume, exJobTitle) {
-//         return <Navigate to="/userForm" state={{ from: location }} replace />
-//     };
+    const handleEntry = entry => {
+        entry === 'seeker' ? navigate('/form/userContact') : navigate('/employer/contact');
+    };
+    return (
+        <div className='h-screen w-full bg-slate-100 flex items-center justify-center'>
+            <div className='w-2/5 bg-white shadow-lg px-10 py-8 rounded-lg'>
+                <h1 className='text-4xl text-gray-500 mb-10 text-center'>Welcome!</h1>
+                <h4 className='text-xl font-medium'>What is your role?</h4>
+                <button onClick={()=>handleEntry('seeker')} className='btn btn-outline btn-primary w-full mt-5 normal-case tracking-wide text-xl'>Job seeker</button>
+                <button onClick={()=>handleEntry('employer')} className='btn btn-outline btn-primary w-full mt-5 normal-case tracking-wide text-xl'>Employer</button>
+            </div>
+        </div>
+    );
+};
 
-//     return children;
-// };
-
-// export default NewEntry;
+export default NewEntry;

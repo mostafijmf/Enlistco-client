@@ -4,11 +4,14 @@ import { MenuAlt3Icon, XIcon } from '@heroicons/react/solid';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { signOut } from 'firebase/auth';
+import useAdmin from '../../hooks/useAdmin';
 
 const Header = () => {
     const [open, setOpen] = useState(false);
     const [openProfile, setOpenProfile] = useState(false);
-    const [user, loading, error] = useAuthState(auth);
+    const [user] = useAuthState(auth);
+    const [admin] = useAdmin();
+
 
     const menuLeft =
         <>
@@ -16,11 +19,14 @@ const Header = () => {
                 <Link to='/'>Find Jobs</Link>
             </li>
             <li className='hover:text-primary hover:font-medium duration-300 text-lg my-5 lg:my-0'>
-                <Link to='/'>Post a job</Link>
+                <Link to='/employer/contact'>Post a job</Link>
             </li>
-            <li className='hover:text-primary hover:font-medium duration-300 text-lg my-5 lg:my-0'>
-                <Link to='/form/userContact'>Upload Your Resume</Link>
-            </li>
+            {
+                !admin.admin &&
+                <li className='hover:text-primary hover:font-medium duration-300 text-lg my-5 lg:my-0'>
+                    <Link to='/form/userContact'>Upload Your Resume</Link>
+                </li>
+            }
         </>
     const menuRight = user ?
         <>
@@ -30,22 +36,37 @@ const Header = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
-                <ul class={`menu bg-slate-50 shadow-md sm:w-60 w-full absolute top-14 lg:right-0 md:-right-5 md:left-auto sm:left0 ${openProfile ? 'block' : 'hidden'}`}>
-                    <li><Link className='w-full px-5' to='/dashboard/userProfile'>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>My Profile
-                    </Link>
-                    </li>
-                    <li><Link className='w-full px-5' to='/dashboard/userApplication'>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        My Application
-                    </Link></li>
+                <ul className={`menu bg-slate-50 shadow-md sm:w-60 w-full absolute top-14 lg:right-0 md:-right-5 md:left-auto sm:left0 ${openProfile ? 'block' : 'hidden'}`}>
+                    {
+                        admin.admin ? <>
+                            <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/manage-users'>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>Manage Users
+                            </Link></li>
+                            <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/manage-job-post'>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                </svg>Manage Post
+                            </Link></li>
+                        </> : <>
+                            <li><Link className='w-full px-5' to='/dashboard/userProfile'>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>My Profile
+                            </Link>
+                            </li>
+                            <li><Link className='w-full px-5' to='/dashboard/myApplication/applied'>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                My Application
+                            </Link></li>
+                        </>
+                    }
                     <li><Link className='w-full px-5' to='/helpCenter'>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         Help Center
                     </Link></li>

@@ -25,7 +25,7 @@ const Login = () => {
 
     setTimeout(() => {
         setResetMessage(false);
-        setResetErrorMessage(false)
+        setResetErrorMessage(false);
     }, 5000);
 
 
@@ -56,7 +56,7 @@ const Login = () => {
     };
 
     return (
-        <div className="sm:py-10 py-6 flex justify-center items-center bg-slate-100">
+        <div className="h-screen flex justify-center items-center bg-slate-100">
             <div className='lg:w-1/3 mx-4 bg-white sm:px-10 px-5 sm:py-8 py-6 rounded-xl border shadow-lg'>
                 <h1 className='text-center text-4xl font-semibold mb-5'>Login</h1>
                 <form onSubmit={handleSignIn}>
