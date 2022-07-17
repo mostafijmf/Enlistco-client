@@ -28,7 +28,8 @@ const SeekerProfile = ({ user }) => {
         exStartDate,
         exEndDate,
         exWorking,
-        exResponsibilities
+        exResponsibilities,
+        resume
     } = user;
     return (
         <div>
@@ -278,10 +279,16 @@ const SeekerProfile = ({ user }) => {
                     }
                 </div>
             </div>
-            <div>
-                <img className='w-full h-full' src={'https://pdf.ac/1LoSq7'} alt="" />
-            </div>
             <hr className='my-7' />
+            {
+                resume ? <>
+                    <div className='lg:w-3/5 sm:w-11/12 w-full mx-auto overflow-y-auto'>
+                        <h1 className='text-center my-5 text-3xl font-medium'>CV / Resume</h1>
+                        <iframe title='Resume' className='w-full h-screen' src={resume}></iframe>
+                    </div>
+                    <hr className='my-7' />
+                </> : ''
+            }
         </div>
     );
 };

@@ -8,7 +8,6 @@ const Applied = () => {
                 <div className="card w-full border">
                     <div className="card-body items-center">
                         <h2 className="card-title">Cookies!</h2>
-                        <p>We are using cookies for no reason.</p>
                     </div>
                     <div className="card-actions justify-end">
                         <button className="btn btn-ghost">View</button>

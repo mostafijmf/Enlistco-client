@@ -13,7 +13,6 @@ const UserContact = () => {
     const fNameRef = useRef('');
     const lNameRef = useRef('');
     const phoneRef = useRef('');
-    const resumeRef = useRef('');
     const countryRef = useRef('');
     const addressRef = useRef('');
     const stateRef = useRef('');
@@ -41,13 +40,13 @@ const UserContact = () => {
         const firstName = fNameRef.current.value;
         const lastName = lNameRef.current.value;
         const phone = phoneRef.current.value;
-        const resume = resumeRef.current.value;
         const country = countryRef.current.value;
         const address = addressRef.current.value;
         const state = stateRef.current.value;
         const zip = zipRef.current.value;
 
-        localStorage.setItem('userContact', JSON.stringify({ firstName, lastName, phone, resume, country, address, state, zip }));
+        localStorage.setItem('userContact', JSON.stringify({ firstName, lastName, phone, country, address, state, zip }));
+
         const seeker = true;
         const email = user.email;
 
@@ -88,10 +87,6 @@ const UserContact = () => {
                         <div className='mt-5'>
                             <label htmlFor='password' className='font-medium sm:text-lg text-base'>Email</label>
                             <input ref={emailRef} disabled required value={user?.email} className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
-                        </div>
-                        <div className='mt-5'>
-                            <label htmlFor='file' className='font-medium sm:text-lg text-base'>Upload your resume</label>
-                            <input id='file' ref={resumeRef} type="file" className="input h-10 text-base w-full mt-2 p-1 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                     </div>
 

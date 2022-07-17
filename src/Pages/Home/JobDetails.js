@@ -1,29 +1,38 @@
 import React from 'react';
 import './JobDetails.css';
 
-const JobDetails = ({open}) => {
+const JobDetails = ({ open }) => {
     const {
-        _id, 
+        _id,
         publish,
-        jobTitle, 
-        company, 
-        jobLocation, 
-        salary, 
-        empType, 
-        jobDescription, 
+        jobTitle,
+        company,
+        jobLocation,
+        salary,
+        empType,
+        jobDescription,
         workplace,
         empQuantity,
         employerEmail,
         receiveEmail,
         skillTags
     } = open;
+
+    const handleApply = async (open) =>{
+        console.log(open)
+    };
+
     return (
-        <div className="rounded-lg border shadow-md sticky top-8 h-screen overflow-y-auto scrollBar">
+        <div className="rounded-lg border shadow-md sticky top-6 h-screen overflow-y-auto scrollBar">
             <div className="card-body">
                 <h1 className='text-2xl font-bold text-center'>Job Details</h1>
                 <div className='flex justify-between'>
                     <span className='text-accent text-sm tracking-wide'>Published: {publish}</span>
-                    <button className='btn btn-primary text-white px-6 tracking-wider'>Apply</button>
+                    <button
+                        onClick={()=>handleApply(open)}
+                        className='btn btn-primary text-white px-6 tracking-wider'>
+                        Apply
+                    </button>
                 </div>
                 <h2 className="text-2xl font-medium">{jobTitle}</h2>
                 <h5 className='font-medium'>{company}</h5>

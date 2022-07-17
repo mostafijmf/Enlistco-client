@@ -12,6 +12,10 @@ const Header = () => {
     const [user] = useAuthState(auth);
     const [admin] = useAdmin();
 
+    const handleSignOut = () => {
+        localStorage.removeItem('accessToken');
+        signOut(auth)
+    };
 
     const menuLeft =
         <>
@@ -71,7 +75,7 @@ const Header = () => {
                         Help Center
                     </Link></li>
                     <li>
-                        <button onClick={() => signOut(auth)} className='w-full px-5'>Singn out</button>
+                        <button onClick={() => handleSignOut()} className='w-full px-5'>Singn out</button>
                     </li>
                 </ul>
             </li>

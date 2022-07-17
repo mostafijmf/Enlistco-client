@@ -1,7 +1,7 @@
 import React from 'react';
 
-const EmployerProfile = ({ myPost }) => {
-    const {employerEmail, receiveEmail} = myPost[0];
+const EmployerProfile = ({ emp }) => {
+    const {employerEmail, receiveEmail} = emp;
 
     return (
         <div className='md:w-3/5 sm:w-4/5 w-11/12 mx-auto'>

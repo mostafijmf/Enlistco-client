@@ -7,7 +7,7 @@ import SeekerProfile from './SeekerProfile';
 
 const UserProfile = () => {
     const [usersData] = useGetUsers(null);
-    const [myPost] = useGetPost();
+    const [myPost] = useGetPost(null);
     const navigate = useNavigate();
 
     if (usersData.length === 0) {
@@ -20,7 +20,7 @@ const UserProfile = () => {
     }
     const seeker = usersData[0].seeker;
     const employer = usersData[0].employer;
-
+    const emp = myPost.find(e => e !== undefined);
     return (<>
         <h1 className='text-center sm:text-4xl text-3xl mt-5 text-accent'>Personal Information</h1>
         {seeker &&
@@ -28,7 +28,7 @@ const UserProfile = () => {
         }
         {
             employer &&
-            <EmployerProfile myPost={myPost}></EmployerProfile>
+            <EmployerProfile emp={emp}></EmployerProfile>
         }
     </>);
 };

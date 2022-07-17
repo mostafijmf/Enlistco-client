@@ -1,11 +1,14 @@
+import axios from 'axios';
 import React, { useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import Spinner from '../Shared/Spinner';
 
 const UserEducation = () => {
     const [user] = useAuthState(auth);
     const [studying, setStudying] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const degreeRef = useRef('');
@@ -13,28 +16,45 @@ const UserEducation = () => {
     const groupRef = useRef('');
     const startDateRef = useRef('');
     const studyingRef = useRef('');
+    const resumeRef = useRef('');
 
     const hanleEducation = async event => {
         event.preventDefault();
+        setLoading(true)
         const degree = degreeRef.current.value;
         const institution = institutionRef.current.value;
         const edugroup = groupRef.current.value;
         const eduStartDate = startDateRef.current.value;
         const studying = studyingRef.current.checked;
+        const resumeFile = resumeRef.current.files[0];
+        
+
+        // ---------resume url generate----------
+        let resumeURL;
+        if (resumeFile) {
+            const pdf = new FormData();
+            pdf.append('file', resumeFile);
+            pdf.append('upload_preset', 'resume');
+
+            resumeURL = await axios.post("https://api.cloudinary.com/v1_1/job-portal/upload", pdf);
+        };
+        const resume = resumeURL.data.secure_url
+        
         let eduEndDate;
         let eduStudying;
-        if(!studying){
+        if (!studying) {
             eduEndDate = event.target.endDate.value;
             eduStudying = '';
         }
-        else{
+        else {
             eduStudying = 'Currently Studying';
             eduEndDate = ''
         };
-        const education = {degree, institution, edugroup, eduStartDate, eduEndDate, eduStudying};
+        const education = { degree, institution, edugroup, eduStartDate, eduEndDate, eduStudying, resume };
         const userContact = JSON.parse(localStorage.getItem('userContact'));
         const jobExp = JSON.parse(localStorage.getItem('jobExp'));
 
+        // Send data to database
         const email = user?.email;
         const url = `https://boiling-beach-14928.herokuapp.com/seeker/${email}`;
         await fetch(url, {
@@ -42,13 +62,14 @@ const UserEducation = () => {
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify({userContact, jobExp, education})
+            body: JSON.stringify({ userContact, jobExp, education })
         })
             .then(res => res.json())
             .then(data => { });
         localStorage.removeItem('userContact');
         localStorage.removeItem('jobExp');
         navigate('/');
+        setLoading(false)
     };
 
     return (
@@ -59,7 +80,13 @@ const UserEducation = () => {
                     <div>
                         <div>
                             <label htmlFor='degree' className='font-medium sm:text-lg text-base'>Degree<span className='text-orange-600 ml-1'>*</span></label>
-                            <input id='degree' ref={degreeRef} required type="text" placeholder="Ex: Bachelor's" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                            <input
+                                id='degree'
+                                ref={degreeRef}
+                                required type="text"
+                                placeholder="Ex: Bachelor's"
+                                className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md"
+                            />
                         </div>
                         <div className='mt-5'>
                             <label htmlFor='institution' className='font-medium sm:text-lg text-base'>Institution<span className='text-orange-600 ml-1'>*</span></label>
@@ -86,10 +113,24 @@ const UserEducation = () => {
                             <input id='checkbox' ref={studyingRef} onChange={() => setStudying(!studying)} type="checkbox" className="checkbox bg-white" />
                             <label className='text-base ml-3 cursor-pointer' htmlFor="checkbox">Currently studying</label>
                         </div>
+                        <div className='mt-5'>
+                            <label htmlFor='file' className='font-medium sm:text-lg text-base'>Upload your resume or cv</label>
+                            <input
+                                id='file'
+                                ref={resumeRef}
+                                type="file"
+                                className="input h-10 text-base w-full mt-2 p-1 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                        </div>
                     </div>
                     <div className='mt-6 flex justify-between'>
-                        <button onClick={()=>navigate('/')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8'>Skip</button>
-                        <button className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8' type="submit">Submit</button>
+                        <button onClick={() => navigate('/')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8'>Skip</button>
+                        <button
+                            className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8'
+                            type="submit">
+                            {
+                                loading ? <Spinner></Spinner> : 'Submit'
+                            }
+                        </button>
                     </div>
                 </form>
             </div>
