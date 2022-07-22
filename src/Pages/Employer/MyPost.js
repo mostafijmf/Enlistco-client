@@ -30,27 +30,27 @@ const MyPost = ({ post }) => {
     };
 
     return (
-        <div className={`${open ? 'h-auto' : 'h-56'} overflow-hidden py-6 px-8 w-full border mb-6 shadow-lg relative`}>
+        <div className={`${open ? 'h-auto border rounded-lg shadow-md px-3 mb-3' : 'h-60'} overflow-hidden sm:py-5 py-3 md:px-8 w-full border-t-2 relative`}>
             <div className="">
-                <h2 className="text-center text-2xl font-medium">{jobTitle}</h2>
+                <h2 className="text-center sm:text-2xl text-xl font-medium">{jobTitle}</h2>
                 <h5 className='text-center font-medium text-base'>{company}</h5>
                 <span className='bg-slate-200 px-2 py-1 rounded w-max'>{workplace}</span>
                 <h5 className='font-medium mt-2'>Location :
-                    <span className='text-base font-normal ml-2'>{jobLocation}</span>
+                    <span className='font-normal ml-2'>{jobLocation}</span>
                 </h5>
                 <h5 className='font-medium'>Salary :
-                    <span className='text-base font-normal ml-2'>${salary}</span>
+                    <span className='font-normal ml-2'>${salary}</span>
                 </h5>
                 <h5 className='font-medium'>Job Type :
-                    <span className='text-base font-normal ml-2'>{empType}</span>
+                    <span className='font-normal ml-2'>{empType}</span>
                 </h5>
                 <h5 className='font-medium'>Employees Quantity :
-                    <span className='text-base font-normal ml-2'>{empQuantity}</span>
+                    <span className='font-normal ml-2'>{empQuantity}</span>
                 </h5>
                 <hr className='my-6' />
                 <div className='mb-10' dangerouslySetInnerHTML={{ __html: jobDescription }}></div>
             </div>
-            <div className="absolute bottom-5 right-5">
+            <div className="absolute sm:bottom-5 sm:right-5 sm:left-auto bottom-0 left-3 sm:w-max w-full bg-white">
                 <button onClick={() => setOpen(!open)} className="btn btn-outline btn-accent min-h-8 h-0">{open ? 'Less' : 'View'}</button>
                 <button onClick={() => setDeletePost(!deletePost)} className="btn btn-outline text-red-600 hover:bg-red-600 min-h-8 h-0 ml-5">Delete</button>
             </div>

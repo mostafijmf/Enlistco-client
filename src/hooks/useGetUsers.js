@@ -19,7 +19,7 @@ const useGetUsers = () => {
             .then(res => res.json())
             .then(data => setUsersData(data));
         }
-    },[])
+    },[user])
 
     return [usersData, setUsersData];
 };

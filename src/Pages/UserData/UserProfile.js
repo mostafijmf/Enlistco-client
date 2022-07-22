@@ -19,16 +19,15 @@ const UserProfile = () => {
         </div>
     }
     const seeker = usersData[0].seeker;
-    const employer = usersData[0].employer;
-    const emp = myPost.find(e => e !== undefined);
+    const employer = myPost.find(e => e !== undefined);
     return (<>
-        <h1 className='text-center sm:text-4xl text-3xl mt-5 text-accent'>Personal Information</h1>
+        <h1 className='text-center md:text-4xl sm:text-3xl text-2xl mt-5 text-accent'>Personal Information</h1>
         {seeker &&
             usersData.map(user => <SeekerProfile key={user._id} user={user}></SeekerProfile>)
         }
         {
             employer &&
-            <EmployerProfile emp={emp}></EmployerProfile>
+            <EmployerProfile employer={employer}></EmployerProfile>
         }
     </>);
 };

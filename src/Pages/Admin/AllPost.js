@@ -22,7 +22,7 @@ const AllPost = ({ posts }) => {
     const handlePermission = id => {
         const permission = true;
         const date = new Date();
-        const publish = date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear();
+        const publish = date.getDate() + '-' + date.toLocaleString('default', {month: 'long'}) + '-' + date.getFullYear();
 
         const url = `https://boiling-beach-14928.herokuapp.com/post/${id}`;
         fetch(url, {
@@ -81,7 +81,7 @@ const AllPost = ({ posts }) => {
             <div className="absolute bottom-5 right-5">
                 <button onClick={() => setOpen(!open)} className="btn btn-link text-accent min-h-8 h-0">{open ? 'Less' : 'View'}</button>
                 {
-                    !permission && <button onClick={() => handlePermission(_id)} className="btn btn-outline btn-primary min-h-8 h-0 ml-5">Pending</button>
+                    !permission && <button onClick={() => handlePermission(_id)} className="btn btn-outline btn-primary min-h-8 h-0 ml-5">Approve Pending</button>
                 }
                 <button onClick={() => setDeletePost(!deletePost)} className="btn btn-outline text-red-600 hover:bg-red-600 min-h-8 h-0 ml-5">Delete</button>
             </div>

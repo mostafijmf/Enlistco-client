@@ -24,9 +24,9 @@ const Dashboard = () => {
                     </label>
                     <Outlet></Outlet>
                 </div>
-                <div className="drawer-side">
+                <div className="drawer-side lg:z-0">
                     <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-                    <ul className="menu bg-slate-100 sticky -z-10 top-0 h-screen border-r p-4 overflow-y-auto w-80 text-base-content">
+                    <ul className="menu bg-slate-100 sticky top-0 h-screen border-r p-4 overflow-y-auto w-80 text-base-content">
                         {
                             admin.admin ? <>
                                 <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/manage-users'>

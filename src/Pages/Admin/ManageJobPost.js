@@ -5,7 +5,6 @@ import AllPost from './AllPost';
 
 const ManageJobPost = () => {
     const [allPost] = useGetAllPost();
-    // console.log(allPost)
     if (allPost.length === 0) {
         return <div className='h-screen top-0 w-full flex items-center justify-center'>
             <Spinner></Spinner>

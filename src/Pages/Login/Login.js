@@ -23,10 +23,12 @@ const Login = () => {
     const location = useLocation();
     let from = location.state?.from?.pathname || "/";
 
-    setTimeout(() => {
-        setResetMessage(false);
-        setResetErrorMessage(false);
-    }, 5000);
+    if(resetMessage || resetErrorMessage){
+        setTimeout(() => {
+            setResetMessage(false);
+            setResetErrorMessage(false);
+        }, 5000);
+    };
 
 
     if (user) {

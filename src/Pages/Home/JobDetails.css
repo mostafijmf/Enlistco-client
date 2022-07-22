@@ -1,5 +1,6 @@
 .scrollBar::-webkit-scrollbar {
-    width: 0.6rem;
+    width: 0.7rem;
+    background: #eee;
 }
 
 .scrollBar::-webkit-scrollbar-thumb {

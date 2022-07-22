@@ -40,6 +40,7 @@ const UserEducation = () => {
         };
         const resume = resumeURL.data.secure_url
         
+        
         let eduEndDate;
         let eduStudying;
         if (!studying) {

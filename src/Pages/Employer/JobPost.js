@@ -9,12 +9,12 @@ const JobPost = () => {
 
     return (
         <div className='w-full flex justify-center'>
-            <div className='w-4/5 mx-auto'>
-                <h1 className='text-3xl my-5 text-accent font-medium'>My posted jobs</h1>
+            <div className='sm:w-4/5 w-11/12 mx-auto'>
+                <h1 className='sm:text-3xl text-2xl sm:text-left text-center my-5 text-accent font-medium'>My posted jobs</h1>
                 {myPost.length === 0 ?
-                    <div className='h-96 w-full flex flex-col justify-center gap-5 items-center'>
-                        <h1 className='text-4xl text-gray-500'>You don't have posted job</h1>
-                        <button onClick={()=>navigate('/employer/contact')} className='btn btn-primary hover:text-white normal-case text-xl tracking-wide'>Post a job</button>
+                    <div className='h-96 w-11/12 mx-auto flex flex-col justify-center gap-5 items-center'>
+                        <h1 className='md:text-4xl sm:text-3xl text-2xl text-center text-gray-500'>You don't have posted job</h1>
+                        <button onClick={()=>navigate('/employer/contact')} className='btn btn-primary hover:text-white min-h-0 sm:h-12 h-10 normal-case sm:text-xl text-lg tracking-wide'>Post a job</button>
                     </div> :
                     myPost.map(post => <MyPost key={post._id} post={post}></MyPost>)
                 }
