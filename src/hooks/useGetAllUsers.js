@@ -1,12 +1,17 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const useGetAllUsers = () => {
     const [allUsers, setAllUsers] = useState([]);
 
     useEffect(()=>{
-        fetch('https://boiling-beach-14928.herokuapp.com/users')
-        .then(res => res.json())
-        .then(data => setAllUsers(data))
+        axios.get('https://boiling-beach-14928.herokuapp.com/users')
+        .then(res => {
+            setAllUsers(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        });
     },[allUsers]);
     return [allUsers, setAllUsers];
 };

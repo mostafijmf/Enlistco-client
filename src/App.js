@@ -1,4 +1,3 @@
-import './App.css';
 import { Routes, Route } from "react-router-dom";
 import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
@@ -21,96 +20,113 @@ import NewEntry from './Pages/Login/NewEntry';
 import ManageUsers from './Pages/Admin/ManageUsers';
 import ManageJobPost from './Pages/Admin/ManageJobPost';
 import RequireAdmin from './Pages/Login/RequireAdmin';
+import SeekerApplications from "./Pages/Employer/SeekerApplications";
+import Resume from "./Pages/Employer/Resume";
+import AdminPost from "./Pages/Admin/AdminPost";
 
 function App() {
   return (
-    <div className="App">
-        <Routes>
-          <Route path='/' element={<Home></Home>}></Route>
+    <div>
+      <Routes>
+        <Route path='/' element={<Home></Home>}></Route>
 
-          <Route path='/new-entry' element={
+        <Route path='/new-entry' element={
+          <RequireAuth>
+            <NewEntry></NewEntry>
+          </RequireAuth>
+        }></Route>
+
+        {/* ---------------Dashboard--------------- */}
+        <Route path='/dashboard' element={
+          <RequireAuth>
+            <Dashboard></Dashboard>
+          </RequireAuth>}>
+          <Route path='/dashboard/manage-users' element={
+            <RequireAdmin>
+              <ManageUsers></ManageUsers>
+            </RequireAdmin>
+          }></Route>
+          <Route path='/dashboard/manage-job-post' element={
+            <RequireAdmin>
+              <ManageJobPost></ManageJobPost>
+            </RequireAdmin>
+          }></Route>
+          <Route path='/dashboard/admin-job-post' element={
+            <RequireAdmin>
+              <AdminPost></AdminPost>
+            </RequireAdmin>
+          }></Route>
+          <Route path='/dashboard/userProfile' element={
             <RequireAuth>
-              <NewEntry></NewEntry>
+              <UserProfile></UserProfile>
             </RequireAuth>
           }></Route>
-
-          {/* ---------------Dashboard--------------- */}
-          <Route path='/dashboard' element={
+          <Route path='/dashboard/myApplication' element={
             <RequireAuth>
-              <Dashboard></Dashboard>
+              <MyApplication></MyApplication>
             </RequireAuth>}>
-            <Route path='/dashboard/manage-users' element={
-              <RequireAdmin>
-                <ManageUsers></ManageUsers>
-              </RequireAdmin>
-            }></Route>
-            <Route path='/dashboard/manage-job-post' element={
-              <RequireAdmin>
-                <ManageJobPost></ManageJobPost>
-              </RequireAdmin>
-            }></Route>
-            <Route path='/dashboard/userProfile' element={
+            <Route path='/dashboard/myApplication/applied' element={
               <RequireAuth>
-                <UserProfile></UserProfile>
+                <Applied></Applied>
               </RequireAuth>
             }></Route>
-            <Route path='/dashboard/myApplication' element={
+            <Route path='/dashboard/myApplication/post' element={
               <RequireAuth>
-                <MyApplication></MyApplication>
-              </RequireAuth>}>
-              <Route path='/dashboard/myApplication/applied' element={
-                <RequireAuth>
-                  <Applied></Applied>
-                </RequireAuth>
-              }></Route>
-              <Route path='/dashboard/myApplication/post' element={
-                <RequireAuth>
-                  <JobPost></JobPost>
-                </RequireAuth>
-              }></Route>
-            </Route>
+                <JobPost></JobPost>
+              </RequireAuth>
+            }></Route>
           </Route>
+          <Route path='/dashboard/seeker-applications' element={
+            <RequireAuth>
+              <SeekerApplications></SeekerApplications>
+            </RequireAuth>
+          }></Route>
+        </Route>
+        <Route path='/dashboard/seeker-resume' element={
+          <RequireAuth>
+            <Resume></Resume>
+          </RequireAuth>
+        }></Route>
+        {/* ---------------user form--------------- */}
+        <Route path='/form/userContact' element={
+          <RequireAuth>
+            <UserContact></UserContact>
+          </RequireAuth>
+        }></Route>
+        <Route path='/form/jobExperience' element={
+          <RequireAuth>
+            <UserJobExperience></UserJobExperience>
+          </RequireAuth>
+        }></Route>
+        <Route path='/form/education' element={
+          <RequireAuth>
+            <UserEducation></UserEducation>
+          </RequireAuth>
+        }></Route>
 
-          {/* ---------------user form--------------- */}
-          <Route path='/form/userContact' element={
-            <RequireAuth>
-              <UserContact></UserContact>
-            </RequireAuth>
-          }></Route>
-          <Route path='/form/jobExperience' element={
-            <RequireAuth>
-              <UserJobExperience></UserJobExperience>
-            </RequireAuth>
-          }></Route>
-          <Route path='/form/education' element={
-            <RequireAuth>
-              <UserEducation></UserEducation>
-            </RequireAuth>
-          }></Route>
-
-          {/* ---------------employer job form--------------- */}
-          <Route path='/employer/contact' element={
-            <RequireAuth>
-              <EmployerContact></EmployerContact>
-            </RequireAuth>
-          }></Route>
-          <Route path='/employer/jobDesciption' element={
-            <RequireAuth>
-              <JobDescription></JobDescription>
-            </RequireAuth>
-          }></Route>
-          <Route path='/employer/ApplicationOptions' element={
-            <RequireAuth>
-              <ApplicationOptions></ApplicationOptions>
-            </RequireAuth>
-          }></Route>
+        {/* ---------------employer job form--------------- */}
+        <Route path='/employer/contact' element={
+          <RequireAuth>
+            <EmployerContact></EmployerContact>
+          </RequireAuth>
+        }></Route>
+        <Route path='/employer/jobDesciption' element={
+          <RequireAuth>
+            <JobDescription></JobDescription>
+          </RequireAuth>
+        }></Route>
+        <Route path='/employer/ApplicationOptions' element={
+          <RequireAuth>
+            <ApplicationOptions></ApplicationOptions>
+          </RequireAuth>
+        }></Route>
 
 
-          <Route path='/helpCenter' element={<HelpCenter></HelpCenter>}></Route>
-          <Route path='/login' element={<Login></Login>}></Route>
-          <Route path='/signUp' element={<SignUp></SignUp>}></Route>
-          <Route path='/*' element={<NotFound></NotFound>}></Route>
-        </Routes>
+        <Route path='/helpCenter' element={<HelpCenter></HelpCenter>}></Route>
+        <Route path='/login' element={<Login></Login>}></Route>
+        <Route path='/signUp' element={<SignUp></SignUp>}></Route>
+        <Route path='/*' element={<NotFound></NotFound>}></Route>
+      </Routes>
     </div>
   );
 }

@@ -16,7 +16,7 @@ const PostList = ({ post, setOpen }) => {
     return (<>
         {
             permission && <div onClick={() => setOpen(post)} className="w-full rounded-lg border shadow-md mb-5 cursor-pointer">
-                <div className="flex flex-col sm:p-8 p-5 gap-2 flex-auto">
+                <div className="flex flex-col sm:p-6 p-3 gap-2 flex-auto">
                     <span className='text-accent text-sm tracking-wide'>Published: {publish}</span>
                     <h2 className="text-2xl font-medium">{jobTitle}</h2>
                     <h5 className='font-medium'>{company}</h5>

@@ -1,7 +1,6 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-const MyPost = ({ post }) => {
+const AdminPostList = ({ post }) => {
     const [open, setOpen] = useState(false);
     const [deletePost, setDeletePost] = useState(false);
     const {
@@ -24,8 +23,8 @@ const MyPost = ({ post }) => {
         fetch(url, {
             method: 'DELETE'
         })
-        .then(res => res.json())
-        .then(data => {});
+            .then(res => res.json())
+            .then(data => { });
         setDeletePost(!deletePost)
     };
 
@@ -56,22 +55,22 @@ const MyPost = ({ post }) => {
             </div>
             {
                 deletePost &&
-                    <div className="fixed w-screen h-screen top-0 left-0 z-20 flex items-center justify-center">
-                        <div className="modal-box text-center bg-secondary">
-                            <h3 className="font-medium text-2xl text-white">Are you sure!</h3>
-                            <p className="text-lg py-4 text-gray-300">Do you want to delete it?</p>
-                            <div className="flex justify-center gap-5 mt-5">
+                <div className="fixed w-screen h-screen top-0 left-0 z-20 flex items-center justify-center">
+                    <div className="modal-box text-center bg-secondary">
+                        <h3 className="font-medium text-2xl text-white">Are you sure!</h3>
+                        <p className="text-lg py-4 text-gray-300">Do you want to delete it?</p>
+                        <div className="flex justify-center gap-5 mt-5">
 
-                                <button onClick={() => setDeletePost(!deletePost)} className="btn btn-primary text-white min-h-8 h-0 px-6 tracking-wider">No</button>
+                            <button onClick={() => setDeletePost(!deletePost)} className="btn btn-primary text-white min-h-8 h-0 px-6 tracking-wider">No</button>
 
-                                <button onClick={()=>handleDelete(_id)} className="btn btn-outline text-white min-h-8 h-0 px-6 tracking-wider">Yes</button>
+                            <button onClick={() => handleDelete(_id)} className="btn btn-outline text-white min-h-8 h-0 px-6 tracking-wider">Yes</button>
 
-                            </div>
                         </div>
                     </div>
+                </div>
             }
         </div>
     );
 };
 
-export default MyPost;
+export default AdminPostList;

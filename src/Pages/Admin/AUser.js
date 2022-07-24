@@ -16,15 +16,15 @@ const AUser = ({user, index}) => {
 
     return (
         <div>
-            <ul className='grid grid-cols-4 px-5 h-14 items-center text-lg text-gray-600'>
+            <ul className='grid grid-cols-4 px-5 h-14 items-center text-base text-gray-600'>
                 <li><span className='mr-20'>{index}</span>{firstName} {lastName}</li>
                 <li>{seeker && 'Seeker'} {employer && '& Employer'} {admin && 'Admin'}</li>
                 <li>{email}</li>
                 <li>
                     {
                         !admin && <>
-                            <button className='btn btn-link mr-8 normal-case text-lg min-h-0 h-10 tracking-wider'>View</button>
-                            <button onClick={() => setDeleteUser(!deleteUser)} className='btn btn-outline normal-case text-lg min-h-0 h-10 tracking-wider'>Delete</button>
+                            <button className='btn btn-link mr-8 normal-case text-base min-h-0 h-9 tracking-wider'>View</button>
+                            <button onClick={() => setDeleteUser(!deleteUser)} className='btn btn-outline normal-case text-base min-h-0 h-9 tracking-wider'>Delete</button>
                         </>
                     }
                 </li>

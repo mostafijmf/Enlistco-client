@@ -5,7 +5,7 @@ const HelpCenter = () => {
     return (<>
         <Header></Header>
         <section className='flex items-center justify-center p-10'>
-            <h1 className='text-5xl text-gray-400'>Comming soon.....</h1>
+            <h1 className='md:text-5xl sm:text-4xl text-3xl text-gray-400 text-center'>Comming soon.....</h1>
         </section>
     </>);
 };

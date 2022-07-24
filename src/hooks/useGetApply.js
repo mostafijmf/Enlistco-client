@@ -18,7 +18,7 @@ const useGetApply = () => {
                 console.log(err)
             });
         };
-    },[user]);
+    },[user, applied]);
     return [applied, setApplied];
 };
 

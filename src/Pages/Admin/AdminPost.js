@@ -1,9 +1,9 @@
 import React from 'react';
-import MyPost from './MyPost';
 import { useNavigate } from 'react-router-dom';
 import useGetPost from '../../hooks/useGetPost';
+import AdminPostList from './AdminPostList';
 
-const JobPost = () => {
+const AdminPost = () => {
     const [myPost] = useGetPost();
     const navigate = useNavigate();
 
@@ -16,11 +16,11 @@ const JobPost = () => {
                         <h1 className='md:text-4xl sm:text-3xl text-2xl text-center text-gray-500'>You don't have posted job</h1>
                         <button onClick={()=>navigate('/employer/contact')} className='btn btn-primary hover:text-white min-h-0 sm:h-11 h-10 normal-case text-lg tracking-wide'>Post a job</button>
                     </div> :
-                    myPost.map(post => <MyPost key={post._id} post={post}></MyPost>)
+                    myPost.map(post => <AdminPostList key={post._id} post={post}></AdminPostList>)
                 }
             </div>
         </div>
     );
 };
 
-export default JobPost;
+export default AdminPost;

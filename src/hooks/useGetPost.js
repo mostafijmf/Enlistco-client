@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../firebase.init';
@@ -9,15 +10,19 @@ const useGetPost = () => {
     useEffect(() => {
         const email = user?.email;
         const url = `https://boiling-beach-14928.herokuapp.com/post/${email}`;
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'authorization': `Bearer ${localStorage.getItem('accessToken')}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => setMyPost(data))
-    }, [myPost]);
+            axios.get(url,{
+                method: 'GET',
+                headers: {
+                    'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
+            .then(res => {
+                setMyPost(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            });
+    }, [user, myPost]);
 
     return [myPost];
 };

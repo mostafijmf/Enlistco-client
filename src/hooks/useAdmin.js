@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
@@ -11,12 +12,14 @@ const useAdmin = () => {
         const email = user?.email;
         if(email){
             const url = `https://boiling-beach-14928.herokuapp.com/admin/${email}`;
-            fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                setAdmin(data);
+            axios.get(url)
+            .then(res => {
+                setAdmin(res.data);
                 setAdminLoading(false)
             })
+            .catch(err => {
+                console.log(err)
+            });
         }
     },[user]);
     return [admin, adminLoading];

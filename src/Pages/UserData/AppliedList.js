@@ -7,7 +7,6 @@ const AppliedList = ({ appliedJob, allPost }) => {
     const allJobPost = allPost.filter(post => post._id === postID);
     const [openModal, setOpenModal] = useState(false);
     const [openPost, setOpenPost] = useState();
-    // console.log(coverLetter)
     const handlePost = (aj) => {
         setOpenPost(aj);
     };
@@ -47,9 +46,9 @@ const AppliedList = ({ appliedJob, allPost }) => {
                         </div>
                     </div>
                     : <>
-                        <div className='w-full border-t-2 py-2 mb-3 relative'>
+                        <div className='w-full border-t-2 mb-3 relative'>
                             <div>
-                                <h1 onClick={() => handlePost(aj)} className='btn btn-link normal-case px-0 sm:min-h-0 h-0 sm:text-2xl text-xl text-left font-medium'>{aj.jobTitle}</h1>
+                                <h1 onClick={() => handlePost(aj)} className='btn btn-link normal-case px-0 min-h-0 h-10 text-xl text-left font-medium'>{aj.jobTitle}</h1>
                                 <p className='sm:text-lg text-base font-medium'>{aj.company}</p>
                                 <div className='flex items-center'>
                                     <p className='sm:text-base text-sm mr-5'>{aj.jobLocation}</p>
@@ -62,23 +61,23 @@ const AppliedList = ({ appliedJob, allPost }) => {
                             </div>
                         </div>
                         {
-                            openModal && <div className='w-full md:h-screen md:py-0 py-10 flex items-center justify-center absolute z-10 top-0 left-0 bg-black/50'>
-                                <div className='xl:w-1/2 lg:w-9/12 md:w-4/5 sm:w-11/12 w-full h-max bg-white rounded-md shadow-2xl relative z-50'>
+                            openModal && <div className='w-full pt-10 pb-40 flex items-center justify-center absolute z-10 top-0 left-0 bg-black/50'>
+                                <div className='lg:w-9/12 md:w-4/5 sm:w-11/12 w-full h-max bg-white rounded-md shadow-2xl relative z-50'>
                                     <button
                                         onClick={() => setOpenModal(!openModal)}
-                                        className='absolute top-5 right-5 w-10 h-10 hover:bg-gray-200 hover:rounded-full duration-300 p-1'>
+                                        className='absolute top-5 sm:right-5 right-3 w-10 h-10 hover:bg-gray-200 hover:rounded-full duration-300 p-1'>
                                         <XIcon></XIcon>
                                     </button>
-                                    <div className='py-5 border-b-2 sm:px-10 px-5'>
+                                    <div className='pt-5 pb-3 border-b-2 sm:px-8 px-5'>
                                         <h1 className='sm:text-2xl text-xl font-medium'>Applied to {aj.jobTitle}</h1>
                                     </div>
-                                    <div className='py-4 sm:px-10 px-5'>
-                                        <h2 className='sm:text-xl text-lg font-medium'>CV / Resume</h2>
+                                    <div className='py-3 sm:px-8 px-5'>
+                                        <h2 className='sm:text-lg text-base font-medium'>CV / Resume</h2>
                                         <iframe title='Resume' className='mt-2' src={resume}></iframe>
                                     </div>
-                                    <div className='pb-8 sm:px-10 px-5 border-t-2'>
-                                        <h2 className='sm:text-xl text-lg my-2 font-medium'>Cover letter</h2>
-                                        <h2 className='sm:text-lg text-base mb-1 font-medium'>Subject :
+                                    <div className='pb-8 sm:px-8 px-5 border-t-2'>
+                                        <h2 className='sm:text-lg base mt-2 font-medium'>Cover letter</h2>
+                                        <h2 className='text-base mb-1 font-medium'>Subject :
                                             <span className='font-normal ml-2'>{subject}</span>
                                         </h2>
                                         <div className='ml-3 sm:h-80 sm:overflow-y-auto scrollBar sm:text-base text-sm' dangerouslySetInnerHTML={{ __html: coverLetter }}></div>

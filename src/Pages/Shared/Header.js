@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MenuAlt3Icon, XIcon } from '@heroicons/react/solid';
+import { AnnotationIcon, MenuAlt3Icon, XIcon } from '@heroicons/react/solid';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { signOut } from 'firebase/auth';
 import useAdmin from '../../hooks/useAdmin';
+import useGetUsers from '../../hooks/useGetUsers';
 
 const Header = () => {
     const [open, setOpen] = useState(false);
     const [openProfile, setOpenProfile] = useState(false);
     const [user] = useAuthState(auth);
     const [admin] = useAdmin();
-
+    const [usersData] = useGetUsers();
+    const emp = usersData[0]?.employer;
     const handleSignOut = () => {
         localStorage.removeItem('accessToken');
         signOut(auth)
@@ -19,15 +21,15 @@ const Header = () => {
 
     const menuLeft =
         <>
-            <li className='hover:text-primary hover:font-medium duration-300 text-lg my-5 lg:my-0'>
+            <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
                 <Link to='/'>Find Jobs</Link>
             </li>
-            <li className='hover:text-primary hover:font-medium duration-300 text-lg my-5 lg:my-0'>
+            <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
                 <Link to='/employer/contact'>Post a job</Link>
             </li>
             {
                 !admin.admin &&
-                <li className='hover:text-primary hover:font-medium duration-300 text-lg my-5 lg:my-0'>
+                <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
                     <Link to='/form/userContact'>Upload Your Resume</Link>
                 </li>
             }
@@ -53,6 +55,20 @@ const Header = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                                 </svg>Manage Post
                             </Link></li>
+                            <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/admin-job-post'>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>My Post
+                            </Link></li>
+                            {
+                                emp &&
+                                <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/seeker-applications'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                                    </svg>
+                                    Seeker Applications
+                                </Link></li>
+                            }
                         </> : <>
                             <li><Link className='w-full px-5' to='/dashboard/userProfile'>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -66,26 +82,35 @@ const Header = () => {
                                 </svg>
                                 My Application
                             </Link></li>
+                            {
+                                emp &&
+                                <li><Link className='w-full px-5' to='/dashboard/seeker-applications'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                                    </svg>
+                                    Seeker Applications
+                                </Link></li>
+                            }
                         </>
                     }
-                    <li><Link className='w-full px-5' to='/helpCenter'>
+                    <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/helpCenter'>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         Help Center
                     </Link></li>
                     <li>
-                        <button onClick={() => handleSignOut()} className='w-full px-5'>Singn out</button>
+                        <button onClick={() => handleSignOut()} className='w-full px-5 hover:text-accent focus:text-accent'>Singn out</button>
                     </li>
                 </ul>
             </li>
         </>
         :
         <>
-            <li className='hover:text-primary hover:font-medium duration-300 text-lg my-5 lg:my-0'>
+            <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
                 <Link to='/login'>Log in</Link>
             </li>
-            <li className='hover:text-primary hover:font-medium duration-300 text-lg my-5 lg:my-0'>
+            <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
                 <Link to='/signUp'>Sign up</Link>
             </li>
         </>
@@ -93,10 +118,10 @@ const Header = () => {
 
     return (
         <header className='w-full shadow z-10 sticky'>
-            <nav className="flex items-center justify-between w-11/12 mx-auto h-16 relative">
+            <nav className="flex items-center justify-between w-11/12 mx-auto h-14 relative">
                 <div className="logo lg:flex-none flex justify-between items-center lg:w-auto w-full">
-                    <Link to='/' className='btn btn-ghost normal-case lg:text-2xl md:text-2xl'>JOB PORTAL</Link>
-                    <span id='hamburger' className='lg:hidden cursor-pointer' onClick={() => setOpen(!open)}>
+                    <Link to='/' className='btn btn-ghost normal-case text-xl md:text-2xl'>JOB PORTAL</Link>
+                    <span id='hamburger' className='lg:hidden cursor-pointer' onClick={() => { setOpen(!open); setOpenProfile(false) }}>
                         {
                             open ? <XIcon className='w-8 h-8'></XIcon> :
                                 <MenuAlt3Icon className='w-8 h-8'></MenuAlt3Icon>
