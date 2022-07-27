@@ -48,7 +48,7 @@ const JobDetails = ({ open }) => {
         const date = new Date();
         const applied = date.getDate() + '-' + date.toLocaleString('default', { month: 'long' }) + '-' + date.getFullYear();
         await axios.post('https://boiling-beach-14928.herokuapp.com/apply',
-            { resume, subject, coverLetter, seekerEmail, seekerName, postID, receiveEmail, applied, jobTitle })
+            { resume, subject, coverLetter, seekerEmail, seekerName, postID, receiveEmail, employerEmail, applied, jobTitle })
             .then(function (response) {
                 setLoading(false);
                 setModal(false)

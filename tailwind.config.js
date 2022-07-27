@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {},
   },
+  important: true,
   daisyui: {
     themes: [
       {
@@ -15,7 +16,6 @@ module.exports = {
           "base-100": "#ffffff",
         },
       },
-      "dark",
       "cupcake",
     ],
   },

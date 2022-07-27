@@ -18,8 +18,8 @@ const UserProfile = () => {
     }
     const seeker = usersData[0].seeker;
     const employer = myPost.find(e => e !== undefined);
-    return (<>
-        <h1 className='text-center sm:text-3xl text-2xl mt-5 text-accent'>Personal Information</h1>
+    return (<section className='relative'>
+        <h1 className='text-center sm:text-3xl text-2xl my-5 text-accent'>Personal Information</h1>
         {seeker &&
             usersData.map(user => <SeekerProfile key={user._id} user={user}></SeekerProfile>)
         }
@@ -27,7 +27,7 @@ const UserProfile = () => {
             employer &&
             <EmployerProfile employer={employer}></EmployerProfile>
         }
-    </>);
+    </section>);
 };
 
 export default UserProfile;

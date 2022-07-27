@@ -70,13 +70,13 @@ const Header = () => {
                                 </Link></li>
                             }
                         </> : <>
-                            <li><Link className='w-full px-5' to='/dashboard/userProfile'>
+                            <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/userProfile'>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>My Profile
                             </Link>
                             </li>
-                            <li><Link className='w-full px-5' to='/dashboard/myApplication/applied'>
+                            <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/myApplication/applied'>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
@@ -84,7 +84,7 @@ const Header = () => {
                             </Link></li>
                             {
                                 emp &&
-                                <li><Link className='w-full px-5' to='/dashboard/seeker-applications'>
+                                <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/seeker-applications'>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                                     </svg>
@@ -138,7 +138,7 @@ const Header = () => {
                         {menuRight}
                     </ul>
                 </div>
-                <ul className={`lg:hidden md:w-64 sm:w-1/2 w-full glass rounded-lg shadow-md px-7 py-4 absolute right-0 duration-300 ease-out ${open ? 'top-20' : '-top-96'}`}>
+                <ul className={`lg:hidden md:w-64 sm:w-1/2 w-full glass rounded-lg shadow-md px-7 py-4 absolute right-0 duration-300 ease-out ${open ? 'top-16' : '-top-96'}`}>
                     {menuLeft}
                     {menuRight}
                 </ul>

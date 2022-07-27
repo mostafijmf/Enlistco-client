@@ -114,8 +114,8 @@ const UserContact = () => {
                         </div>
                     </div>
                     <div className='mt-6 flex justify-between'>
-                        <button onClick={() => navigate('/form/jobExperience')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8'>Skip</button>
-                        <button type='submit' className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8'>Next</button>
+                        <button onClick={() => navigate('/form/jobExperience')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base hover:text-white sm:h-11 h-8 min-h-0'>Later</button>
+                        <button type='submit' className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white sm:h-11 h-8 min-h-0'>Next</button>
                     </div>
                 </form>
             </div>

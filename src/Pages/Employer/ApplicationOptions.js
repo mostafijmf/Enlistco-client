@@ -94,7 +94,7 @@ const ApplicationOptions = () => {
                             </div>
                         </div>
                         <div className='mt-10 flex sm:justify-center'>
-                            <button className='btn btn-accent sm:px-10 px-6 capitalize sm:text-lg text-base text-white'>Submit</button>
+                            <button className='btn btn-accent sm:px-10 px-5 normal-case sm:text-lg text-base text-white sm:h-11 h-10 min-h-0'>Submit</button>
                             {
                                 open &&
                                 <div className="fixed w-screen h-screen top-0 left-0 flex items-center justify-center bg-black/50">

@@ -21,9 +21,9 @@ const AppliedList = ({ appliedJob, allPost }) => {
                                 <span className='text-accent text-sm tracking-wide'>Published: {aj.publish}</span>
                                 <button
                                     onClick={() => setOpenPost('')}
-                                    className='btn btn-link sm:text-lg text-base tracking-wider normal-case'>
+                                    className='btn btn-link sm:text-lg text-base min-h-0 h-8 p-0 tracking-wider normal-case'>
                                     Back
-                                    <ArrowRightIcon className='w-5 h-5 ml-2'></ArrowRightIcon>
+                                    <ArrowRightIcon className='sm:w-5 sm:h-5 w-4 h-4 sm:ml-2 ml-1'></ArrowRightIcon>
                                 </button>
                             </div>
                             <h2 className="sm:text-2xl text-xl font-medium">{aj.jobTitle}</h2>
@@ -62,7 +62,7 @@ const AppliedList = ({ appliedJob, allPost }) => {
                         </div>
                         {
                             openModal && <div className='w-full pt-10 pb-40 flex items-center justify-center absolute z-10 top-0 left-0 bg-black/50'>
-                                <div className='lg:w-9/12 md:w-4/5 sm:w-11/12 w-full h-max bg-white rounded-md shadow-2xl relative z-50'>
+                                <div className='lg:w-9/12 md:w-4/5 w-11/12 h-max bg-white rounded-md shadow-2xl relative z-50'>
                                     <button
                                         onClick={() => setOpenModal(!openModal)}
                                         className='absolute top-5 sm:right-5 right-3 w-10 h-10 hover:bg-gray-200 hover:rounded-full duration-300 p-1'>
