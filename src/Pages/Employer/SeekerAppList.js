@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SeekerAppList = ({ p, index, setOpenModal }) => {
     const navigate = useNavigate();
-    const { _id, seekerName, seekerEmail, jobTitle, applied, coverLetter, subject, resume } = p
+    const { _id, seekerName, seekerEmail, seekerPhone, jobTitle, applied, coverLetter, subject, resume } = p
     const handleCLetter = (coverLetter, subject) => {
         setOpenModal({ coverLetter, subject })
     };
@@ -20,6 +20,7 @@ const SeekerAppList = ({ p, index, setOpenModal }) => {
                 </button>
             </td>
             <td className='py-0 text-sm'>{seekerEmail}</td>
+            <td className='py-0 text-sm'>{seekerPhone}</td>
             <td className='py-0 text-sm'>{jobTitle}</td>
             <td className='py-0 text-sm'>{applied}</td>
             <td className='py-0'>

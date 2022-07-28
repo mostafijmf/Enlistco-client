@@ -29,7 +29,7 @@ const CandidatesProfile = () => {
             <Spinner></Spinner>
         </div>
     };
-    // console.log(cdData)
+    
     const { _id,
         firstName,
         lastName,

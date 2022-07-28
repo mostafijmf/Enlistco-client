@@ -10,9 +10,7 @@ const useGetAllPost = () => {
         .then(res => {
             setAllPost(res.data)
         })
-        .catch(err => {
-            console.log(err)
-        });
+        .catch(err => {});
     },[allPost]);
 
     return [allPost, setAllPost];

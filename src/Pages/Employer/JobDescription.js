@@ -6,7 +6,7 @@ const JobDescription = () => {
     // Description
     const editorRef = useRef(null);
     const navigate = useNavigate()
-    const log = () => {
+    const handleJobDes = () => {
         if (editorRef.current) {
             localStorage.setItem('jobDescription', JSON.stringify(editorRef.current.getContent()));
             navigate('/employer/ApplicationOptions')
@@ -36,8 +36,8 @@ const JobDescription = () => {
 
                 />
                 <div className='flex items-center justify-between md:mx-5 mt-10'>
-                    <button onClick={()=>navigate('/employer/contact')} className='btn btn-outline btn-accent sm:px-10 px-5 normal-case sm:text-lg text-base sm:h-11 h-10 min-h-0'>Preview</button>
-                    <button onClick={log} className='btn btn-accent sm:px-10 px-5 normal-case sm:text-lg text-base text-white sm:h-11 h-10 min-h-0'>Save and continue</button>
+                    <button onClick={()=>navigate('/employer/contact')} className='btn btn-outline btn-accent sm:px-10 px-5 normal-case sm:text-lg text-base h-11 min-h-0'>Preview</button>
+                    <button onClick={handleJobDes} className='btn btn-accent sm:px-10 px-5 normal-case sm:text-lg text-base text-white h-11 min-h-0'>Save and continue</button>
                 </div>
             </div>
         </div>

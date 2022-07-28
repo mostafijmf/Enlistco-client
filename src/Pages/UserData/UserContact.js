@@ -20,7 +20,7 @@ const UserContact = () => {
 
     const navigate = useNavigate();
     const [token, setToken] = useState('');
-    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (token) {
@@ -28,15 +28,9 @@ const UserContact = () => {
         }
     }, [token, navigate]);
 
-    if (open) {
-        return <div className='h-screen w-full flex items-center justify-center'>
-            <Spinner></Spinner>
-        </div>
-    }
-
     const handleContact = async event => {
         event.preventDefault();
-        setOpen(true);
+        setLoading(true);
         const firstName = fNameRef.current.value;
         const lastName = lNameRef.current.value;
         const phone = phoneRef.current.value;
@@ -51,19 +45,19 @@ const UserContact = () => {
         const email = user.email;
 
         await fetch(`https://boiling-beach-14928.herokuapp.com/users/${email}`, {
-        method: 'PUT',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify({ email, seeker })
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ email, seeker })
         })
-        .then(res => res.json())
-        .then(data => {
-            const accessToken = data.token;
-            localStorage.setItem('accessToken', accessToken);
-            setToken(accessToken);
-        });
-        setOpen(false);
+            .then(res => res.json())
+            .then(data => {
+                const accessToken = data.token;
+                localStorage.setItem('accessToken', accessToken);
+                setToken(accessToken);
+            });
+        setLoading(false);
     };
 
     return (
@@ -114,8 +108,14 @@ const UserContact = () => {
                         </div>
                     </div>
                     <div className='mt-6 flex justify-between'>
-                        <button onClick={() => navigate('/form/jobExperience')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base hover:text-white sm:h-11 h-8 min-h-0'>Later</button>
-                        <button type='submit' className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white sm:h-11 h-8 min-h-0'>Next</button>
+                        <button onClick={() => navigate('/form/jobExperience')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base hover:text-white h-11 min-h-0'>Later</button>
+                        <button
+                            type='submit'
+                            disabled={loading}
+                            className='btn btn-primary px-6 capitalize sm:text-lg text-base text-white h-11 min-h-0'>{
+                                loading ? <Spinner></Spinner> : 'Save and continue'
+                            }
+                        </button>
                     </div>
                 </form>
             </div>

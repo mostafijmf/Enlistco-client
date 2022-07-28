@@ -17,9 +17,7 @@ const useAdmin = () => {
                 setAdmin(res.data);
                 setAdminLoading(false)
             })
-            .catch(err => {
-                console.log(err)
-            });
+            .catch(err => {});
         }
     },[user]);
     return [admin, adminLoading];

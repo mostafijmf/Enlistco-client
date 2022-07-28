@@ -14,9 +14,7 @@ const useGetApply = () => {
             .then(res => {
                 setApplied(res.data)
             })
-            .catch(err => {
-                console.log(err)
-            });
+            .catch(err => {});
         };
     },[user, applied]);
     return [applied, setApplied];

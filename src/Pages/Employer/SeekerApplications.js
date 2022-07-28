@@ -75,6 +75,7 @@ const SeekerApplications = () => {
                                     <th className='bg-slate-100 py-3 rounded-t-none normal-case text-base font-medium'>({seekerApplyList.length})</th>
                                     <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Seeker</th>
                                     <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Seeker email</th>
+                                    <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Phone number</th>
                                     <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Job title</th>
                                     <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Applied</th>
                                     <th className='bg-slate-100 py-3 rounded-r-none normal-case text-base font-medium'>Cover-letter | Resume</th>

@@ -32,7 +32,7 @@ const JobDetails = ({ open }) => {
         receiveEmail,
         skillTags
     } = open;
-
+    
     const app = applied.filter(a => a.postID === _id);
 
     const handleApply = async event => {
@@ -42,13 +42,14 @@ const JobDetails = ({ open }) => {
         const subject = event.target.subject.value;
         const coverLetter = editorRef.current.getContent();
         const seekerEmail = user?.email;
+        const seekerPhone = user?.phone;
         const seekerName = user?.firstName + ' ' + user?.lastName;
         const postID = _id;
 
         const date = new Date();
         const applied = date.getDate() + '-' + date.toLocaleString('default', { month: 'long' }) + '-' + date.getFullYear();
         await axios.post('https://boiling-beach-14928.herokuapp.com/apply',
-            { resume, subject, coverLetter, seekerEmail, seekerName, postID, receiveEmail, employerEmail, applied, jobTitle })
+            { resume, subject, coverLetter, seekerEmail, seekerPhone, seekerName, postID, receiveEmail, employerEmail, applied, jobTitle })
             .then(function (response) {
                 setLoading(false);
                 setModal(false)

@@ -124,9 +124,9 @@ const UserEducation = () => {
                         </div>
                     </div>
                     <div className='mt-6 flex justify-between'>
-                        <button onClick={() => navigate('/')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base hover:text-white sm:h-11 h-8 min-h-0'>Later</button>
+                        <button onClick={() => navigate('/')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base hover:text-white h-11 min-h-0'>Later</button>
                         <button
-                            className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white sm:h-11 h-8 min-h-0'
+                            className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-11 min-h-0'
                             type="submit">
                             {
                                 loading ? <Spinner></Spinner> : 'Submit'
