@@ -1,10 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import auth from '../../firebase.init';
 
 const UserJobExperience = () => {
-    const [user] = useAuthState(auth);
     const [currentWork, setCurrentWork] = useState(false);
     const navigate = useNavigate();
 
@@ -38,8 +35,8 @@ const UserJobExperience = () => {
     };
 
     return (
-        <div className="flex justify-center items-center bg-slate-100 h-screen">
-            <div className='lg:w-1/2 md:w-3/5 sm:w-4/5 w-11/12 bg-white sm:px-10 px-5 sm:py-8 py-5 h-max mt-8 mb-10 rounded-xl border shadow-lg'>
+        <div className="flex justify-center items-center bg-slate-100">
+            <div className='lg:w-1/2 md:w-3/5 sm:w-4/5 w-11/12 bg-white sm:px-10 px-5 sm:py-8 py-5 h-max my-10 rounded-xl border shadow-lg'>
                 <h1 className='text-center md:text-4xl sm:text-3xl text-2xl font-semibold mb-5'>Job Experience</h1>
                 <form onSubmit={handleJobExp}>
                     <div>
@@ -74,9 +71,9 @@ const UserJobExperience = () => {
                         </div>
                     </div>
                     <div className='mt-6 flex justify-between'>
-                        <button onClick={()=>navigate('/form/education')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8'>Skip</button>
+                        <button onClick={()=>navigate('/form/education')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base hover:text-white sm:h-11 h-8 min-h-0'>Later</button>
 
-                        <button className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8' type="submit">Next</button>
+                        <button className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white sm:h-11 h-8 min-h-0' type="submit">Next</button>
                     </div>
                 </form>
             </div>

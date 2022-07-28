@@ -20,9 +20,7 @@ const useGetUsers = () => {
             .then(res => {
                 setUsersData(res.data)
             })
-            .catch(err => {
-                console.log(err)
-            });
+            .catch(err => {});
         }
     },[user, usersData])
 

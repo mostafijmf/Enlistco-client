@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import useAdmin from '../../hooks/useAdmin';
 import useGetUsers from '../../hooks/useGetUsers';
+import Footer from '../Shared/Footer';
 import Header from '../Shared/Header';
 import Spinner from '../Shared/Spinner';
 
@@ -20,8 +21,8 @@ const Dashboard = () => {
             <div className="drawer drawer-mobile">
                 <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content sm:scrollBar-none scrollBar">
-                    <label title='Open sidebar' htmlFor="my-drawer-2" className='cursor-pointer absolute z-30 text-5xl left-2 h-screen flex items-center lg:hidden'>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 bg-slate-300 rounded" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <label title='Open sidebar' htmlFor="my-drawer-2" className='cursor-pointer absolute z-30 text-5xl left-0 h-screen flex items-center lg:hidden'>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 bg-slate-300/40 rounded" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                         </svg>
                     </label>
@@ -81,7 +82,7 @@ const Dashboard = () => {
                             </>
                         }
                         <label title='Close' htmlFor="my-drawer-2" className='cursor-pointer absolute text-5xl right-1 top-0 bottom-0 flex items-center lg:hidden'>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 bg-slate-300 rounded" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 bg-slate-300/40 rounded" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                             </svg>
                         </label>
@@ -90,6 +91,7 @@ const Dashboard = () => {
                 </div>
             </div>
         </section>
+        <Footer></Footer>
     </>);
 };
 

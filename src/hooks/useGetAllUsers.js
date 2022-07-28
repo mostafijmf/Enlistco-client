@@ -9,9 +9,7 @@ const useGetAllUsers = () => {
         .then(res => {
             setAllUsers(res.data)
         })
-        .catch(err => {
-            console.log(err)
-        });
+        .catch(err => {});
     },[allUsers]);
     return [allUsers, setAllUsers];
 };

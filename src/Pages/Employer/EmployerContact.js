@@ -17,7 +17,7 @@ const EmployerContact = () => {
     const empTypeRef = useRef();
 
     const [token, setToken] = useState('');
-    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (token) {
@@ -25,15 +25,10 @@ const EmployerContact = () => {
         }
     }, [token, navigate]);
 
-    if (open) {
-        return <div className='h-screen w-full flex items-center justify-center'>
-            <Spinner></Spinner>
-        </div>
-    }
 
     const hanleContact = async event => {
         event.preventDefault();
-        setOpen(true)
+        setLoading(true)
         const jobTitle = jobTitleRef.current.value;
         const company = companyRef.current.value;
         const workplace = workplaceRef.current.value;
@@ -46,19 +41,19 @@ const EmployerContact = () => {
         const email = user.email;
 
         await fetch(`https://boiling-beach-14928.herokuapp.com/users/${email}`, {
-        method: 'PUT',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify({email, employer})
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ email, employer })
         })
-        .then(res => res.json())
-        .then(data => {
-            const accessToken = data.token;
-            localStorage.setItem('accessToken', accessToken);
-            setToken(accessToken)
-        });
-        setOpen(false);
+            .then(res => res.json())
+            .then(data => {
+                const accessToken = data.token;
+                localStorage.setItem('accessToken', accessToken);
+                setToken(accessToken)
+            });
+        setLoading(false);
     };
     return (
         <div className="flex justify-center bg-accent py-5">
@@ -104,7 +99,12 @@ const EmployerContact = () => {
                             </div>
                         </div>
                         <div className='mt-6 flex sm:justify-center'>
-                            <button type='submit' className='btn btn-outline hover:btn-accent sm:px-10 px-6 capitalize sm:text-lg text-base text-white'>Save and continue</button>
+                            <button
+                                type='submit'
+                                disabled={loading}
+                                className='btn btn-outline hover:btn-accent sm:px-10 px-6 normal-case sm:text-lg text-base text-white'>{
+                                    loading ? <Spinner></Spinner> : 'Save and continue'
+                                }</button>
                         </div>
                     </form>
                 </div>

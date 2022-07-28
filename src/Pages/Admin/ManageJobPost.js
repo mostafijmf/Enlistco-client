@@ -13,8 +13,8 @@ const ManageJobPost = () => {
 
     return (
         <div className='w-full flex justify-center'>
-            <div className='w-4/5 mb-10 mx-auto'>
-                <h1 className='text-3xl my-5 text-accent font-medium'>Manage all post</h1>
+            <div className='md:w-4/5 w-11/12 mb-10 mx-auto'>
+                <h1 className='text-2xl md:text-left text-center my-5 text-accent font-medium'>Manage all post</h1>
                 {
                     allPost.map(posts => <AllPost key={posts._id} posts={posts}></AllPost>)
                 }

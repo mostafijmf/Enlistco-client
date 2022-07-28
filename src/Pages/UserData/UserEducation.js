@@ -38,8 +38,7 @@ const UserEducation = () => {
 
             resumeURL = await axios.post("https://api.cloudinary.com/v1_1/job-portal/upload", pdf);
         };
-        const resume = resumeURL.data.secure_url
-        
+        const resume = resumeURL.data.secure_url;
         
         let eduEndDate;
         let eduStudying;
@@ -74,8 +73,8 @@ const UserEducation = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen bg-slate-100">
-            <div className='lg:w-1/2 md:w-3/5 sm:w-4/5 w-11/12 bg-white sm:px-10 px-5 sm:py-8 py-5 h-max mt-8 mb-10 rounded-xl border shadow-lg'>
+        <div className="flex justify-center items-center bg-slate-100">
+            <div className='lg:w-1/2 md:w-3/5 sm:w-4/5 w-11/12 bg-white sm:px-10 px-5 sm:py-8 py-5 h-max my-10 rounded-xl border shadow-lg'>
                 <h1 className='text-center md:text-4xl sm:text-3xl text-2xl font-semibold mb-5'>Add Education</h1>
                 <form onSubmit={hanleEducation}>
                     <div>
@@ -120,13 +119,14 @@ const UserEducation = () => {
                                 id='file'
                                 ref={resumeRef}
                                 type="file"
+                                required
                                 className="input h-10 text-base w-full mt-2 p-1 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                     </div>
                     <div className='mt-6 flex justify-between'>
-                        <button onClick={() => navigate('/')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8'>Skip</button>
+                        <button onClick={() => navigate('/')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base hover:text-white h-11 min-h-0'>Later</button>
                         <button
-                            className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-0 sm:min-h-12 min-h-8'
+                            className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-11 min-h-0'
                             type="submit">
                             {
                                 loading ? <Spinner></Spinner> : 'Submit'

@@ -51,8 +51,8 @@ const MyPost = ({ post }) => {
                 <div className='mb-10' dangerouslySetInnerHTML={{ __html: jobDescription }}></div>
             </div>
             <div className="absolute sm:bottom-5 sm:right-5 sm:left-auto bottom-0 left-3 sm:w-max w-full bg-white">
-                <button onClick={() => setOpen(!open)} className="btn btn-outline btn-accent min-h-8 h-0">{open ? 'Less' : 'View'}</button>
-                <button onClick={() => setDeletePost(!deletePost)} className="btn btn-outline text-red-600 hover:bg-red-600 min-h-8 h-0 ml-5">Delete</button>
+                <button onClick={() => setOpen(!open)} className="btn btn-outline btn-accent normal-case text-base min-h-8 h-0">{open ? 'Less' : 'View'}</button>
+                <button onClick={() => setDeletePost(!deletePost)} className="btn btn-outline  normal-case text-base min-h-8 h-0 ml-5">Delete</button>
             </div>
             {
                 deletePost &&

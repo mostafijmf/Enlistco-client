@@ -1,18 +1,21 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useRef } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import Spinner from '../Shared/Spinner';
 
 const ApplicationOptions = () => {
     const [user] = useAuthState(auth);
     const navigate = useNavigate();
-    const [open, setOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const [loading, setLoading] = useState(false);
     const skillRef = useRef();
-    
+
     const emailRef = useRef();
     const salaryRef = useRef();
-    
+
     const [skillTags, setskillTags] = useState([]);
 
     // Add skill
@@ -28,26 +31,28 @@ const ApplicationOptions = () => {
     // Handle form
     const handleApplication = async event => {
         event.preventDefault();
+        setLoading(true);
+
         const receiveEmail = emailRef.current.value;
         const salary = salaryRef.current.value;
-        const postOptions = {receiveEmail, salary, skillTags};
+        const postOptions = { receiveEmail, salary, skillTags };
         const employerContact = JSON.parse(localStorage.getItem('employerContact'));
-        const jobDescription =  JSON.parse(localStorage.getItem('jobDescription'));
+        const jobDescription = JSON.parse(localStorage.getItem('jobDescription'));
         const email = user.email;
 
-        const url = `https://boiling-beach-14928.herokuapp.com/post`;
-        await fetch(url, {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({postOptions, employerContact, jobDescription, email})
+        await axios.post('https://boiling-beach-14928.herokuapp.com/post', {
+            postOptions, employerContact, jobDescription, email
         })
-        .then(res => res.json())
-        .then(data => { });
+            .then(res => {
+                setLoading(true);
+            })
+            .catch(err => {
+                setLoading(true);
+            });
+
         localStorage.removeItem('employerContact');
         localStorage.removeItem('jobDescription');
-        setOpen(true);
+        setOpenModal(true);
     };
 
     return (
@@ -94,9 +99,16 @@ const ApplicationOptions = () => {
                             </div>
                         </div>
                         <div className='mt-10 flex sm:justify-center'>
-                            <button className='btn btn-accent sm:px-10 px-6 capitalize sm:text-lg text-base text-white'>Submit</button>
+                            <button
+                                type='submit'
+                                disabled={loading}
+                                className='btn btn-accent sm:px-10 px-5 normal-case sm:text-lg text-base text-white h-11 min-h-0'>
+                                {
+                                    loading ? <Spinner></Spinner> : 'Submit'
+                                }
+                            </button>
                             {
-                                open &&
+                                openModal &&
                                 <div className="fixed w-screen h-screen top-0 left-0 flex items-center justify-center bg-black/50">
                                     <div className="modal-box">
                                         <h3 className="font-medium text-2xl text-green-500">Congratulations for your job post!</h3>

@@ -20,7 +20,6 @@ const useGetPost = () => {
                 setMyPost(res.data)
             })
             .catch(err => {
-                console.log(err)
             });
     }, [user, myPost]);
 

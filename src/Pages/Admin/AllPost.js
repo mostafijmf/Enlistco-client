@@ -47,12 +47,15 @@ const AllPost = ({ posts }) => {
     };
 
     return (
-        <div className={`${open ? 'h-auto' : 'h-28'} overflow-hidden py-6 px-8 w-full border mb-6 shadow-lg relative`}>
+        <div className={`${open ? 'h-auto' : 'h-32'} overflow-hidden sm:py-6 sm:px-8 p-3 w-full border mb-6 shadow-lg relative`}>
+            {
+                !permission && <span className='absolute text-sm bg-success text-white sm:px-3 px-1 py-1 sm:top-6 top-0 left-0 rounded-r-full'>Pending...</span>
+            }
             <div className="">
-                <h2 className="text-center text-2xl font-medium">{jobTitle}</h2>
+                <h2 className="text-center text-xl font-medium">{jobTitle}</h2>
                 <h5 className='text-center font-medium text-base'>{company}</h5>
-                <span className='bg-slate-200 px-2 py-1 rounded w-max'>{workplace}</span>
-                <h5 className='font-medium mt-2'>Location :
+                <span className='bg-slate-200 px-2 py-1 rounded w-max sm:block hidden'>{workplace}</span>
+                <h5 className={`font-medium ${open ? 'mt-2' : 'mt-14'}`}>Location :
                     <span className='text-base font-normal ml-2'>{jobLocation}</span>
                 </h5>
                 <h5 className='font-medium'>Salary :
@@ -72,18 +75,18 @@ const AllPost = ({ posts }) => {
                 </h5>
                 <h5 className='font-medium'>Provide tags :
                     {
-                        skillTags.map(tag => <span className='text-base font-normal ml-2'>'{tag}'</span>)
+                        skillTags.map((tag, index) => <span key={index} className='text-base font-normal ml-2'>'{tag}'</span>)
                     }
                 </h5>
                 <hr className='my-6' />
                 <div className='mb-10' dangerouslySetInnerHTML={{ __html: jobDescription }}></div>
             </div>
-            <div className="absolute bottom-5 right-5">
-                <button onClick={() => setOpen(!open)} className="btn btn-link text-accent min-h-8 h-0">{open ? 'Less' : 'View'}</button>
+            <div className="absolute md:bottom-5 bottom-2 right-5">
+                <button onClick={() => setOpen(!open)} className="btn btn-link text-accent normal-case text-base min-h-0 h-9 p-0">{open ? 'Less' : 'View'}</button>
                 {
-                    !permission && <button onClick={() => handlePermission(_id)} className="btn btn-outline btn-primary min-h-8 h-0 ml-5">Approve Pending</button>
+                    !permission && <button onClick={() => handlePermission(_id)} className="btn btn-outline btn-primary normal-case text-base min-h-0 h-9 ml-5 px-2">Approve</button>
                 }
-                <button onClick={() => setDeletePost(!deletePost)} className="btn btn-outline text-red-600 hover:bg-red-600 min-h-8 h-0 ml-5">Delete</button>
+                <button onClick={() => setDeletePost(!deletePost)} className="btn btn-outline normal-case text-base min-h-0 h-9 ml-5 px-2">Delete</button>
             </div>
             {
                 deletePost &&

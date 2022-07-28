@@ -23,6 +23,7 @@ import RequireAdmin from './Pages/Login/RequireAdmin';
 import SeekerApplications from "./Pages/Employer/SeekerApplications";
 import Resume from "./Pages/Employer/Resume";
 import AdminPost from "./Pages/Admin/AdminPost";
+import CandidatesProfile from "./Pages/Employer/CandidatesProfile";
 
 function App() {
   return (
@@ -79,6 +80,11 @@ function App() {
           <Route path='/dashboard/seeker-applications' element={
             <RequireAuth>
               <SeekerApplications></SeekerApplications>
+            </RequireAuth>
+          }></Route>
+          <Route path='/dashboard/seeker-profile' element={
+            <RequireAuth>
+              <CandidatesProfile></CandidatesProfile>
             </RequireAuth>
           }></Route>
         </Route>
