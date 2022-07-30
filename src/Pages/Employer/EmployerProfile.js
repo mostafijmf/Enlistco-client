@@ -4,7 +4,7 @@ const EmployerProfile = ({ employer }) => {
     const {employerEmail, receiveEmail} = employer;
 
     return (
-        <div className='md:w-4/5 w-11/12 mx-auto sm:p-8 p-4 shadow-lg border rounded-md mb-20'>
+        <div className='md:w-4/5 sm:w-11/12 w-full mx-auto sm:p-8 p-4 shadow-lg border rounded-md mb-20'>
             <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Employer</h1>
             <div className='mt-5 relative'>
                 <ul>

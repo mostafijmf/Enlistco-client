@@ -24,13 +24,13 @@ const MyPost = ({ post }) => {
         fetch(url, {
             method: 'DELETE'
         })
-        .then(res => res.json())
-        .then(data => {});
+            .then(res => res.json())
+            .then(data => { });
         setDeletePost(!deletePost)
     };
 
     return (
-        <div className={`${open ? 'h-auto border rounded-lg shadow-md md:px-8 px-3' : 'sm:h-52 h-60'} overflow-hidden py-3 sm:mb-0 mb-3 w-full border-t-2 relative`}>
+        <div className={`${open ? 'h-auto border rounded-lg shadow-md md:px-8' : 'sm:h-52 h-60'} overflow-hidden py-3 px-5 sm:mb-0 mb-3 w-full border-t-2 relative`}>
             <div className="">
                 <h2 className="text-center text-xl font-medium">{jobTitle}</h2>
                 <h5 className='text-center font-medium text-base'>{company}</h5>
@@ -50,25 +50,41 @@ const MyPost = ({ post }) => {
                 <hr className='my-6' />
                 <div className='mb-10' dangerouslySetInnerHTML={{ __html: jobDescription }}></div>
             </div>
-            <div className="absolute sm:bottom-5 sm:right-5 sm:left-auto bottom-0 left-3 sm:w-max w-full bg-white">
-                <button onClick={() => setOpen(!open)} className="btn btn-outline btn-accent normal-case text-base min-h-8 h-0">{open ? 'Less' : 'View'}</button>
-                <button onClick={() => setDeletePost(!deletePost)} className="btn btn-outline  normal-case text-base min-h-8 h-0 ml-5">Delete</button>
+            <div className="absolute sm:bottom-5 sm:right-5 sm:left-auto bottom-0 left-5 sm:w-max w-full bg-white">
+                <button
+                    onClick={() => setOpen(!open)}
+                    className="btn btn-outline btn-accent normal-case text-base min-h-0 sm:h-8 h-9 px-6">
+                    {open ? 'Less' : 'View'}
+                </button>
+                <button
+                    onClick={() => setDeletePost(!deletePost)}
+                    className="btn btn-outline  normal-case text-base min-h-0 sm:h-8 h-9 px-6 ml-6">
+                    Delete
+                </button>
             </div>
             {
                 deletePost &&
-                    <div className="fixed w-screen h-screen top-0 left-0 z-20 flex items-center justify-center">
-                        <div className="modal-box text-center bg-secondary">
-                            <h3 className="font-medium text-2xl text-white">Are you sure!</h3>
-                            <p className="text-lg py-4 text-gray-300">Do you want to delete it?</p>
-                            <div className="flex justify-center gap-5 mt-5">
+                <div className="fixed w-screen h-screen top-0 left-0 z-20 flex items-center justify-center">
+                    <div className="modal-box text-center bg-secondary">
+                        <h3 className="font-medium text-2xl text-white">Are you sure!</h3>
+                        <p className="text-lg py-4 text-gray-300">Do you want to delete it?</p>
+                        <div className="flex justify-center gap-10 mt-5">
 
-                                <button onClick={() => setDeletePost(!deletePost)} className="btn btn-primary text-white min-h-8 h-0 px-6 tracking-wider">No</button>
+                            <button
+                                onClick={() => setDeletePost(!deletePost)}
+                                className="btn btn-primary text-white min-h-0 h-10 px-10 tracking-wider">
+                                No
+                            </button>
 
-                                <button onClick={()=>handleDelete(_id)} className="btn btn-outline text-white min-h-8 h-0 px-6 tracking-wider">Yes</button>
+                            <button
+                                onClick={() => handleDelete(_id)}
+                                className="btn btn-outline text-white min-h-0 h-10 px-10 tracking-wider">
+                                Yes
+                            </button>
 
-                            </div>
                         </div>
                     </div>
+                </div>
             }
         </div>
     );

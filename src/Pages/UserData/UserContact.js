@@ -24,7 +24,7 @@ const UserContact = () => {
 
     useEffect(() => {
         if (token) {
-            navigate('/form/jobExperience');
+            navigate('/form/job-experience');
         }
     }, [token, navigate]);
 
@@ -62,7 +62,7 @@ const UserContact = () => {
 
     return (
         <div className="flex justify-center bg-slate-100 py-5">
-            <div className='lg:w-1/2 md:w-3/5 sm:w-4/5 w-11/12 bg-white sm:px-10 px-5 sm:py-8 py-5 h-max sm:mt-8 mt-6 mb-10 rounded-xl border shadow-lg'>
+            <div className='lg:w-1/2 md:w-3/4 sm:w-4/5 w-11/12 bg-white sm:px-10 px-5 sm:py-8 py-5 h-max sm:mt-8 mt-6 mb-10 rounded-xl border shadow-lg'>
                 <h1 className='text-center md:text-4xl sm:text-3xl text-2xl font-semibold mb-5'>Personal information</h1>
                 <form onSubmit={handleContact}>
                     <div>
@@ -107,12 +107,16 @@ const UserContact = () => {
                             <input id='zipCode' ref={zipRef} type="number" placeholder="Zip code" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                     </div>
-                    <div className='mt-6 flex justify-between'>
-                        <button onClick={() => navigate('/form/jobExperience')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base hover:text-white h-11 min-h-0'>Later</button>
+                    <div className='mt-6 flex sm:flex-row flex-col-reverse justify-between gap-4'>
+                        <button
+                            onClick={() => navigate('/form/job-experience')}
+                            className='sm:w-max w-full btn btn-outline btn-primary px-10 normal-case sm:text-lg text-base hover:text-white h-11 min-h-0'>
+                            Later
+                        </button>
                         <button
                             type='submit'
                             disabled={loading}
-                            className='btn btn-primary px-6 capitalize sm:text-lg text-base text-white h-11 min-h-0'>{
+                            className='sm:w-max w-full btn btn-primary px-6 normal-case sm:text-lg text-base text-white h-11 min-h-0'>{
                                 loading ? <Spinner></Spinner> : 'Save and continue'
                             }
                         </button>

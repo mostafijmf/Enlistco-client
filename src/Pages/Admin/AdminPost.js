@@ -14,7 +14,7 @@ const AdminPost = () => {
                 {myPost.length === 0 ?
                     <div className='h-96 w-11/12 mx-auto flex flex-col justify-center gap-5 items-center'>
                         <h1 className='md:text-4xl sm:text-3xl text-2xl text-center text-gray-500'>You don't have posted job</h1>
-                        <button onClick={()=>navigate('/employer/contact')} className='btn btn-primary hover:text-white min-h-0 sm:h-11 h-10 normal-case text-lg tracking-wide'>Post a job</button>
+                        <button onClick={()=>navigate('/employer-form/contact')} className='btn btn-primary hover:text-white min-h-0 sm:h-11 h-10 normal-case text-lg tracking-wide'>Post a job</button>
                     </div> :
                     myPost.map(post => <AdminPostList key={post._id} post={post}></AdminPostList>)
                 }

@@ -6,7 +6,7 @@ const NewEntry = () => {
     const navigate = useNavigate();
 
     const handleEntry = entry => {
-        entry === 'seeker' ? navigate('/form/userContact') : navigate('/employer/contact');
+        entry === 'seeker' ? navigate('/form/user-contact') : navigate('/employer-form/contact');
     };
     return (
         <>

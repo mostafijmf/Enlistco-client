@@ -27,7 +27,7 @@ const UserEducation = () => {
         const eduStartDate = startDateRef.current.value;
         const studying = studyingRef.current.checked;
         const resumeFile = resumeRef.current.files[0];
-        
+
 
         // ---------resume url generate----------
         let resumeURL;
@@ -39,7 +39,7 @@ const UserEducation = () => {
             resumeURL = await axios.post("https://api.cloudinary.com/v1_1/job-portal/upload", pdf);
         };
         const resume = resumeURL.data.secure_url;
-        
+
         let eduEndDate;
         let eduStudying;
         if (!studying) {
@@ -96,7 +96,7 @@ const UserEducation = () => {
                             <label htmlFor='group' className='font-medium sm:text-lg text-base'>Subject or Group<span className='text-orange-600 ml-1'>*</span></label>
                             <input id='group' ref={groupRef} required type="text" placeholder="Ex: Business" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
-                        <div className='flex justify-between'>
+                        <div className='flex sm:flex-row flex-col justify-between sm:gap-4'>
                             <div className='mt-5'>
                                 <label htmlFor='startDate' className='font-medium sm:text-lg text-base'>Start date<span className='text-orange-600 ml-1'>*</span></label>
                                 <input id='startDate' ref={startDateRef} required type="date" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
@@ -123,10 +123,14 @@ const UserEducation = () => {
                                 className="input h-10 text-base w-full mt-2 p-1 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                     </div>
-                    <div className='mt-6 flex justify-between'>
-                        <button onClick={() => navigate('/')} className='btn btn-outline btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base hover:text-white h-11 min-h-0'>Later</button>
+                    <div className='mt-6 flex sm:flex-row flex-col-reverse justify-between gap-4'>
                         <button
-                            className='btn btn-primary sm:px-10 px-6 capitalize sm:text-lg text-base text-white h-11 min-h-0'
+                            onClick={() => navigate('/')}
+                            className='sm:w-max w-full btn btn-outline btn-primary px-10 normal-case sm:text-lg text-base hover:text-white h-11 min-h-0'>
+                            Later
+                        </button>
+                        <button
+                            className='sm:w-max w-full btn btn-primary px-6 normal-case sm:text-lg text-base text-white h-11 min-h-0'
                             type="submit">
                             {
                                 loading ? <Spinner></Spinner> : 'Submit'

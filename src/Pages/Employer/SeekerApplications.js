@@ -52,7 +52,7 @@ const SeekerApplications = () => {
                 <div className='w-full py-10'>
                     <div className='xl:w-3/5 md:w-3/4 sm:w-4/5 w-11/12 mx-auto py-5 sm:px-8 px-5 shadow-xl border rounded-md relative'>
                         <div className='absolute top-3 right-3'>
-                            <XIcon onClick={() => setOpenModal('')} className='w-10 h-10 hover:bg-slate-200 p-1 rounded-full cursor-pointer'></XIcon>
+                            <XIcon onClick={() => setOpenModal('')} className='w-8 h-8 hover:bg-slate-200 p-1 rounded-full cursor-pointer'></XIcon>
                         </div>
                         <h1 className='text-center sm:text-2xl text-xl pb-5'>Cover Letter</h1>
                         <hr />
@@ -79,6 +79,7 @@ const SeekerApplications = () => {
                                     <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Job title</th>
                                     <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Applied</th>
                                     <th className='bg-slate-100 py-3 rounded-r-none normal-case text-base font-medium'>Cover-letter | Resume</th>
+                                    <th className='bg-slate-100 py-3 rounded-r-none normal-case text-base font-medium'>Offer-letter</th>
                                 </tr>
                             </thead>
                             {

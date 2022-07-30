@@ -102,7 +102,7 @@ const ApplicationOptions = () => {
                             <button
                                 type='submit'
                                 disabled={loading}
-                                className='btn btn-accent sm:px-10 px-5 normal-case sm:text-lg text-base text-white h-11 min-h-0'>
+                                className='sm-w-max w-full btn btn-accent sm:px-10 px-5 normal-case sm:text-lg text-base text-white h-11 min-h-0'>
                                 {
                                     loading ? <Spinner></Spinner> : 'Submit'
                                 }

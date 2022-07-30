@@ -49,12 +49,12 @@ const JobDetails = ({ open }) => {
         const date = new Date();
         const applied = date.getDate() + '-' + date.toLocaleString('default', { month: 'long' }) + '-' + date.getFullYear();
         await axios.post('https://boiling-beach-14928.herokuapp.com/apply',
-            { resume, subject, coverLetter, seekerEmail, seekerPhone, seekerName, postID, receiveEmail, employerEmail, applied, jobTitle })
-            .then(function (response) {
+            { resume, subject, coverLetter, seekerEmail, seekerPhone, seekerName, postID, receiveEmail, employerEmail, applied, jobTitle, company })
+            .then(res => {
                 setLoading(false);
                 setModal(false)
             })
-            .catch(function (error) { });
+            .catch(err => { });
     };
 
     return (<>
@@ -96,7 +96,7 @@ const JobDetails = ({ open }) => {
         {
             modal && <RequireAuth>
                 <div className='w-full h-screen flex items-center justify-center fixed top-0 left-0 bg-black/50 z-10'>
-                    <div className='xl:w-1/2 md:w-3/5 sm:w-4/5 w-11/12 h-max sm:px-10 px-5 bg-white rounded-md shadow-2xl relative'>
+                    <div className='xl:w-1/2 md:w-3/5 sm:w-4/5 w-full h-max sm:px-10 px-5 bg-white rounded-md shadow-2xl relative'>
                         <button
                             onClick={() => setModal(false)}
                             className='absolute top-3 right-5 w-8 h-8 hover:bg-gray-200 hover:rounded-full duration-300 p-1'>
@@ -136,7 +136,7 @@ const JobDetails = ({ open }) => {
                                     }}
 
                                 />
-                                <button disabled={loading} className='btn btn-outline my-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>{loading ? <Spinner /> : 'Send'}</button>
+                                <button disabled={loading} className='btn btn-outline md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>{loading ? <Spinner /> : 'Send'}</button>
                             </form>
                         </div>
                     </div>

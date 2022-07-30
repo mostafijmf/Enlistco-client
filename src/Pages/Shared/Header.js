@@ -25,12 +25,12 @@ const Header = () => {
                 <Link to='/'>Find Jobs</Link>
             </li>
             <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
-                <Link to='/employer/contact'>Post a job</Link>
+                <Link to='/employer-form/contact'>Post a job</Link>
             </li>
             {
                 !admin.admin &&
                 <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
-                    <Link to='/form/userContact'>Upload Your Resume</Link>
+                    <Link to='/form/user-contact'>Upload Your Resume</Link>
                 </li>
             }
         </>
@@ -70,13 +70,13 @@ const Header = () => {
                                 </Link></li>
                             }
                         </> : <>
-                            <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/userProfile'>
+                            <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/user-profile'>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>My Profile
                             </Link>
                             </li>
-                            <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/myApplication/applied'>
+                            <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/application/applied'>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
@@ -93,7 +93,7 @@ const Header = () => {
                             }
                         </>
                     }
-                    <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/helpCenter'>
+                    <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/help-center'>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
