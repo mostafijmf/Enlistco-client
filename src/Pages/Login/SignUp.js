@@ -4,6 +4,7 @@ import auth from '../../firebase.init';
 import SocialLogin from './SocialLogin';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import Spinner from '../Shared/Spinner';
+import { useEffect } from 'react';
 
 const SignUp = () => {
     const emailRef = useRef('');
@@ -18,9 +19,11 @@ const SignUp = () => {
     ] = useCreateUserWithEmailAndPassword(auth);
     const navigate = useNavigate();
 
-    if (user) {
-        navigate('/new-entry');
-    };
+    useEffect(() => {
+        if (user) {
+            navigate('/new-entry');
+        };
+    }, [user, navigate]);
 
     const handleSignUp = async event => {
         event.preventDefault();
@@ -37,7 +40,7 @@ const SignUp = () => {
     };
 
     return (
-        <div className="h-screen flex justify-center items-center bg-slate-100">
+        <div className="flex justify-center py-10 bg-slate-100">
             <div className='lg:w-1/3 mx-4 bg-white sm:px-10 px-5 sm:py-8 py-6 rounded-xl border shadow-lg'>
                 <h1 className='text-center text-4xl font-semibold mb-5'>Sign Up</h1>
                 <form onSubmit={handleSignUp}>
@@ -67,7 +70,7 @@ const SignUp = () => {
                         error && <p className='text-sm text-red-600 mt-3'>Already have an account in this email</p>
                     }
                     <div className='mt-6'>
-                        <button className='btn btn-primary capitalize text-lg text-white w-full' type="submit">
+                        <button className='btn btn-primary normal-case text-lg text-white w-full' type="submit">
                             {
                                 loading ? <Spinner></Spinner> : 'Sign up'
                             }

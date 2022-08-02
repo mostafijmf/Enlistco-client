@@ -26,12 +26,15 @@ import AdminPost from "./Pages/Admin/AdminPost";
 import CandidatesProfile from "./Pages/Employer/CandidatesProfile";
 import AUserDetails from "./Pages/Admin/AUserDetails";
 import SendOfferLetter from "./Pages/Employer/SendOfferLetter";
+import JobDetails from "./Pages/Home/JobDetails";
 
 function App() {
   return (
     <div>
       <Routes>
-        <Route path='/' element={<Home></Home>}></Route>
+        <Route path='/' element={<Home></Home>}>
+          <Route path='/job/:id' element={<JobDetails></JobDetails>}></Route>
+        </Route>
 
         <Route path='/new-entry' element={
           <RequireAuth>
@@ -143,7 +146,7 @@ function App() {
 
         <Route path='/help-center' element={<HelpCenter></HelpCenter>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
-        <Route path='/signUp' element={<SignUp></SignUp>}></Route>
+        <Route path='/signup' element={<SignUp></SignUp>}></Route>
         <Route path='/*' element={<NotFound></NotFound>}></Route>
       </Routes>
     </div>

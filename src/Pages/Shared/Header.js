@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AnnotationIcon, MenuAlt3Icon, XIcon } from '@heroicons/react/solid';
+import { MenuAlt3Icon, XIcon } from '@heroicons/react/solid';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { signOut } from 'firebase/auth';
@@ -111,7 +111,7 @@ const Header = () => {
                 <Link to='/login'>Log in</Link>
             </li>
             <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
-                <Link to='/signUp'>Sign up</Link>
+                <Link to='/signup'>Sign up</Link>
             </li>
         </>
         ;

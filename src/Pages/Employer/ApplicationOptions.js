@@ -44,10 +44,10 @@ const ApplicationOptions = () => {
             postOptions, employerContact, jobDescription, email
         })
             .then(res => {
-                setLoading(true);
+                setLoading(false);
             })
             .catch(err => {
-                setLoading(true);
+                setLoading(false);
             });
 
         localStorage.removeItem('employerContact');

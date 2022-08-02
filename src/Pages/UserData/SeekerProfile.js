@@ -26,7 +26,7 @@ const SeekerProfile = ({ user }) => {
         jobExperience,
         resume
     } = user;
-    const { exJobTitle } = jobExperience[jobExperience.length - 1];
+    const exJobTitle = jobExperience && jobExperience[jobExperience.length - 1].exJobTitle;
 
     useEffect(() => {
         if (successMsg) {
@@ -345,7 +345,7 @@ const SeekerProfile = ({ user }) => {
             <div className='md:w-4/5 sm:w-11/12 w-full mx-auto sm:p-8 p-4 shadow-lg border rounded-md'>
                 <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Job Experience</h1>
                 <div className='mt-5 relative'>
-                    {
+                    { jobExperience &&
                         jobExperience.map((ex, index) =>
                             <ul key={index} className='border-t mb-5 relative'>
                                 <span

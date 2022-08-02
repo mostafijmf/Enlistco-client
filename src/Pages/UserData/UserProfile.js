@@ -9,8 +9,8 @@ const UserProfile = () => {
     const [usersData] = useGetUsers(null);
     const [myPost] = useGetPost(null);
     const navigate = useNavigate();
-
-    if (usersData.length === 0) {
+    
+    if (!usersData || usersData.length === 0) {
         return <div className='h-96 w-full flex flex-col justify-center gap-5 items-center'>
                 <h1 className='text-4xl text-gray-500'>You don't have data</h1>
                 <button onClick={() => navigate('/form/user-contact')} className='btn btn-primary hover:text-white min-h-0 sm:h-11 h-10 normal-case text-lg tracking-wide'>Upload your resume</button>
