@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import BundledEditor from '../../BundledEditor';
 import { useNavigate } from 'react-router-dom';
+import PageTitle from '../Shared/PageTitle';
 
 const JobDescription = () => {
     // Description
@@ -15,7 +16,8 @@ const JobDescription = () => {
 
 
 
-    return (
+    return (<>
+        <PageTitle title='Description Form - Dashboard'></PageTitle>
         <div className='bg-slate-100 flex justify-center items-center h-full py-10'>
             <div className='lg:w-3/5 md:w-2/3 sm:w-4/5 w-11/12 py-6 px-5 text-center bg-white rounded-lg shadow-lg'>
                 <h1 className='text-4xl text-accent text-center'>Add a job description<span className='text-orange-600 text-3xl ml-1'>*</span></h1>
@@ -49,6 +51,7 @@ const JobDescription = () => {
                 </div>
             </div>
         </div>
+    </>
     );
 };
 

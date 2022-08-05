@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 
 const EmployerContact = () => {
@@ -55,7 +56,8 @@ const EmployerContact = () => {
             });
         setLoading(false);
     };
-    return (
+    return (<>
+        <PageTitle title='Contact Form - Dashboard'></PageTitle>
         <div className="flex justify-center bg-accent py-5">
             <div className='w-full'>
                 <h1 className='text-center md:text-4xl sm:text-3xl text-2xl font-semibold my-5 text-white'>Find a great hire, fast</h1>
@@ -110,6 +112,7 @@ const EmployerContact = () => {
                 </div>
             </div>
         </div>
+    </>
     );
 };
 

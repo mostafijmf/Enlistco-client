@@ -2,12 +2,14 @@ import React from 'react';
 import MyPost from './MyPost';
 import { useNavigate } from 'react-router-dom';
 import useGetPost from '../../hooks/useGetPost';
+import PageTitle from '../Shared/PageTitle';
 
 const JobPost = () => {
     const [myPost] = useGetPost();
     const navigate = useNavigate();
 
-    return (
+    return (<>
+        <PageTitle title='Post-Job - Dashboard'></PageTitle>
         <div className='w-full flex justify-center'>
             <div className='sm:w-11/12 w-full mx-auto'>
                 <h1 className='text-2xl font-medium text-accent sm:text-left text-center mt-5 mb-3'>My posted jobs</h1>
@@ -20,6 +22,7 @@ const JobPost = () => {
                 }
             </div>
         </div>
+    </>
     );
 };
 

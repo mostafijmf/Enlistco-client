@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 import CountryList from './CountryList';
 
@@ -42,7 +43,7 @@ const UserContact = () => {
         localStorage.setItem('userContact', JSON.stringify({ firstName, lastName, phone, country, address, state, zip }));
 
         const seeker = true;
-        const email = user.email;
+        const email = user?.email;
 
         await fetch(`https://boiling-beach-14928.herokuapp.com/users/${email}`, {
             method: 'PUT',
@@ -60,7 +61,8 @@ const UserContact = () => {
         setLoading(false);
     };
 
-    return (
+    return (<>
+        <PageTitle title='Contact Form - Dashboard'></PageTitle>
         <div className="flex justify-center bg-slate-100 py-5">
             <div className='lg:w-1/2 md:w-3/4 sm:w-4/5 w-11/12 bg-white sm:px-10 px-5 sm:py-8 py-5 h-max sm:mt-8 mt-6 mb-10 rounded-xl border shadow-lg'>
                 <h1 className='text-center md:text-4xl sm:text-3xl text-2xl font-semibold mb-5'>Personal information</h1>
@@ -124,6 +126,7 @@ const UserContact = () => {
                 </form>
             </div>
         </div>
+    </>
     );
 };
 

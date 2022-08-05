@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 
 const ApplicationOptions = () => {
@@ -55,7 +56,8 @@ const ApplicationOptions = () => {
         setOpenModal(true);
     };
 
-    return (
+    return (<>
+        <PageTitle title='Submit Form - Dashboard'></PageTitle>
         <div className="flex justify-center items-center bg-slate-100 h-screen">
             <div className='w-full'>
                 <div className='lg:w-2/5 md:w-3/5 sm:w-4/5 w-11/12 mx-auto bg-white sm:px-10 px-5 sm:py-8 py-5 h-max sm:mt-8 mb-10 rounded-xl border shadow-lg'>
@@ -124,6 +126,7 @@ const ApplicationOptions = () => {
                 </div>
             </div>
         </div>
+    </>
     );
 };
 

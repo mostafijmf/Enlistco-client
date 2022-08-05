@@ -5,6 +5,7 @@ import SocialLogin from './SocialLogin';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import Spinner from '../Shared/Spinner';
 import { useEffect } from 'react';
+import PageTitle from '../Shared/PageTitle';
 
 const SignUp = () => {
     const emailRef = useRef('');
@@ -39,7 +40,8 @@ const SignUp = () => {
         };
     };
 
-    return (
+    return (<>
+        <PageTitle title='Sign Up'></PageTitle>
         <div className="flex justify-center py-10 bg-slate-100">
             <div className='lg:w-1/3 mx-4 bg-white sm:px-10 px-5 sm:py-8 py-6 rounded-xl border shadow-lg'>
                 <h1 className='text-center text-4xl font-semibold mb-5'>Sign Up</h1>
@@ -81,6 +83,7 @@ const SignUp = () => {
                 <SocialLogin></SocialLogin>
             </div>
         </div>
+    </>
     );
 };
 

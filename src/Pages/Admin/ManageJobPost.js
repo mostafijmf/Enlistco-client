@@ -1,5 +1,6 @@
 import React from 'react';
 import useGetAllPost from '../../hooks/useGetAllPost';
+import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 import AllPost from './AllPost';
 
@@ -11,7 +12,8 @@ const ManageJobPost = () => {
         </div>
     };
 
-    return (
+    return (<>
+        <PageTitle title='Manage Posts - Dashboard'></PageTitle>
         <div className='w-full flex justify-center'>
             <div className='md:w-4/5 w-11/12 mb-10 mx-auto'>
                 <h1 className='text-2xl md:text-left text-center my-5 text-accent font-medium'>Manage all post</h1>
@@ -20,6 +22,7 @@ const ManageJobPost = () => {
                 }
             </div>
         </div>
+    </>
     );
 };
 

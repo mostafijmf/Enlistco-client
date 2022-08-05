@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../Shared/Footer';
 import Header from '../Shared/Header';
+import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 import JobDetails from './JobDetails';
 import PostList from './PostList';
@@ -27,7 +28,7 @@ const Home = () => {
     const [focusAddress, setFocusAddress] = useState(false);
     const [addressSelect, setAddressSelect] = useState('');
 
-
+    // search bar
     useEffect(() => {
         axios.get('https://boiling-beach-14928.herokuapp.com/post')
             .then(res => {
@@ -41,9 +42,11 @@ const Home = () => {
                     const inputMatch = data.filter(d => d.permission ?
                         d.jobTitle.toLowerCase().includes(titleText) ||
                         d.company.toLowerCase().includes(titleText) ||
-                        d.skillTags.some(e => e.toLowerCase().includes(titleText))
+                        d.skillTags.some(e => e.toLowerCase().includes(titleText)) ||
+                        d._id.slice(0, 25).toLowerCase().includes(titleText)
                         : ''
                     );
+
                     if (inputMatch.length === 0) {
                         setTitleData([]);
                         setAllPost(data)
@@ -86,7 +89,8 @@ const Home = () => {
         const titleMatch = titleText && allPost.filter(d => d.permission ?
             d.jobTitle.toLowerCase().includes(titleText) ||
             d.company.toLowerCase().includes(titleText) ||
-            d.skillTags.some(e => e.toLowerCase().includes(titleText))
+            d.skillTags.some(e => e.toLowerCase().includes(titleText)) ||
+            d._id.slice(0, 25).toLowerCase().includes(titleText)
             : ''
         );
         const addressMatch = addessText && allPost.filter(d => d.permission ?
@@ -118,11 +122,12 @@ const Home = () => {
     };
 
 
-    const aPost = searchingPost.length === 0 ? allPost.filter(ap => ap.permission) : searchingPost.filter(ap => ap.permission) ;
+    const aPost = searchingPost.length === 0 ? allPost.filter(ap => ap.permission) : searchingPost.filter(ap => ap.permission);
 
 
 
     return (<>
+        <PageTitle title='Home'></PageTitle>
         <Header></Header>
         <main onClick={() => {
             setFocusTitle(false);

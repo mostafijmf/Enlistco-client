@@ -1,6 +1,7 @@
 import { XIcon } from '@heroicons/react/solid';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import PageTitle from '../Shared/PageTitle';
 
 const AUserDetails = () => {
     const location = useLocation();
@@ -22,7 +23,8 @@ const AUserDetails = () => {
     } = location?.state;
     const jobExp = jobExperience && jobExperience[jobExperience.length - 1];
 
-    return (
+    return (<>
+        <PageTitle title='Users Details - Dashboard'></PageTitle>
         <div className='md:w-9/12 sm:w-11/12 w-full mx-auto sm:p-8 p-4 my-5 shadow-lg border rounded-md relative'>
             <div className='absolute top-3 right-3' onClick={() => navigate(-1)}>
                 <XIcon className='w-8 h-8 hover:bg-slate-200 p-1 rounded-full cursor-pointer'></XIcon>
@@ -129,6 +131,7 @@ const AUserDetails = () => {
                 </div>
             }
         </div>
+    </>
     );
 };
 

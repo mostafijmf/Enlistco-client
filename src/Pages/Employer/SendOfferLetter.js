@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import BundledEditor from '../../BundledEditor';
+import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 
 const SendOfferLetter = () => {
@@ -13,7 +14,7 @@ const SendOfferLetter = () => {
     const [loading, setLoading] = useState(false);
     const [successMsg, setSuccessMsg] = useState('');
     const editorRef = useRef(null);
-    
+
     useEffect(() => {
         if (successMsg) {
             setTimeout(() => {
@@ -27,22 +28,23 @@ const SendOfferLetter = () => {
         setLoading(true);
         const subject = e.target.subject.value;
         const offerLetter = editorRef.current.getContent();
-        
+
         await axios.put(`https://boiling-beach-14928.herokuapp.com/apply/${_id}`, {
             _id, seekerEmail, seekerName, jobTitle, company, subject, offerLetter
         })
-        .then(res => {
-            if(res.data){
-                setSuccessMsg('Offer letter sent successfully');
-                setLoading(false);
-            }
+            .then(res => {
+                if (res.data) {
+                    setSuccessMsg('Offer letter sent successfully');
+                    setLoading(false);
+                }
             })
-        .catch(err => {
-            setLoading(false);
+            .catch(err => {
+                setLoading(false);
             });
     };
 
-    return (
+    return (<>
+        <PageTitle title='Send Offer Letter - Dashboard'></PageTitle>
         <div className='bg-white top-0 left-0 h-full w-full py-10'>
             <div className={`fixed top-20 ${successMsg ? 'right-10' : '-right-96'} z-10 duration-300 bg-white flex items-center py-3 px-5 border rounded-lg shadow-md`}>
                 <CheckCircleIcon className='w-7 h-7 text-success mr-2'></CheckCircleIcon>
@@ -98,6 +100,7 @@ const SendOfferLetter = () => {
                 </div>
             </div>
         </div>
+    </>
     );
 };
 

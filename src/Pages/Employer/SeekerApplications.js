@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import * as XLSX from 'xlsx';
 import auth from '../../firebase.init';
+import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 import SeekerAppList from './SeekerAppList';
 
@@ -46,8 +47,10 @@ const SeekerApplications = () => {
         XLSX.writeFile(wb, 'SeekerData.xlsx');
     };
 
-    return (
-        <section>{
+    return (<>
+        <PageTitle title='Seeker Applications - Dashboard'></PageTitle>
+        <section>
+            {
             openModal ?
                 <div className='w-full py-10'>
                     <div className='xl:w-3/5 md:w-3/4 sm:w-4/5 w-11/12 mx-auto py-5 sm:px-8 px-5 shadow-xl border rounded-md relative'>
@@ -93,6 +96,7 @@ const SeekerApplications = () => {
                     </div>
                 </div>
         }</section>
+    </>
     );
 };
 

@@ -8,12 +8,15 @@ const EmailVerify = () => {
     const [sendEmailVerification, sending, error] = useSendEmailVerification(auth);
     const [sentMsg, setSentMsg] = useState('');
     const [againMsg, setAgainMsg] = useState("");
+    const [reload, setReload] = useState("");
+
 
     useEffect(() => {
         if (sentMsg) {
             setTimeout(() => {
                 setSentMsg('')
-                setAgainMsg("Didn't recieve email, Send again!")
+                setAgainMsg("Didn't recieve email, Send again!");
+                setReload("After verified, reload this page");
             }, 5000);
         }
     }, [sentMsg]);
@@ -21,9 +24,12 @@ const EmailVerify = () => {
     const handleSendEmail = async () => {
         await sendEmailVerification();
         setSentMsg('Email sent succesfully, check inbox or spam folder');
+        setTimeout(() => {
+            setReload("After verified, reload this page");
+        }, 6000);
     }
 
-    return (<>
+    return (
         <section className="fixed top-0 left-0 z-10 w-full h-screen bg-slate-100 flex justify-center items-center">
             <div className='lg:w-2/5 md:w-3/5 sm:w-4/5 w-full p-10 rounded-lg shadow-md border hover:shadow-lg bg-white h-max text-center'>
                 <h3 className='text-3xl font-medium mb-3'>Verify your email</h3>
@@ -42,7 +48,7 @@ const EmailVerify = () => {
                         </p>
                     }
                     {
-                        !error && setAgainMsg && <p className='text-sm mb-3'>{againMsg}
+                        !error && againMsg && <p className='text-sm mb-3'>{againMsg}
                         </p>
                     }
                     <button
@@ -52,10 +58,13 @@ const EmailVerify = () => {
                             sending ? <Spinner></Spinner> : againMsg ? 'Send again!' : 'Verify email'
                         }
                     </button>
+                    {
+                        reload && <p className='text-sm text-gray-500 mt-3'>{reload}
+                        </p>
+                    }
                 </div>
             </div>
         </section>
-    </>
     );
 };
 

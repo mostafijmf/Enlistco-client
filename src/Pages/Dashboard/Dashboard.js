@@ -4,6 +4,7 @@ import useAdmin from '../../hooks/useAdmin';
 import useGetUsers from '../../hooks/useGetUsers';
 import Footer from '../Shared/Footer';
 import Header from '../Shared/Header';
+import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 
 const Dashboard = () => {
@@ -16,6 +17,7 @@ const Dashboard = () => {
         </div>
     };
     return (<>
+        <PageTitle title='Dashboard'></PageTitle>
         <Header></Header>
         <section>
             <div className="drawer drawer-mobile">

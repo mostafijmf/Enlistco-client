@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PageTitle from '../Shared/PageTitle';
 
 const UserJobExperience = () => {
     const [currentWork, setCurrentWork] = useState(false);
@@ -21,20 +22,21 @@ const UserJobExperience = () => {
         const exResponsibilities = responsibilitiesRef.current.value;
         let exEndDate;
         let exWorking;
-        if(!Working){
+        if (!Working) {
             exEndDate = event.target.endDate.value;
             exWorking = '';
         }
-        else{
+        else {
             exWorking = 'Currently Working';
             exEndDate = ''
         };
 
-        localStorage.setItem('jobExp', JSON.stringify({exJobTitle, exCompany, exStartDate, exEndDate, exWorking, exResponsibilities}))
+        localStorage.setItem('jobExp', JSON.stringify({ exJobTitle, exCompany, exStartDate, exEndDate, exWorking, exResponsibilities }))
         navigate('/form/education')
     };
 
-    return (
+    return (<>
+        <PageTitle title='Experience Form - Dashboard'></PageTitle>
         <div className="flex justify-center items-center bg-slate-100">
             <div className='lg:w-1/2 md:w-3/4 sm:w-4/5 w-11/12 bg-white sm:px-10 px-5 sm:py-8 py-5 h-max my-10 rounded-xl border shadow-lg'>
                 <h1 className='text-center md:text-4xl sm:text-3xl text-2xl font-semibold mb-5'>Job Experience</h1>
@@ -71,13 +73,14 @@ const UserJobExperience = () => {
                         </div>
                     </div>
                     <div className='mt-6 flex sm:flex-row flex-col-reverse justify-between gap-4'>
-                        <button onClick={()=>navigate('/form/education')} className='sm:w-max w-full btn btn-outline btn-primary px-10 normal-case sm:text-lg text-base hover:text-white h-11 min-h-0'>Later</button>
+                        <button onClick={() => navigate('/form/education')} className='sm:w-max w-full btn btn-outline btn-primary px-10 normal-case sm:text-lg text-base hover:text-white h-11 min-h-0'>Later</button>
 
                         <button className='sm:w-max w-full btn btn-primary px-6 normal-case sm:text-lg text-base text-white h-11 min-h-0' type="submit">Save and continue</button>
                     </div>
                 </form>
             </div>
         </div>
+    </>
     );
 };
 
