@@ -16,7 +16,6 @@ const SeekerProfile = ({ user }) => {
     const { _id,
         firstName,
         lastName,
-        exJobTitle,
         email,
         phone,
         address,
@@ -27,7 +26,7 @@ const SeekerProfile = ({ user }) => {
         jobExperience,
         resume
     } = user;
-
+    const exJobTitle = jobExperience && jobExperience[jobExperience.length - 1].exJobTitle;
 
     useEffect(() => {
         if (successMsg) {
@@ -138,7 +137,7 @@ const SeekerProfile = ({ user }) => {
     };
 
     // Delete a Job experience
-    const handleDeleteJobExp = async ex =>{
+    const handleDeleteJobExp = async ex => {
         setLoading(true);
         await axios.patch(`https://boiling-beach-14928.herokuapp.com/delete-jobexp/${_id}`, { ex })
             .then(res => {
@@ -162,7 +161,7 @@ const SeekerProfile = ({ user }) => {
                     <Spinner></Spinner>
                 </div>
             }
-            <div className='md:w-4/5 w-11/12 mx-auto sm:p-8 p-4 shadow-lg border rounded-md'>
+            <div className='md:w-4/5 sm:w-11/12 w-full mx-auto sm:p-8 p-4 shadow-lg border rounded-md'>
                 <div>
                     <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>{firstName} {lastName}</h1>
                     <h2 className='text-center sm:text-xl text-lg'>{exJobTitle}</h2>
@@ -245,7 +244,7 @@ const SeekerProfile = ({ user }) => {
 
             <hr className='my-7' />
 
-            <div className='md:w-4/5 w-11/12 mx-auto sm:p-8 p-4 shadow-lg border rounded-md'>
+            <div className='md:w-4/5 sm:w-11/12 w-full mx-auto sm:p-8 p-4 shadow-lg border rounded-md'>
                 <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Education</h1>
                 <div className='mt-5 relative'>
                     {
@@ -323,15 +322,15 @@ const SeekerProfile = ({ user }) => {
                                     <input id='checkbox' onChange={() => setStudying(!studying)} type="checkbox" className="checkbox bg-white" />
                                     <label className='text-base ml-3 cursor-pointer' htmlFor="checkbox">Currently Studying</label>
                                 </div>
-                                <div className='mt-6 flex justify-between items-center'>
+                                <div className='mt-6 flex sm:flex-row flex-col justify-between gap-4'>
                                     <button
-                                        className='btn btn-outline btn-accent normal-case text-base tracking-wider sm:px-16 px-10 min-h-0 h-10'
+                                        className='sm:w-max w-full btn btn-outline btn-accent normal-case text-base tracking-wider sm:px-16 px-10 min-h-0 h-11'
                                         type="submit">
                                         Save
                                     </button>
                                     <button
                                         onClick={() => setAddEduData(!addEduData)}
-                                        className='btn btn-link sm:px-10 capitalize text-base text-accent hover:text-primary h-0 min-h-8'>
+                                        className='sm:w-max w-full btn btn-link sm:px-10 capitalize text-base text-accent hover:text-primary h-11 min-h-0'>
                                         Cancel
                                     </button>
                                 </div>
@@ -343,10 +342,10 @@ const SeekerProfile = ({ user }) => {
 
             <hr className='my-7' />
 
-            <div className='md:w-4/5 w-11/12 mx-auto sm:p-8 p-4 shadow-lg border rounded-md'>
+            <div className='md:w-4/5 sm:w-11/12 w-full mx-auto sm:p-8 p-4 shadow-lg border rounded-md'>
                 <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Job Experience</h1>
                 <div className='mt-5 relative'>
-                    {
+                    { jobExperience &&
                         jobExperience.map((ex, index) =>
                             <ul key={index} className='border-t mb-5 relative'>
                                 <span
@@ -424,9 +423,16 @@ const SeekerProfile = ({ user }) => {
                                         <textarea id='exResponsibilities' rows="3" type="text" placeholder="Describe your responsibilities" className="textarea text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                                     </div>
                                 </div>
-                                <div className='mt-6 flex justify-between items-center'>
-                                    <button className='btn btn-outline btn-accent normal-case text-base tracking-wider px-16 min-h-0 h-10 sm:w-max w-full' type="submit">Save</button>
-                                    <button onClick={() => setAddJobExp(!addJobExp)} className='btn btn-link sm:px-10 capitalize text-base text-accent hover:text-primary h-0 min-h-8'>Cancel</button>
+                                <div className='mt-6 flex sm:flex-row flex-col justify-between gap-4'>
+                                    <button
+                                        className='btn btn-outline btn-accent normal-case text-base tracking-wider px-16 min-h-0 h-11 sm:w-max w-full' type="submit">
+                                        Save
+                                    </button>
+                                    <button
+                                        onClick={() => setAddJobExp(!addJobExp)}
+                                        className='sm:w-max w-full btn btn-link sm:px-10 capitalize text-base text-accent hover:text-primary min-h-0 h-11'>
+                                        Cancel
+                                    </button>
                                 </div>
                             </form>
                         </div>

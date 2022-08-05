@@ -8,6 +8,8 @@ import Spinner from '../Shared/Spinner';
 import useGetApply from '../../hooks/useGetApply';
 import BundledEditor from '../../BundledEditor';
 import RequireAuth from '../Login/RequireAuth';
+import { useLocation } from 'react-router-dom';
+import useGetAllPost from '../../hooks/useGetAllPost';
 
 const JobDetails = ({ open }) => {
     const [usersData] = useGetUsers();
@@ -16,6 +18,10 @@ const JobDetails = ({ open }) => {
     const user = usersData[0];
     const [applied] = useGetApply(null);
     const editorRef = useRef(null);
+    const [allPost] = useGetAllPost();
+    const { pathname } = useLocation();
+
+    const post = allPost.filter(items => items._id.includes(pathname.slice(5, 20)));
 
     const {
         _id,
@@ -31,8 +37,8 @@ const JobDetails = ({ open }) => {
         employerEmail,
         receiveEmail,
         skillTags
-    } = open;
-    
+    } = post[0] || open;
+
     const app = applied.filter(a => a.postID === _id);
 
     const handleApply = async event => {
@@ -43,18 +49,18 @@ const JobDetails = ({ open }) => {
         const coverLetter = editorRef.current.getContent();
         const seekerEmail = user?.email;
         const seekerPhone = user?.phone;
-        const seekerName = user?.firstName + ' ' + user?.lastName;
+        const seekerName = user?.firstName + user?.lastName ? user?.firstName + ' ' + user?.lastName : 'no name';
         const postID = _id;
 
         const date = new Date();
         const applied = date.getDate() + '-' + date.toLocaleString('default', { month: 'long' }) + '-' + date.getFullYear();
         await axios.post('https://boiling-beach-14928.herokuapp.com/apply',
-            { resume, subject, coverLetter, seekerEmail, seekerPhone, seekerName, postID, receiveEmail, employerEmail, applied, jobTitle })
-            .then(function (response) {
+            { resume, subject, coverLetter, seekerEmail, seekerPhone, seekerName, postID, receiveEmail, employerEmail, applied, jobTitle, company })
+            .then(res => {
                 setLoading(false);
                 setModal(false)
             })
-            .catch(function (error) { });
+            .catch(err => { });
     };
 
     return (<>
@@ -96,7 +102,7 @@ const JobDetails = ({ open }) => {
         {
             modal && <RequireAuth>
                 <div className='w-full h-screen flex items-center justify-center fixed top-0 left-0 bg-black/50 z-10'>
-                    <div className='xl:w-1/2 md:w-3/5 sm:w-4/5 w-11/12 h-max sm:px-10 px-5 bg-white rounded-md shadow-2xl relative'>
+                    <div className='xl:w-1/2 md:w-3/5 sm:w-4/5 w-full h-max sm:px-10 px-5 bg-white rounded-md shadow-2xl relative'>
                         <button
                             onClick={() => setModal(false)}
                             className='absolute top-3 right-5 w-8 h-8 hover:bg-gray-200 hover:rounded-full duration-300 p-1'>
@@ -106,16 +112,18 @@ const JobDetails = ({ open }) => {
                             <h1 className='text-xl font-medium'>Apply to {company}</h1>
                         </div>
                         <div className='py-2'>
-                            <h2 className='text-lg font-medium'>CV / Resume</h2>
-                            <iframe title='Resume' className='mt-2' src={user?.resume}></iframe>
+                            <h2 className='text-lg font-medium'>CV / Resume</h2>{
+                                user?.resume ?
+                                    <iframe title='Resume' className='mt-2' src={user?.resume}></iframe>
+                                    : <div className='text-gray-500'>
+                                        You don't have a resume.<button className='btn btn-link normal-case p-0 ml-2'>Upload your resume</button>
+                                    </div>
+                            }
                         </div>
                         <div className='py-2'>
-                            <h2 className='text-lg font-medium mb-1'>Add cover letter
-                                <span className='text-orange-600 ml-1'>*</span>
-                            </h2>
+                            <h2 className='text-lg font-medium mb-1'>Add cover letter</h2>
                             <form onSubmit={handleApply}>
                                 <input
-                                    required
                                     type="text"
                                     placeholder="Subject"
                                     name='subject'
@@ -136,7 +144,12 @@ const JobDetails = ({ open }) => {
                                     }}
 
                                 />
-                                <button disabled={loading} className='btn btn-outline my-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>{loading ? <Spinner /> : 'Send'}</button>
+                                <button
+                                    type='submit'
+                                    disabled={loading}
+                                    className='btn btn-outline md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>
+                                    {loading ? <Spinner /> : 'Submit'}
+                                </button>
                             </form>
                         </div>
                     </div>

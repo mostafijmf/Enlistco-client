@@ -4,6 +4,7 @@ import auth from '../../firebase.init';
 import SocialLogin from './SocialLogin';
 import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import Spinner from '../Shared/Spinner';
+import PageTitle from '../Shared/PageTitle';
 
 const Login = () => {
     const emailRef = useRef('');
@@ -23,7 +24,7 @@ const Login = () => {
     const location = useLocation();
     let from = location.state?.from?.pathname || "/";
 
-    if(resetMessage || resetErrorMessage){
+    if (resetMessage || resetErrorMessage) {
         setTimeout(() => {
             setResetMessage(false);
             setResetErrorMessage(false);
@@ -57,7 +58,8 @@ const Login = () => {
         };
     };
 
-    return (
+    return (<>
+        <PageTitle title='Login'></PageTitle>
         <div className="h-screen flex justify-center items-center bg-slate-100">
             <div className='lg:w-1/3 mx-4 bg-white sm:px-10 px-5 sm:py-8 py-6 rounded-xl border shadow-lg'>
                 <h1 className='text-center text-4xl font-semibold mb-5'>Login</h1>
@@ -85,12 +87,12 @@ const Login = () => {
 
                 {
                     resetMessage ?
-                        <p className='text-sm text-green-500'>Check Your Email . . .</p> : 
+                        <p className='text-sm text-green-500'>Check Your Email . . .</p> :
                         <>
                             {
                                 sending ?
-                                    <Spinner></Spinner> 
-                                :
+                                    <Spinner></Spinner>
+                                    :
                                     <p className='text-sm'>Forget Password?
                                         <button onClick={() => handleReset()} className="text-blue-600 normal-case ml-1">Reset</button>
                                     </p>
@@ -98,13 +100,14 @@ const Login = () => {
                         </>
                 }
                 {
-                    resetErrorMessage || resetError ? 
-                    <p className='text-sm text-red-600'>Please provide a valid email.</p> :
-                    <p>{resetError}</p>
+                    resetErrorMessage || resetError ?
+                        <p className='text-sm text-red-600'>Please provide a valid email.</p> :
+                        <p>{resetError}</p>
                 }
                 <SocialLogin></SocialLogin>
             </div>
         </div>
+    </>
     );
 };
 

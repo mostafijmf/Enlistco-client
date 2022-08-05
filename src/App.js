@@ -24,12 +24,17 @@ import SeekerApplications from "./Pages/Employer/SeekerApplications";
 import Resume from "./Pages/Employer/Resume";
 import AdminPost from "./Pages/Admin/AdminPost";
 import CandidatesProfile from "./Pages/Employer/CandidatesProfile";
+import AUserDetails from "./Pages/Admin/AUserDetails";
+import SendOfferLetter from "./Pages/Employer/SendOfferLetter";
+import JobDetails from "./Pages/Home/JobDetails";
 
 function App() {
   return (
     <div>
       <Routes>
-        <Route path='/' element={<Home></Home>}></Route>
+        <Route path='/' element={<Home></Home>}>
+          <Route path='/job/:id' element={<JobDetails></JobDetails>}></Route>
+        </Route>
 
         <Route path='/new-entry' element={
           <RequireAuth>
@@ -47,6 +52,11 @@ function App() {
               <ManageUsers></ManageUsers>
             </RequireAdmin>
           }></Route>
+          <Route path='/dashboard/manage-users/details' element={
+            <RequireAdmin>
+              <AUserDetails></AUserDetails>
+            </RequireAdmin>
+          }></Route>
           <Route path='/dashboard/manage-job-post' element={
             <RequireAdmin>
               <ManageJobPost></ManageJobPost>
@@ -57,21 +67,21 @@ function App() {
               <AdminPost></AdminPost>
             </RequireAdmin>
           }></Route>
-          <Route path='/dashboard/userProfile' element={
+          <Route path='/dashboard/user-profile' element={
             <RequireAuth>
               <UserProfile></UserProfile>
             </RequireAuth>
           }></Route>
-          <Route path='/dashboard/myApplication' element={
+          <Route path='/dashboard/application' element={
             <RequireAuth>
               <MyApplication></MyApplication>
             </RequireAuth>}>
-            <Route path='/dashboard/myApplication/applied' element={
+            <Route path='/dashboard/application/applied' element={
               <RequireAuth>
                 <Applied></Applied>
               </RequireAuth>
             }></Route>
-            <Route path='/dashboard/myApplication/post' element={
+            <Route path='/dashboard/application/post' element={
               <RequireAuth>
                 <JobPost></JobPost>
               </RequireAuth>
@@ -80,6 +90,12 @@ function App() {
           <Route path='/dashboard/seeker-applications' element={
             <RequireAuth>
               <SeekerApplications></SeekerApplications>
+            </RequireAuth>
+          }>
+          </Route>
+          <Route path='/dashboard/seeker-applications/offer-letter' element={
+            <RequireAuth>
+              <SendOfferLetter></SendOfferLetter>
             </RequireAuth>
           }></Route>
           <Route path='/dashboard/seeker-profile' element={
@@ -94,12 +110,12 @@ function App() {
           </RequireAuth>
         }></Route>
         {/* ---------------user form--------------- */}
-        <Route path='/form/userContact' element={
+        <Route path='/form/user-contact' element={
           <RequireAuth>
             <UserContact></UserContact>
           </RequireAuth>
         }></Route>
-        <Route path='/form/jobExperience' element={
+        <Route path='/form/job-experience' element={
           <RequireAuth>
             <UserJobExperience></UserJobExperience>
           </RequireAuth>
@@ -111,26 +127,26 @@ function App() {
         }></Route>
 
         {/* ---------------employer job form--------------- */}
-        <Route path='/employer/contact' element={
+        <Route path='/employer-form/contact' element={
           <RequireAuth>
             <EmployerContact></EmployerContact>
           </RequireAuth>
         }></Route>
-        <Route path='/employer/jobDesciption' element={
+        <Route path='/employer-form/job-description' element={
           <RequireAuth>
             <JobDescription></JobDescription>
           </RequireAuth>
         }></Route>
-        <Route path='/employer/ApplicationOptions' element={
+        <Route path='/employer-form/application-options' element={
           <RequireAuth>
             <ApplicationOptions></ApplicationOptions>
           </RequireAuth>
         }></Route>
 
 
-        <Route path='/helpCenter' element={<HelpCenter></HelpCenter>}></Route>
+        <Route path='/help-center' element={<HelpCenter></HelpCenter>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
-        <Route path='/signUp' element={<SignUp></SignUp>}></Route>
+        <Route path='/signup' element={<SignUp></SignUp>}></Route>
         <Route path='/*' element={<NotFound></NotFound>}></Route>
       </Routes>
     </div>

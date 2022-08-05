@@ -6,6 +6,7 @@ import auth from '../firebase.init';
 const useGetUsers = () => {
     const [user] = useAuthState(auth);
     const [usersData, setUsersData] = useState([]);
+    const [loading, setLoading] = useState(true);
     
     useEffect(()=>{
         const email = user?.email;
@@ -18,13 +19,16 @@ const useGetUsers = () => {
                 }
             })
             .then(res => {
-                setUsersData(res.data)
+                setUsersData(res.data);
+                setLoading(false)
             })
-            .catch(err => {});
+            .catch(err => {
+                setLoading(false)
+            });
         }
     },[user, usersData])
 
-    return [usersData, setUsersData];
+    return [usersData, loading];
 };
 
 export default useGetUsers;

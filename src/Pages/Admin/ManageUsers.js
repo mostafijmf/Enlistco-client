@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import useGetAllUsers from '../../hooks/useGetAllUsers';
+import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 import AUser from './AUser';
 
@@ -23,7 +24,8 @@ const ManageUsers = () => {
             });
     };
 
-    return (
+    return (<>
+        <PageTitle title='Manage Users - Dashboard'></PageTitle>
         <div className="overflow-x-auto">
             <table className="table w-full" id='exportToxlsx'>
                 <thead>
@@ -65,6 +67,7 @@ const ManageUsers = () => {
                 </div>
             }
         </div>
+    </>
     );
 };
 

@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 
 const EmployerContact = () => {
@@ -21,7 +22,7 @@ const EmployerContact = () => {
 
     useEffect(() => {
         if (token) {
-            navigate('/employer/jobDesciption');
+            navigate('/employer-form/job-description');
         }
     }, [token, navigate]);
 
@@ -55,11 +56,12 @@ const EmployerContact = () => {
             });
         setLoading(false);
     };
-    return (
+    return (<>
+        <PageTitle title='Contact Form - Dashboard'></PageTitle>
         <div className="flex justify-center bg-accent py-5">
             <div className='w-full'>
                 <h1 className='text-center md:text-4xl sm:text-3xl text-2xl font-semibold my-5 text-white'>Find a great hire, fast</h1>
-                <div className='lg:w-2/5 md:w-3/5 sm:w-4/5 w-11/12 mx-auto glass sm:px-10 px-5 sm:py-8 py-5 h-max sm:mt-8 mb-10 rounded-xl border shadow-lg'>
+                <div className='xl:w-2/5 lg:w-1/2 md:w-2/3 sm:w-4/5 w-11/12 mx-auto glass sm:px-10 px-5 sm:py-8 py-5 h-max sm:mt-8 mb-10 rounded-xl border shadow-lg'>
                     <form onSubmit={hanleContact}>
                         <div>
                             <div>
@@ -102,7 +104,7 @@ const EmployerContact = () => {
                             <button
                                 type='submit'
                                 disabled={loading}
-                                className='btn btn-outline hover:btn-accent sm:px-10 px-6 normal-case sm:text-lg text-base text-white'>{
+                                className='sm:w-max w-full btn btn-outline hover:btn-accent sm:px-10 px-6 normal-case sm:text-lg text-base text-white'>{
                                     loading ? <Spinner></Spinner> : 'Save and continue'
                                 }</button>
                         </div>
@@ -110,6 +112,7 @@ const EmployerContact = () => {
                 </div>
             </div>
         </div>
+    </>
     );
 };
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import Footer from './Footer';
 import Header from './Header';
+import PageTitle from './PageTitle';
 
 const NotFound = () => {
     return (<>
+        <PageTitle title='404 Error'></PageTitle>
         <Header></Header>
         <section className='flex justify-center h-screen'>
             <div className='text-center mt-20'>

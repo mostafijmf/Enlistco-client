@@ -3,13 +3,15 @@ import useGetAllPost from '../../hooks/useGetAllPost';
 import useGetApply from '../../hooks/useGetApply';
 import AppliedList from './AppliedList';
 import { useNavigate } from 'react-router-dom';
+import PageTitle from '../Shared/PageTitle';
 
 const Applied = () => {
     const [applied] = useGetApply(null);
     const [allPost] = useGetAllPost(null);
     const navigate = useNavigate();
 
-    return (
+    return (<>
+        <PageTitle title='Applied - Dashboard'></PageTitle>
         <div className='w-full flex justify-center relative'>
             <div className='sm:w-4/5 w-11/12 mx-auto'>
                 <h1 className='text-2xl font-medium text-accent sm:text-left text-center mt-5 mb-3'>My applied jobs</h1>
@@ -24,6 +26,7 @@ const Applied = () => {
                 }
             </div>
         </div>
+    </>
     );
 };
 

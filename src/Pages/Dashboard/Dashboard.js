@@ -4,6 +4,7 @@ import useAdmin from '../../hooks/useAdmin';
 import useGetUsers from '../../hooks/useGetUsers';
 import Footer from '../Shared/Footer';
 import Header from '../Shared/Header';
+import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 
 const Dashboard = () => {
@@ -16,6 +17,7 @@ const Dashboard = () => {
         </div>
     };
     return (<>
+        <PageTitle title='Dashboard'></PageTitle>
         <Header></Header>
         <section>
             <div className="drawer drawer-mobile">
@@ -58,13 +60,13 @@ const Dashboard = () => {
                                     </Link></li>
                                 }
                             </> : <>
-                                <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/userProfile'>
+                                <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/user-profile'>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>My Profile
                                 </Link></li>
 
-                                <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/myApplication/applied'>
+                                <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/application/applied'>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>

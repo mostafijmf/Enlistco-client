@@ -6,6 +6,7 @@ import auth from '../firebase.init';
 const useGetPost = () => {
     const [user] = useAuthState(auth);
     const [myPost, setMyPost] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const email = user?.email;
@@ -17,13 +18,15 @@ const useGetPost = () => {
                 }
             })
             .then(res => {
-                setMyPost(res.data)
+                setMyPost(res.data);
+                setLoading(false)
             })
             .catch(err => {
+                setLoading(false)
             });
     }, [user, myPost]);
 
-    return [myPost];
+    return [myPost, loading];
 };
 
 export default useGetPost;

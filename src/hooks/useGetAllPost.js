@@ -13,7 +13,7 @@ const useGetAllPost = () => {
         .catch(err => {});
     },[allPost]);
 
-    return [allPost, setAllPost];
+    return [allPost];
 };
 
 export default useGetAllPost;

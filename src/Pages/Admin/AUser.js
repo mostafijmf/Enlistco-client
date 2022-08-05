@@ -1,9 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AUser = ({ user, index, setDeleteUData, setUserData }) => {
     const { firstName, lastName, seeker, employer, admin, email, } = user;
-    
-    const handleDelete = user =>{
+    const navigate = useNavigate();
+
+
+    const handleDelete = user => {
         setDeleteUData(true);
         setUserData(user);
     };
@@ -20,7 +23,13 @@ const AUser = ({ user, index, setDeleteUData, setUserData }) => {
                 <td className='py-2 text-sm'>
                     {
                         !admin && <>
-                            <button className='btn btn-link mr-8 normal-case text-base min-h-0 h-9 tracking-wider'>View</button>
+                            <button
+                                onClick={()=> navigate('/dashboard/manage-users/details', {
+                                    state: user
+                                })}
+                                className='btn btn-link mr-6 normal-case text-base min-h-0 h-9 tracking-wider'>
+                                View
+                            </button>
                             <button
                                 onClick={() => handleDelete(user)}
                                 className='btn btn-outline normal-case text-base min-h-0 h-9 tracking-wider'>
