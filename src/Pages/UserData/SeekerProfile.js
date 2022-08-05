@@ -26,7 +26,7 @@ const SeekerProfile = ({ user }) => {
         jobExperience,
         resume
     } = user;
-    const exJobTitle = jobExperience && jobExperience[jobExperience.length - 1].exJobTitle;
+    const exJobTitle = jobExperience && jobExperience[jobExperience.length - 1]?.exJobTitle;
 
     useEffect(() => {
         if (successMsg) {
@@ -39,7 +39,7 @@ const SeekerProfile = ({ user }) => {
     // Update personal data
     const updatePersonalData = async e => {
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
         const phone = e.target.phone.value;
         const address = e.target.address.value;
         const state = e.target.state.value;
@@ -148,6 +148,38 @@ const SeekerProfile = ({ user }) => {
                 setLoading(false);
             });
     };
+
+
+    // Upload resume
+    const handleResumeUpload = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        // ---------resume url generate----------
+        const resumeFile = e.target.resume.files[0];
+
+        let resumeURL;
+        if (resumeFile) {
+            const pdf = new FormData();
+            pdf.append('file', resumeFile);
+            pdf.append('upload_preset', 'resume');
+
+            resumeURL = await axios.post("https://api.cloudinary.com/v1_1/job-portal/upload", pdf);
+        };
+        const resume = resumeURL.data.secure_url;
+
+        // Send data to database
+        await axios.put(`https://boiling-beach-14928.herokuapp.com/user-resume/${_id}`, { resume })
+            .then((res) => {
+                if (res) {
+                    setLoading(false);
+                    setSuccessMsg('Resume upload successfully.');
+                    console.log(res.data)
+                }
+            })
+            .catch(err => { setLoading(false) });
+    };
+
 
     return (
         <div>
@@ -345,7 +377,7 @@ const SeekerProfile = ({ user }) => {
             <div className='md:w-4/5 sm:w-11/12 w-full mx-auto sm:p-8 p-4 shadow-lg border rounded-md'>
                 <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Job Experience</h1>
                 <div className='mt-5 relative'>
-                    { jobExperience &&
+                    {jobExperience &&
                         jobExperience.map((ex, index) =>
                             <ul key={index} className='border-t mb-5 relative'>
                                 <span
@@ -447,7 +479,26 @@ const SeekerProfile = ({ user }) => {
                         <iframe title='Resume' className='w-full h-screen' src={resume}></iframe>
                     </div>
                     <hr className='my-7' />
-                </> : ''
+                </> :
+                    <form
+                        onSubmit={handleResumeUpload}
+                        className='md:w-4/5 sm:w-11/12 w-full mx-auto sm:p-8 p-4 shadow-lg border rounded-md mb-10'>
+                        <h1 className='text-center mb-5 md:text-3xl sm:text-2xl text-xl font-medium'>Upload your CV / Resume</h1>
+                        <div className='flex items-center justify-between w-full border rounded-md '>
+                            <input
+                                id='resume'
+                                required
+                                type="file"
+                                className="input h-11 py-2 text-base w-full border-none border-gray-200 focus:outline-0 hover:shadow-md"
+                            />
+                            <input
+                                type="submit"
+                                value="Upload"
+                                // className='px-8 py-2 bg-accent rounded-r-md text-lg text-white h-full w-max'
+                                className='btn btn-accent min-h-0 h-11 px-6 text-base hover:text-white normal-case rounded-l-none rounded-r-md'
+                            />
+                        </div>
+                    </form>
             }
         </div>
     );
