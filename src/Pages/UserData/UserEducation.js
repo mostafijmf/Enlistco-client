@@ -95,7 +95,8 @@ const UserEducation = () => {
                             <input id='institution' ref={institutionRef} required type="text" placeholder="Ex: Oxford University" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                         <div className='mt-5'>
-                            <label htmlFor='group' className='font-medium sm:text-lg text-base'>Subject or Group<span className='text-orange-600 ml-1'>*</span></label>
+                            <label htmlFor='group' className='font-medium sm:text-lg text-base'>Subject or Group<span className='text-orange-600 ml-1'>*</span>
+                            </label>
                             <input id='group' ref={groupRef} required type="text" placeholder="Ex: Business" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                         <div className='flex sm:flex-row flex-col justify-between sm:gap-4'>
