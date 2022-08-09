@@ -21,15 +21,15 @@ const Header = () => {
 
     const menuLeft =
         <>
-            <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
+            <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0 relative before:duration-300 hover:before:content-[""] hover:before:absolute hover:before:w-full hover:before:h-0.5 hover:before:bg-primary hover:before:-bottom-1 hover:before:left-0'>
                 <Link to='/'>Find Jobs</Link>
             </li>
-            <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
+            <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0 relative before:duration-300 hover:before:content-[""] hover:before:absolute hover:before:w-full hover:before:h-0.5 hover:before:bg-primary hover:before:-bottom-1 hover:before:left-0'>
                 <Link to='/employer-form/contact'>Post a job</Link>
             </li>
             {
                 !admin.admin &&
-                <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
+                <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0 relative before:duration-300 hover:before:content-[""] hover:before:absolute hover:before:w-full hover:before:h-0.5 hover:before:bg-primary hover:before:-bottom-1 hover:before:left-0'>
                     <Link to='/form/user-contact'>Upload Your Resume</Link>
                 </li>
             }
@@ -45,10 +45,16 @@ const Header = () => {
                 <ul className={`menu bg-slate-50 shadow-md sm:w-60 w-full absolute top-14 lg:right-0 md:-right-5 md:left-auto sm:left0 ${openProfile ? 'block' : 'hidden'}`}>
                     {
                         admin.admin ? <>
-                            <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/manage-users'>
+                            <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/manage-recruiters'>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                Manage Recruiters
+                            </Link></li>
+                            <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/manage-seekers'>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>Manage Users
+                                </svg>Manage Seekers
                             </Link></li>
                             <li><Link className='w-full px-5 hover:text-accent focus:text-accent' to='/dashboard/manage-job-post'>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -107,10 +113,10 @@ const Header = () => {
         </>
         :
         <>
-            <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
+            <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0 relative before:duration-300 hover:before:content-[""] hover:before:absolute hover:before:w-full hover:before:h-0.5 hover:before:bg-primary hover:before:-bottom-1 hover:before:left-0'>
                 <Link to='/login'>Log in</Link>
             </li>
-            <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0'>
+            <li className='hover:text-primary duration-300 sm:text-lg text-base my-5 lg:my-0 relative before:duration-300 hover:before:content-[""] hover:before:absolute hover:before:w-full hover:before:h-0.5 hover:before:bg-primary hover:before:-bottom-1 hover:before:left-0'>
                 <Link to='/signup'>Sign up</Link>
             </li>
         </>
@@ -120,7 +126,7 @@ const Header = () => {
         <header className='w-full shadow z-10 sticky'>
             <nav className="flex items-center justify-between w-11/12 mx-auto h-14 relative">
                 <div className="logo lg:flex-none flex justify-between items-center lg:w-auto w-full">
-                    <Link to='/' className='btn btn-ghost normal-case text-xl md:text-2xl'>JOB PORTAL</Link>
+                    <Link to='/' className='btn btn-ghost normal-case text-xl md:text-2xl'>Enlistco</Link>
                     <span id='hamburger' className='lg:hidden cursor-pointer' onClick={() => { setOpen(!open); setOpenProfile(false) }}>
                         {
                             open ? <XIcon className='w-8 h-8'></XIcon> :

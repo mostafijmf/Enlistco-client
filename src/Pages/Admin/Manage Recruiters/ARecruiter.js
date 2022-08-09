@@ -1,14 +1,19 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import useGetAllPost from '../../../hooks/useGetAllPost'
 
-const AUser = ({ user, index, setDeleteUData, setUserData }) => {
-    const { firstName, lastName, seeker, employer, admin, email, } = user;
+const ARecruiter = ({ emp, index, setDeleteUData, setUserData }) => {
+    const { firstName, lastName, admin, email, } = emp;
+    const [allPost] = useGetAllPost();
+
+    const companyName = allPost.filter(p=>p.employerEmail === email);
+    const company = companyName[0]?.company;
     const navigate = useNavigate();
 
 
-    const handleDelete = user => {
+    const handleDelete = emp => {
         setDeleteUData(true);
-        setUserData(user);
+        setUserData(emp);
     };
 
     return (
@@ -16,22 +21,20 @@ const AUser = ({ user, index, setDeleteUData, setUserData }) => {
             <tr>
                 <th className='py-2 text-sm'>{index + 1}</th>
                 <td className='py-2 text-sm'>{firstName} {lastName}</td>
-                <td className='py-2 text-sm'>
-                    {seeker && 'Seeker'} {employer && '& Employer'} {admin && 'Admin'}
-                </td>
                 <td className='py-2 text-sm'>{email}</td>
+                <td className='py-2 text-sm'>{company}</td>
                 <td className='py-2 text-sm'>
                     {
                         !admin && <>
                             <button
-                                onClick={()=> navigate('/dashboard/manage-users/details', {
-                                    state: user
+                                onClick={() => navigate('/dashboard/manage-recruiters/details', {
+                                    state: {emp, company}
                                 })}
                                 className='btn btn-link mr-6 normal-case text-base min-h-0 h-9 tracking-wider'>
                                 View
                             </button>
                             <button
-                                onClick={() => handleDelete(user)}
+                                onClick={() => handleDelete(emp)}
                                 className='btn btn-outline normal-case text-base min-h-0 h-9 tracking-wider'>
                                 Delete
                             </button>
@@ -43,4 +46,4 @@ const AUser = ({ user, index, setDeleteUData, setUserData }) => {
     );
 };
 
-export default AUser;
+export default ARecruiter;

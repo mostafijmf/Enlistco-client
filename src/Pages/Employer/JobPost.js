@@ -11,7 +11,7 @@ const JobPost = () => {
     return (<>
         <PageTitle title='Post-Job - Dashboard'></PageTitle>
         <div className='w-full flex justify-center'>
-            <div className='sm:w-11/12 w-full mx-auto'>
+            <div className='sm:w-4/5 w-11/12 mx-auto'>
                 <h1 className='text-2xl font-medium text-accent sm:text-left text-center mt-5 mb-3'>My posted jobs</h1>
                 {myPost.length === 0 ?
                     <div className='h-96 w-11/12 mx-auto flex flex-col justify-center gap-5 items-center'>

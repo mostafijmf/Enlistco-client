@@ -24,7 +24,8 @@ const SeekerProfile = ({ user }) => {
         zip,
         education,
         jobExperience,
-        resume
+        resume,
+        seekerAbout
     } = user;
     const exJobTitle = jobExperience && jobExperience[jobExperience.length - 1]?.exJobTitle;
 
@@ -268,6 +269,11 @@ const SeekerProfile = ({ user }) => {
                                 </li>
                                 <li className='mt-2 text-base font-medium'>Zip code :
                                     <span className='font-normal ml-2'>{zip}</span>
+                                </li>
+                                <li className='mt-2'>
+                                    <h2 className='text-center font-medium sm:text-xl text-lg my-2'>About</h2>
+                                    <hr/>
+                                    <p className='p-3'>{seekerAbout}</p>
                                 </li>
                             </ul>
                     }

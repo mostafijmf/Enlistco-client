@@ -4,19 +4,28 @@ import useGetPost from '../../hooks/useGetPost';
 import useGetUsers from '../../hooks/useGetUsers';
 import EmployerProfile from '../Employer/EmployerProfile';
 import PageTitle from '../Shared/PageTitle';
+import Spinner from '../Shared/Spinner';
 import SeekerProfile from './SeekerProfile';
 
 const UserProfile = () => {
-    const [usersData] = useGetUsers(null);
+    const [usersData, loading] = useGetUsers(null);
     const [myPost] = useGetPost(null);
     const navigate = useNavigate();
 
+    if (loading) {
+        return <div className='h-screen w-full flex justify-center items-center'>
+            <Spinner></Spinner>
+        </div>
+    }
+    
     if (!usersData || usersData.length === 0) {
         return <div className='h-96 w-full flex flex-col justify-center gap-5 items-center'>
             <h1 className='text-4xl text-gray-500'>You don't have data</h1>
             <button onClick={() => navigate('/form/user-contact')} className='btn btn-primary hover:text-white min-h-0 sm:h-11 h-10 normal-case text-lg tracking-wide'>Upload your resume</button>
         </div>
     }
+
+
     const seeker = usersData[0].seeker;
     const employer = myPost.find(e => e !== undefined);
     return (<>
