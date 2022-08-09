@@ -1,12 +1,18 @@
+import { ArrowRightIcon } from '@heroicons/react/solid';
+import axios from 'axios';
 import React from 'react';
 import { useState } from 'react';
+import Spinner from '../Shared/Spinner';
 
 const MyPost = ({ post }) => {
     const [open, setOpen] = useState(false);
+    const [openPost, setOpenPost] = useState(false);
     const [deletePost, setDeletePost] = useState(false);
+    const [loading, setLoading] = useState(false);
     const {
         _id,
         jobTitle,
+        publish,
         company,
         jobLocation,
         salary,
@@ -18,47 +24,92 @@ const MyPost = ({ post }) => {
         receiveEmail,
         skillTags
     } = post;
-
-    const handleDelete = id => {
+    
+    const handleDelete = async id => {
+        setLoading(true)
         const url = `https://boiling-beach-14928.herokuapp.com/post/${id}`;
-        fetch(url, {
-            method: 'DELETE'
-        })
-            .then(res => res.json())
-            .then(data => { });
-        setDeletePost(!deletePost)
+
+        await axios.delete(url)
+            .then(res => {
+                setLoading(false)
+                setDeletePost(!deletePost);
+            })
+            .then(err => {
+                setLoading(false)
+            })
     };
 
-    return (
-        <div className={`${open ? 'h-auto border rounded-lg shadow-md md:px-8' : 'sm:h-52 h-60'} overflow-hidden py-3 px-5 sm:mb-0 mb-3 w-full border-t-2 relative`}>
-            <div className="">
-                <h2 className="text-center text-xl font-medium">{jobTitle}</h2>
-                <h5 className='text-center font-medium text-base'>{company}</h5>
-                <span className='bg-slate-200 font-medium px-2 py-1 rounded w-max'>{workplace}</span>
-                <h5 className='text-base font-medium mt-2'>Location :
-                    <span className='font-normal ml-2'>{jobLocation}</span>
+    return (openPost ?
+        <div className="rounded-lg border shadow-md mb-10">
+            <div className="card-body sm:p-8 p-5">
+                <h1 className='sm:text-2xl text-xl font-bold text-center'>Job Details</h1>
+                <div className='flex justify-between items-center'>
+                    <span className='text-accent text-sm tracking-wide'>Published: {publish}</span>
+                    <button
+                        onClick={() => setOpenPost(false)}
+                        className='btn btn-link sm:text-lg text-base min-h-0 h-8 p-0 tracking-wider normal-case'>
+                        Back
+                        <ArrowRightIcon className='sm:w-5 sm:h-5 w-4 h-4 sm:ml-2 ml-1'></ArrowRightIcon>
+                    </button>
+                </div>
+                <h2 className="sm:text-2xl text-xl font-medium">{jobTitle}</h2>
+                <h5 className='font-medium'>{company}</h5>
+                <h5 className='font-medium'>Location :
+                    <span className='text-base font-normal ml-2'>{jobLocation}</span>
                 </h5>
-                <h5 className='text-base font-medium'>Salary :
-                    <span className='font-normal ml-2'>${salary}</span>
+                <h5 className='font-medium'>Salary :
+                    <span className='text-base font-normal ml-2'>${salary}</span>
                 </h5>
-                <h5 className='text-base font-medium'>Job Type :
-                    <span className='font-normal ml-2'>{empType}</span>
+                <h5 className='font-medium'>Job Type :
+                    <span className='text-base font-normal ml-2'>{empType}</span>
                 </h5>
-                <h5 className='text-base font-medium'>Employees Quantity :
-                    <span className='font-normal ml-2'>{empQuantity}</span>
+                <h5 className='font-medium'>Employees Quantity :
+                    <span className='text-base font-normal ml-2'>{empQuantity}</span>
                 </h5>
-                <hr className='my-6' />
+                <h5 className='font-medium'>Your email :
+                    <span className='text-base font-normal ml-2'>{employerEmail}</span>
+                </h5>
+                <h5 className='font-medium'>Receive email :
+                    <span className='text-base font-normal ml-2'>{receiveEmail}</span>
+                </h5>{
+                    skillTags.length !== 0 &&
+                    <h5 className='font-medium'>Tags :
+                        {
+                            skillTags.map(tag => <span key={tag} className='text-base font-normal ml-2'>{tag}</span>)
+                        }
+                    </h5>
+                }
+                <span className='bg-slate-200 px-2 py-1 rounded w-max'>{workplace}</span>
+                <hr />
                 <div className='mb-10' dangerouslySetInnerHTML={{ __html: jobDescription }}></div>
             </div>
-            <div className="absolute sm:bottom-5 sm:right-5 sm:left-auto bottom-0 left-5 sm:w-max w-full bg-white">
+        </div>
+        :
+        <div className='w-full border-t-2 mb-3 relative'>
+            {
+                !publish &&
+                <div className='absolute top-0 right-0 w-max px-2 rounded-l-xl bg-primary text-white text-sm'>
+                    Under review
+                </div>
+            }
+            <div>
+                <h1 className='text-xl text-left font-medium'>{jobTitle}</h1>
+                <p className='sm:text-lg text-base'>{company}</p>
+                <div className='flex items-center'>
+                    <p className='sm:text-base text-sm mr-5'>{jobLocation}</p>
+                    <span className='sm:text-base text-sm font-medium bg-slate-200 px-2 py-1 rounded w-max'>{workplace}</span>
+                </div>
+                <h5 className='sm:text-base text-sm text-accent'><span className='mr-2'>Published:</span> {publish}</h5>
+            </div>
+            <div className="absolute flex items-center justify-end gap-5 bottom-0 right-0 w-full">
                 <button
-                    onClick={() => setOpen(!open)}
+                    onClick={() => setOpenPost(true)}
                     className="btn btn-outline btn-accent normal-case text-base min-h-0 sm:h-8 h-9 px-6">
-                    {open ? 'Less' : 'View'}
+                    View
                 </button>
                 <button
                     onClick={() => setDeletePost(!deletePost)}
-                    className="btn btn-outline  normal-case text-base min-h-0 sm:h-8 h-9 px-6 ml-6">
+                    className="btn btn-outline normal-case text-base min-h-0 sm:h-8 h-9 px-6">
                     Delete
                 </button>
             </div>
@@ -79,7 +130,7 @@ const MyPost = ({ post }) => {
                             <button
                                 onClick={() => handleDelete(_id)}
                                 className="btn btn-outline text-white min-h-0 h-10 px-10 tracking-wider">
-                                Yes
+                                {loading ? <Spinner></Spinner> : 'Yes'}
                             </button>
 
                         </div>

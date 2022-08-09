@@ -28,6 +28,7 @@ const UserEducation = () => {
         const eduStartDate = startDateRef.current.value;
         const studying = studyingRef.current.checked;
         const resumeFile = resumeRef.current.files[0];
+        const seekerAbout = event.target.about.value;
 
 
         // ---------resume url generate----------
@@ -51,7 +52,7 @@ const UserEducation = () => {
             eduStudying = 'Currently Studying';
             eduEndDate = ''
         };
-        const education = { degree, institution, edugroup, eduStartDate, eduEndDate, eduStudying, resume };
+        const education = { degree, institution, edugroup, eduStartDate, eduEndDate, eduStudying, resume, seekerAbout };
         const userContact = JSON.parse(localStorage.getItem('userContact'));
         const jobExp = JSON.parse(localStorage.getItem('jobExp'));
 
@@ -124,6 +125,15 @@ const UserEducation = () => {
                                 type="file"
                                 required
                                 className="input h-10 text-base w-full mt-2 p-1 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                        </div>
+                        <div className='mt-5'>
+                            <label htmlFor='about' className='font-medium sm:text-lg text-base'>About</label>
+                            <textarea
+                                rows="6" cols=""
+                                id='about'
+                                placeholder='Describe yourself'
+                                className='text-base w-full mt-2 p-2 border rounded-md border-gray-200 focus:outline-0 focus:shadow-md'
+                            ></textarea>
                         </div>
                     </div>
                     <div className='mt-6 flex sm:flex-row flex-col-reverse justify-between gap-4'>

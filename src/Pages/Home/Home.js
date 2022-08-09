@@ -233,7 +233,7 @@ const Home = () => {
                     <div className='md:w-4/5 sm:w-10/12 w-11/12 mx-auto flex justify-between gap-5 mb-10'>
                         <div className={`lg:block w-full ${pathname !== '/' ? 'hidden' : 'block'}`}>
                             {
-                                aPost.map(post => <PostList key={post._id} post={post}></PostList>)
+                                aPost?.map(post => <PostList key={post._id} post={post}></PostList>)
                             }
                         </div>
                         <div className={`w-full lg:block ${pathname !== '/' ? 'block' : 'hidden'} relative`}>

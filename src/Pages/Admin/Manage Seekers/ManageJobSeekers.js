@@ -1,15 +1,17 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import useGetAllUsers from '../../hooks/useGetAllUsers';
-import PageTitle from '../Shared/PageTitle';
-import Spinner from '../Shared/Spinner';
-import AUser from './AUser';
+import useGetAllUsers from '../../../hooks/useGetAllUsers';
+import PageTitle from '../../Shared/PageTitle';
+import Spinner from '../../Shared/Spinner';
+import AJobSeeker from './AJobSeeker';
 
-const ManageUsers = () => {
+const ManageJobSeekers = () => {
     const [allUsers] = useGetAllUsers();
     const [deleteUData, setDeleteUData] = useState(false);
     const [loading, setLoading] = useState(false);
     const [userData, setUserData] = useState();
+
+    const seeker = allUsers.filter(s=>s.seeker);
 
     const handleDelete = async email => {
         setLoading(true);
@@ -25,26 +27,28 @@ const ManageUsers = () => {
     };
 
     return (<>
-        <PageTitle title='Manage Users - Dashboard'></PageTitle>
+        <PageTitle title='Manage Seeker - Dashboard'></PageTitle>
+        <h1 className='text-2xl text-center my-5 text-accent font-medium'>Manage job seekers</h1>
         <div className="overflow-x-auto">
             <table className="table w-full" id='exportToxlsx'>
                 <thead>
                     <tr>
                         <th className='bg-slate-100 py-3 rounded-t-none normal-case text-base font-medium'>No.</th>
                         <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Name</th>
-                        <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Seeker/Employer</th>
                         <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Email</th>
+                        <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Phone number</th>
                         <th className='bg-slate-100 py-3 normal-case text-base font-medium'></th>
                     </tr>
                 </thead>
-                {allUsers.map((user, index) =>
-                    <AUser
+                {seeker.map((user, index) =>
+                    <AJobSeeker
                         key={user._id}
                         user={user}
                         index={index}
                         setDeleteUData={setDeleteUData}
                         setUserData={setUserData}>
-                    </AUser>)}
+                    </AJobSeeker>
+                )}
             </table>
 
             {
@@ -71,4 +75,4 @@ const ManageUsers = () => {
     );
 };
 
-export default ManageUsers;
+export default ManageJobSeekers;

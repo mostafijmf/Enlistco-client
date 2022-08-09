@@ -17,16 +17,18 @@ import MyApplication from './Pages/Dashboard/MyApplication';
 import Applied from './Pages/UserData/Applied';
 import JobPost from './Pages/Employer/JobPost';
 import NewEntry from './Pages/Login/NewEntry';
-import ManageUsers from './Pages/Admin/ManageUsers';
 import ManageJobPost from './Pages/Admin/ManageJobPost';
 import RequireAdmin from './Pages/Login/RequireAdmin';
 import SeekerApplications from "./Pages/Employer/SeekerApplications";
 import Resume from "./Pages/Employer/Resume";
 import AdminPost from "./Pages/Admin/AdminPost";
 import CandidatesProfile from "./Pages/Employer/CandidatesProfile";
-import AUserDetails from "./Pages/Admin/AUserDetails";
 import SendOfferLetter from "./Pages/Employer/SendOfferLetter";
 import JobDetails from "./Pages/Home/JobDetails";
+import ManageRecruiters from "./Pages/Admin/Manage Recruiters/ManageRecruiters";
+import ManageJobSeekers from "./Pages/Admin/Manage Seekers/ManageJobSeekers";
+import RecruiterDetails from "./Pages/Admin/Manage Recruiters/RecruiterDetails";
+import SeekerDetails from "./Pages/Admin/Manage Seekers/SeekerDetails";
 
 function App() {
   return (
@@ -47,14 +49,24 @@ function App() {
           <RequireAuth>
             <Dashboard></Dashboard>
           </RequireAuth>}>
-          <Route path='/dashboard/manage-users' element={
+          <Route path='/dashboard/manage-recruiters' element={
             <RequireAdmin>
-              <ManageUsers></ManageUsers>
+              <ManageRecruiters></ManageRecruiters>
             </RequireAdmin>
           }></Route>
-          <Route path='/dashboard/manage-users/details' element={
+          <Route path='/dashboard/manage-recruiters/details' element={
             <RequireAdmin>
-              <AUserDetails></AUserDetails>
+              <RecruiterDetails></RecruiterDetails>
+            </RequireAdmin>
+          }></Route>
+          <Route path='/dashboard/manage-seekers' element={
+            <RequireAdmin>
+              <ManageJobSeekers></ManageJobSeekers>
+            </RequireAdmin>
+          }></Route>
+          <Route path='/dashboard/manage-seekers/details' element={
+            <RequireAdmin>
+              <SeekerDetails></SeekerDetails>
             </RequireAdmin>
           }></Route>
           <Route path='/dashboard/manage-job-post' element={

@@ -7,7 +7,7 @@ const AppliedList = ({ appliedJob, allPost }) => {
     const allJobPost = allPost.filter(post => post._id === postID);
     const [openModal, setOpenModal] = useState(false);
     const [openPost, setOpenPost] = useState();
-    const handlePost = (aj) => {
+    const handlePostView = (aj) => {
         setOpenPost(aj);
     };
     return (<>
@@ -48,20 +48,21 @@ const AppliedList = ({ appliedJob, allPost }) => {
                     : <>
                         <div className='w-full border-t-2 mb-3 relative'>
                             <div>
-                                <h1 onClick={() => handlePost(aj)} className='btn btn-link normal-case px-0 min-h-0 h-10 text-xl text-left font-medium'>{aj.jobTitle}</h1>
-                                <p className='sm:text-lg text-base font-medium'>{aj.company}</p>
+                                <h1 className='text-xl text-left font-medium'>{aj.jobTitle}</h1>
+                                <p className='sm:text-lg text-base'>{aj.company}</p>
                                 <div className='flex items-center'>
                                     <p className='sm:text-base text-sm mr-5'>{aj.jobLocation}</p>
                                     <span className='sm:text-base text-sm font-medium bg-slate-200 px-2 py-1 rounded w-max'>{aj.workplace}</span>
                                 </div>
                                 <h5 className='sm:text-base text-sm text-accent'><span className='mr-2'>Applied</span>{applied}</h5>
                             </div>
-                            <div className='absolute sm:top-12 -bottom-1 right-0'>
-                                <button onClick={() => setOpenModal(!openModal)} className='btn btn-link px-0 normal-case sm:text-base text-sm'>See cover letter</button>
+                            <div className='absolute sm:top-12 -bottom-1 right-0 flex items-center justify-center gap-5'>
+                                <button  onClick={() => handlePostView(aj)} className="btn btn-outline btn-accent normal-case text-base min-h-0 sm:h-8 h-9 px-6">View</button>
+                                <button onClick={() => setOpenModal(!openModal)} className="btn btn-outline normal-case text-base min-h-0 sm:h-8 h-9 px-6">See cover letter</button>
                             </div>
                         </div>
                         {
-                            openModal && <div className='w-full pt-10 pb-40 flex items-center justify-center absolute z-10 top-0 left-0 bg-black/50'>
+                            openModal && <div className='w-full pt-10 pb-40 flex items-center justify-center absolute z-10 top-0 left-0 glass'>
                                 <div className='lg:w-9/12 md:w-4/5 w-11/12 h-max bg-white rounded-md shadow-2xl relative z-50'>
                                     <button
                                         onClick={() => setOpenModal(!openModal)}
