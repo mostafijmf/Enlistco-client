@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import auth from '../../firebase.init';
-import PageTitle from '../Shared/PageTitle';
-import Spinner from '../Shared/Spinner';
-import CountryList from './CountryList';
+import auth from '../../../firebase.init';
+import PageTitle from '../../Shared/PageTitle';
+import Spinner from '../../Shared/Spinner';
+import CountryList from '../../Shared/CountryList';
 
 const UserContact = () => {
     const [user] = useAuthState(auth);

@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import auth from '../../firebase.init';
-import PageTitle from '../Shared/PageTitle';
-import Spinner from '../Shared/Spinner';
+import auth from '../../../firebase.init';
+import PageTitle from '../../Shared/PageTitle';
+import Spinner from '../../Shared/Spinner';
 
 const EmployerContact = () => {
     const [user] = useAuthState(auth);

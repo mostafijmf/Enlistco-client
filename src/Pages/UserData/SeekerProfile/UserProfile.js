@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import useGetPost from '../../hooks/useGetPost';
-import useGetUsers from '../../hooks/useGetUsers';
-import EmployerProfile from '../Employer/EmployerProfile';
-import PageTitle from '../Shared/PageTitle';
-import Spinner from '../Shared/Spinner';
+import useGetPost from '../../../hooks/useGetPost';
+import useGetUsers from '../../../hooks/useGetUsers';
+import EmployerProfile from '../../Employer/EmployerProfile';
+import PageTitle from '../../Shared/PageTitle';
+import Spinner from '../../Shared/Spinner';
 import SeekerProfile from './SeekerProfile';
 
 const UserProfile = () => {

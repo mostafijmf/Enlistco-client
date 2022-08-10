@@ -3,8 +3,8 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import PageTitle from '../Shared/PageTitle';
-import Spinner from '../Shared/Spinner';
+import PageTitle from '../../Shared/PageTitle';
+import Spinner from '../../Shared/Spinner';
 
 const CandidatesProfile = () => {
     const location = useLocation();

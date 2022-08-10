@@ -5,9 +5,9 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import * as XLSX from 'xlsx';
-import auth from '../../firebase.init';
-import PageTitle from '../Shared/PageTitle';
-import Spinner from '../Shared/Spinner';
+import auth from '../../../firebase.init';
+import PageTitle from '../../Shared/PageTitle';
+import Spinner from '../../Shared/Spinner';
 import SeekerAppList from './SeekerAppList';
 
 const SeekerApplications = () => {

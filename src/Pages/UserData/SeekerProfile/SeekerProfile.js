@@ -1,8 +1,8 @@
 import { CheckCircleIcon, PlusIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import Spinner from '../Shared/Spinner';
-import CountryList from './CountryList';
+import CountryList from '../../Shared/CountryList';
+import Spinner from '../../Shared/Spinner';
 
 const SeekerProfile = ({ user }) => {
     const [editPData, setEditPData] = useState(false);

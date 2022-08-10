@@ -3,9 +3,9 @@ import axios from 'axios';
 import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import BundledEditor from '../../BundledEditor';
-import PageTitle from '../Shared/PageTitle';
-import Spinner from '../Shared/Spinner';
+import BundledEditor from '../../../BundledEditor';
+import PageTitle from '../../Shared/PageTitle';
+import Spinner from '../../Shared/Spinner';
 
 const SendOfferLetter = () => {
     const navigate = useNavigate();
