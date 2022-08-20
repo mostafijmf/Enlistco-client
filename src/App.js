@@ -17,7 +17,7 @@ import MyApplication from './Pages/Dashboard/MyApplication';
 import Applied from './Pages/UserData/SeekerProfile/Applied';
 import JobPost from './Pages/Employer/JobPost';
 import NewEntry from './Pages/Login/NewEntry';
-import ManageJobPost from './Pages/Admin/ManageJobPost';
+import ManageJobPost from './Pages/Admin/Manage Job-post/ManageJobPost';
 import RequireAdmin from './Pages/Login/RequireAdmin';
 import SeekerApplications from "./Pages/Employer/Candidates/SeekerApplications";
 import Resume from "./Pages/Employer/Candidates/Resume";
@@ -29,6 +29,7 @@ import ManageRecruiters from "./Pages/Admin/Manage Recruiters/ManageRecruiters";
 import ManageJobSeekers from "./Pages/Admin/Manage Seekers/ManageJobSeekers";
 import RecruiterDetails from "./Pages/Admin/Manage Recruiters/RecruiterDetails";
 import SeekerDetails from "./Pages/Admin/Manage Seekers/SeekerDetails";
+import ViewApplicants from "./Pages/Admin/Manage Job-post/ViewApplicants";
 
 function App() {
   return (
@@ -44,11 +45,17 @@ function App() {
           </RequireAuth>
         }></Route>
 
-        {/* ---------------Dashboard--------------- */}
+        {/* ====================
+            Dashboard
+        ==================== */}
         <Route path='/dashboard' element={
           <RequireAuth>
             <Dashboard></Dashboard>
           </RequireAuth>}>
+
+          {/* ====================
+              Admin Dashboard
+          ==================== */}
           <Route path='/dashboard/manage-recruiters' element={
             <RequireAdmin>
               <ManageRecruiters></ManageRecruiters>
@@ -74,11 +81,20 @@ function App() {
               <ManageJobPost></ManageJobPost>
             </RequireAdmin>
           }></Route>
+          <Route path='/dashboard/manage-job-post/view-applicants' element={
+            <RequireAdmin>
+              <ViewApplicants></ViewApplicants>
+            </RequireAdmin>
+          }></Route>
           <Route path='/dashboard/admin-job-post' element={
             <RequireAdmin>
               <AdminPost></AdminPost>
             </RequireAdmin>
           }></Route>
+
+          {/* ====================
+              User Dashboard
+          ==================== */}
           <Route path='/dashboard/user-profile' element={
             <RequireAuth>
               <UserProfile></UserProfile>
@@ -121,7 +137,10 @@ function App() {
             <Resume></Resume>
           </RequireAuth>
         }></Route>
-        {/* ---------------user form--------------- */}
+        
+        {/* ====================
+              User Form
+          ==================== */}
         <Route path='/form/user-contact' element={
           <RequireAuth>
             <UserContact></UserContact>
@@ -138,7 +157,9 @@ function App() {
           </RequireAuth>
         }></Route>
 
-        {/* ---------------employer job form--------------- */}
+        {/* ====================
+              Employer job form
+          ==================== */}
         <Route path='/employer-form/contact' element={
           <RequireAuth>
             <EmployerContact></EmployerContact>

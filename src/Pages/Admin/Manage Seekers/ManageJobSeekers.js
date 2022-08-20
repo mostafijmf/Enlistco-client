@@ -33,11 +33,11 @@ const ManageJobSeekers = () => {
             <table className="table w-full" id='exportToxlsx'>
                 <thead>
                     <tr>
-                        <th className='bg-slate-100 py-3 rounded-t-none normal-case text-base font-medium'>No.</th>
+                        <th className='bg-slate-100 py-3 rounded-l-none normal-case text-base font-medium'>No.</th>
                         <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Name</th>
                         <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Email</th>
                         <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Phone number</th>
-                        <th className='bg-slate-100 py-3 normal-case text-base font-medium'></th>
+                        <th className='bg-slate-100 py-3 rounded-r-none normal-case text-base font-medium'></th>
                     </tr>
                 </thead>
                 {seeker.map((user, index) =>

@@ -175,7 +175,6 @@ const SeekerProfile = ({ user }) => {
                 if (res) {
                     setLoading(false);
                     setSuccessMsg('Resume upload successfully.');
-                    console.log(res.data)
                 }
             })
             .catch(err => { setLoading(false) });

@@ -1,12 +1,50 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const SeekerAppList = ({ p, index, setOpenModal }) => {
+const SeekerAppList = ({ items, index, setOpenModal }) => {
     const navigate = useNavigate();
-    const { _id, seekerName, seekerEmail, seekerPhone, jobTitle, company, applied, coverLetter, subject, resume } = p;
+    const {
+        _id,
+        seekerName,
+        seekerEmail,
+        seekerPhone,
+        jobTitle,
+        company,
+        applied,
+        coverLetter,
+        subject,
+        resume,
+        
+        // Screening question
+        bgCheck,
+        certification,
+        drivingLicense,
+        drugTest,
+        education,
+        gpa,
+        hybridWork,
+        remoteWork,
+        workExperience,
+        urgentHiring,
+        customQuestion
+    } = items;
 
-    const handleCLetter = (coverLetter, subject) => {
-        setOpenModal({ coverLetter, subject })
+    const handleCLetter = () => {
+        setOpenModal({
+            coverLetter,
+            subject,
+            bgCheck,
+            certification,
+            drivingLicense,
+            drugTest,
+            education,
+            gpa,
+            hybridWork,
+            remoteWork,
+            workExperience,
+            urgentHiring,
+            customQuestion
+        })
     };
 
     return (
@@ -27,7 +65,7 @@ const SeekerAppList = ({ p, index, setOpenModal }) => {
                 <td className='py-0 text-sm'>{applied}</td>
                 <td className='py-0'>
                     <button
-                        onClick={() => handleCLetter(coverLetter, subject)}
+                        onClick={handleCLetter}
                         className='btn btn-link pl-0 pr-2 normal-case text-sm'>
                         Cover-letter
                     </button>|

@@ -6,7 +6,6 @@ import PageTitle from '../../Shared/PageTitle';
 const RecruiterDetails = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    console.log(location?.state)
 
     const {
         firstName,
