@@ -1,9 +1,9 @@
 import React from 'react';
-import useGetAllPost from '../../hooks/useGetAllPost';
-import useGetApply from '../../hooks/useGetApply';
+import useGetAllPost from '../../../hooks/useGetAllPost';
+import useGetApply from '../../../hooks/useGetApply';
 import AppliedList from './AppliedList';
 import { useNavigate } from 'react-router-dom';
-import PageTitle from '../Shared/PageTitle';
+import PageTitle from '../../Shared/PageTitle';
 
 const Applied = () => {
     const [applied] = useGetApply(null);

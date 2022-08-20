@@ -1,12 +1,12 @@
 import React from 'react';
-import useGetAllPost from '../../hooks/useGetAllPost';
-import PageTitle from '../Shared/PageTitle';
-import Spinner from '../Shared/Spinner';
+import useGetAllPost from '../../../hooks/useGetAllPost';
+import PageTitle from '../../Shared/PageTitle';
+import Spinner from '../../Shared/Spinner';
 import AllPost from './AllPost';
 
 const ManageJobPost = () => {
-    const [allPost] = useGetAllPost();
-    if (allPost.length === 0) {
+    const [allPost, loading] = useGetAllPost();
+    if (loading) {
         return <div className='h-screen top-0 w-full flex items-center justify-center'>
             <Spinner></Spinner>
         </div>

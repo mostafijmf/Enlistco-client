@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import BundledEditor from '../../BundledEditor';
+import BundledEditor from '../../../BundledEditor';
 import { useNavigate } from 'react-router-dom';
-import PageTitle from '../Shared/PageTitle';
+import PageTitle from '../../Shared/PageTitle';
 
 const JobDescription = () => {
     // Description

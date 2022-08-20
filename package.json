@@ -1,7 +1,7 @@
 {
-  "name": "job-portal-client",
+  "name": "enlistco-client",
   "version": "0.1.0",
-  "private": true,
+  "homepage": ".",
   "dependencies": {
     "@heroicons/react": "^1.0.6",
     "@testing-library/jest-dom": "^5.16.4",

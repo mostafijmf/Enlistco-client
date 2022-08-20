@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PageTitle from '../Shared/PageTitle';
+import PageTitle from '../../Shared/PageTitle';
 
 const UserJobExperience = () => {
     const [currentWork, setCurrentWork] = useState(false);

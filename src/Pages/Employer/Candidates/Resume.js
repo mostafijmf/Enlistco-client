@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import PageTitle from '../Shared/PageTitle';
+import PageTitle from '../../Shared/PageTitle';
 
 const Resume = () => {
     const location = useLocation();

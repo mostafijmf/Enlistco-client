@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ViewApplicants from './ViewApplicants';
 
 const AllPost = ({ posts }) => {
     const [open, setOpen] = useState(false);
@@ -19,10 +21,12 @@ const AllPost = ({ posts }) => {
         permission
     } = posts;
 
+    const navigate = useNavigate();
+
     const handlePermission = id => {
         const permission = true;
         const date = new Date();
-        const publish = date.getDate() + '-' + date.toLocaleString('default', {month: 'long'}) + '-' + date.getFullYear();
+        const publish = date.getDate() + '-' + date.toLocaleString('default', { month: 'long' }) + '-' + date.getFullYear();
 
         const url = `https://boiling-beach-14928.herokuapp.com/post/${id}`;
         fetch(url, {
@@ -30,7 +34,7 @@ const AllPost = ({ posts }) => {
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify({ permission, publish})
+            body: JSON.stringify({ permission, publish })
         })
             .then(res => res.json())
             .then(data => { });
@@ -82,11 +86,32 @@ const AllPost = ({ posts }) => {
                 <div className='mb-10' dangerouslySetInnerHTML={{ __html: jobDescription }}></div>
             </div>
             <div className="absolute md:bottom-5 bottom-2 right-5">
-                <button onClick={() => setOpen(!open)} className="btn btn-link text-accent normal-case text-base min-h-0 h-9 p-0">{open ? 'Less' : 'View'}</button>
+                <button
+                    onClick={() => setOpen(!open)}
+                    className="btn btn-link text-accent normal-case text-base min-h-0 h-9 px-2">{open ? 'Less' : 'View'}
+                </button>
                 {
-                    !permission && <button onClick={() => handlePermission(_id)} className="btn btn-outline btn-primary normal-case text-base min-h-0 h-9 ml-5 px-2">Approve</button>
+                    !permission ?
+                        <button
+                            onClick={() => handlePermission(_id)}
+                            className="btn btn-outline btn-primary normal-case text-base min-h-0 h-9 ml-5 px-2">
+                            Approve
+                        </button>
+                        :
+                        <button
+                            onClick={() => {
+                                navigate('/dashboard/manage-job-post/view-applicants', {
+                                    state: _id
+                                })
+                            }}
+                            className="btn btn-link normal-case text-base min-h-0 h-9 px-2">View applicants
+                        </button>
                 }
-                <button onClick={() => setDeletePost(!deletePost)} className="btn btn-outline normal-case text-base min-h-0 h-9 ml-5 px-2">Delete</button>
+                <button
+                    onClick={() => setDeletePost(!deletePost)}
+                    className="btn btn-outline normal-case text-base min-h-0 h-9 ml-5 px-2">
+                    Delete
+                </button>
             </div>
             {
                 deletePost &&
@@ -94,11 +119,11 @@ const AllPost = ({ posts }) => {
                     <div className="modal-box text-center bg-secondary">
                         <h3 className="font-medium text-2xl text-white">Are you sure!</h3>
                         <p className="text-lg py-4 text-gray-300">Do you want to delete it?</p>
-                        <div className="flex justify-center gap-5 mt-5">
+                        <div className="flex justify-center gap-10 mt-5">
 
-                            <button onClick={() => setDeletePost(!deletePost)} className="btn btn-primary text-white min-h-8 h-0 px-6 tracking-wider">No</button>
+                            <button onClick={() => setDeletePost(!deletePost)} className="btn btn-primary text-white min-h-0 h-10 px-8 tracking-wider">No</button>
 
-                            <button onClick={() => handleDelete(_id)} className="btn btn-outline text-white min-h-8 h-0 px-6 tracking-wider">Yes</button>
+                            <button onClick={() => handleDelete(_id)} className="btn btn-outline text-white min-h-0 h-10 px-8 tracking-wider">Yes</button>
 
                         </div>
                     </div>
