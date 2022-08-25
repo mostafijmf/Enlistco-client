@@ -58,7 +58,7 @@ const UserEducation = () => {
 
         // Send data to database
         const email = user?.email;
-        const url = `https://boiling-beach-14928.herokuapp.com/seeker/${email}`;
+        const url = `https://enlistco.co.in/api/seeker/${email}`;
         await fetch(url, {
             method: 'PUT',
             headers: {

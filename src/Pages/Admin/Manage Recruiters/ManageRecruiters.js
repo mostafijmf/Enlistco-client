@@ -15,7 +15,7 @@ const ManageRecruiters = () => {
 
     const handleDelete = async email => {
         setLoading(true);
-        const url = `https://boiling-beach-14928.herokuapp.com/users/${email}`;
+        const url = `https://enlistco.co.in/api/users/${email}`;
         await axios.delete(url)
             .then(res => {
                 setDeleteUData(!deleteUData);

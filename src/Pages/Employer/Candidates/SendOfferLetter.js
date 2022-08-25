@@ -29,7 +29,7 @@ const SendOfferLetter = () => {
         const subject = e.target.subject.value;
         const offerLetter = editorRef.current.getContent();
 
-        await axios.put(`https://boiling-beach-14928.herokuapp.com/apply/${_id}`, {
+        await axios.put(`https://enlistco.co.in/api/apply/${_id}`, {
             _id, seekerEmail, seekerName, jobTitle, company, subject, offerLetter
         })
             .then(res => {

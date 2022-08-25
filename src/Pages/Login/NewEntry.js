@@ -20,7 +20,7 @@ const NewEntry = () => {
             const seeker = entry === 'seeker' ? true : false;
             const employer = entry === 'employer' ? true : false;
             const email = user?.email;
-            const url = `https://boiling-beach-14928.herokuapp.com/users/${email}`;
+            const url = `https://enlistco.co.in/api/users/${email}`;
 
             await axios.put(url, { email, seeker, employer })
                 .then(res => {

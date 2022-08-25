@@ -5,7 +5,7 @@ const useGetAllUsers = () => {
     const [allUsers, setAllUsers] = useState([]);
 
     useEffect(()=>{
-        axios.get('https://boiling-beach-14928.herokuapp.com/users')
+        axios.get('https://enlistco.co.in/api/users')
         .then(res => {
             setAllUsers(res.data)
         })

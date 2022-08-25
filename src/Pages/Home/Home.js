@@ -30,7 +30,7 @@ const Home = () => {
 
     // search bar
     useEffect(() => {
-        axios.get('https://boiling-beach-14928.herokuapp.com/post')
+        axios.get('https://enlistco.co.in/api/post')
             .then(res => {
                 setLoading(false)
                 const data = res.data;

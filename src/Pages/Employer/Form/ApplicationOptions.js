@@ -160,7 +160,7 @@ const ApplicationOptions = () => {
         ] : '';
 
         if (receiveEmail.includes('@' && '.')) {
-            await axios.post('https://boiling-beach-14928.herokuapp.com/post', {
+            await axios.post('https://enlistco.co.in/api/post', {
                 postOptions, employerContact, jobDescription, email, bgCheck, certification, drivingLicense, drugTest, education, gpa, hybridWork, remoteWork, workExperience, urgentHiring, customQuestion
             })
                 .then(res => {

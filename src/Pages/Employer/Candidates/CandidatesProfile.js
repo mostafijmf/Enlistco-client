@@ -14,7 +14,7 @@ const CandidatesProfile = () => {
     useEffect(() => {
         const email = location.state;
         if (email) {
-            axios.get(`https://boiling-beach-14928.herokuapp.com/users/${email}`)
+            axios.get(`https://enlistco.co.in/api/users/${email}`)
                 .then(res => {
                     setCdData(res.data);
                     setLoading(false)
