@@ -41,7 +41,7 @@ const EmployerContact = () => {
         const employer = true;
         const email = user.email;
 
-        await fetch(`https://boiling-beach-14928.herokuapp.com/users/${email}`, {
+        await fetch(`https://enlistco.co.in/api/users/${email}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'

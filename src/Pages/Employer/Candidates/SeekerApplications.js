@@ -18,7 +18,7 @@ const SeekerApplications = () => {
 
     useEffect(() => {
         const email = user?.email;
-        axios.get(`https://boiling-beach-14928.herokuapp.com/apply-emp/${email}`)
+        axios.get(`https://enlistco.co.in/api/apply-emp/${email}`)
             .then(res => {
                 setSeekerApplyList(res.data);
                 setLoading(false)

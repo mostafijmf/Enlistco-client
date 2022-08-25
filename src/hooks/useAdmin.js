@@ -11,7 +11,7 @@ const useAdmin = () => {
     useEffect(()=>{
         const email = user?.email;
         if(email){
-            const url = `https://boiling-beach-14928.herokuapp.com/admin/${email}`;
+            const url = `https://enlistco.co.in/api/admin/${email}`;
             axios.get(url)
             .then(res => {
                 setAdmin(res.data);

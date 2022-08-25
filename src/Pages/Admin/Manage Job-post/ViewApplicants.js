@@ -11,7 +11,7 @@ const ViewApplicants = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get(`https://boiling-beach-14928.herokuapp.com/admin-applied-list/${appliedID}`)
+        axios.get(`https://enlistco.co.in/api/admin-applied-list/${appliedID}`)
             .then(res => {
                 setAppliedList(res.data);
                 setLoading(false)

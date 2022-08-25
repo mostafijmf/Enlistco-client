@@ -19,7 +19,7 @@ const AdminPostList = ({ post }) => {
     } = post;
 
     const handleDelete = id => {
-        const url = `https://boiling-beach-14928.herokuapp.com/post/${id}`;
+        const url = `https://enlistco.co.in/api/post/${id}`;
         fetch(url, {
             method: 'DELETE'
         })

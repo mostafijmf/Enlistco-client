@@ -7,7 +7,7 @@ const useGetAllPost = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
-        axios.get('https://boiling-beach-14928.herokuapp.com/post')
+        axios.get('https://enlistco.co.in/api/post')
         .then(res => {
             setAllPost(res.data);
             setLoading(false)
