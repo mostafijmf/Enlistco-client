@@ -38,37 +38,38 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
 
         // screening questions
         const screeningQuestions = JSON.parse(localStorage.getItem('screeningQuestions'));
-        const bgCheck = screeningQuestions.qBgCheck ?
+        console.log(screeningQuestions)
+        const bgCheck = screeningQuestions && screeningQuestions.qBgCheck ?
             screeningQuestions.qBgCheck
             : '';
-        const certification = screeningQuestions.qCertification ?
+        const certification = screeningQuestions && screeningQuestions.qCertification ?
             screeningQuestions.qCertification
             : '';
-        const drivingLicense = screeningQuestions.qDrivingLicense ?
+        const drivingLicense = screeningQuestions && screeningQuestions.qDrivingLicense ?
             screeningQuestions.qDrivingLicense
             : '';
-        const drugTest = screeningQuestions.qDrugTest ?
+        const drugTest = screeningQuestions && screeningQuestions.qDrugTest ?
             screeningQuestions.qDrugTest
             : '';
-        const education = screeningQuestions.qEducation ?
+        const education = screeningQuestions && screeningQuestions.qEducation ?
             screeningQuestions.qEducation
             : '';
-        const gpa = screeningQuestions.qGpa ?
+        const gpa = screeningQuestions && screeningQuestions.qGpa ?
             screeningQuestions.qGpa
             : '';
-        const hybridWork = screeningQuestions.qHybridWork ?
+        const hybridWork = screeningQuestions && screeningQuestions.qHybridWork ?
             screeningQuestions.qHybridWork
             : '';
-        const remoteWork = screeningQuestions.qRemoteWork ?
+        const remoteWork = screeningQuestions && screeningQuestions.qRemoteWork ?
             screeningQuestions.qRemoteWork
             : '';
-        const workExperience = screeningQuestions.qWorkExperience ?
+        const workExperience = screeningQuestions && screeningQuestions.qWorkExperience ?
             screeningQuestions.qWorkExperience
             : '';
-        const urgentHiring = screeningQuestions.qUrgentHiring ?
+        const urgentHiring = screeningQuestions && screeningQuestions.qUrgentHiring ?
             screeningQuestions.qUrgentHiring
             : '';
-        const customQuestion = screeningQuestions.ctQuestion ?
+        const customQuestion = screeningQuestions && screeningQuestions.ctQuestion ?
             screeningQuestions.ctQuestion
             : '';
 
