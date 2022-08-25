@@ -23,7 +23,7 @@ const PostList = ({ post }) => {
 
     const clipboard = id => {
         setCopied(true)
-        navigator.clipboard.writeText(`https://job-portal-online.web.app/job/${id.slice(5, 20)}`);
+        navigator.clipboard.writeText(`https://enlistco.co.in/job/${id.slice(5, 20)}`);
     };
 
     return (<section className='relative'>{
@@ -39,7 +39,7 @@ const PostList = ({ post }) => {
                     openClipboard && <div onClick={() => clipboard(_id)}
                         title='copy'
                         className='absolute right-0 top-9 sm:w-max h-max border hover:border-accent rounded-md shadow-lg bg-white flex justify-between items-center cursor-pointer  text-gray-500 hover:text-accent'>
-                        <p className='text-sm p-2'>https://job-portal-online.web.app/job/{_id.slice(5, 20)}</p>
+                        <p className='text-sm p-2'>https://enlistco.co.in/job/{_id.slice(5, 20)}</p>
                         <span className='sm:p-2 py-4 px-2 border hover:border-accent rounded-r-md hover'>{
                             copied ?
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
