@@ -47,7 +47,7 @@ const SeekerProfile = ({ user }) => {
         const country = e.target.country.value;
         const zip = e.target.zip.value;
 
-        await axios.patch(`https://enlistco.co.in/api/users/${_id}`, {
+        await axios.patch(`https://api.enlistco.co.in/users/${_id}`, {
             phone, address, state, country, zip
         })
             .then((res) => {
@@ -81,7 +81,7 @@ const SeekerProfile = ({ user }) => {
         };
         const education = { degree, institution, edugroup, eduStartDate, eduEndDate, eduStudying };
 
-        await axios.put(`https://enlistco.co.in/api/add-edu/${_id}`, education)
+        await axios.put(`https://api.enlistco.co.in/add-edu/${_id}`, education)
             .then(res => {
                 setLoading(false);
                 setAddEduData(!addEduData);
@@ -95,7 +95,7 @@ const SeekerProfile = ({ user }) => {
     // Delete an education
     const handleDeleteEdu = async edu => {
         setLoading(true);
-        await axios.patch(`https://enlistco.co.in/api/delete-edu/${_id}`, { edu })
+        await axios.patch(`https://api.enlistco.co.in/delete-edu/${_id}`, { edu })
             .then(res => {
                 setLoading(false);
                 setSuccessMsg('Education remove successfully.');
@@ -126,7 +126,7 @@ const SeekerProfile = ({ user }) => {
 
         const jobExperience = { exJobTitle, exCompany, exStartDate, exEndDate, exWorking, exResponsibilities };
 
-        await axios.put(`https://enlistco.co.in/api/add-jobexp/${_id}`, jobExperience)
+        await axios.put(`https://api.enlistco.co.in/add-jobexp/${_id}`, jobExperience)
             .then(res => {
                 setLoading(false);
                 setAddJobExp(!addJobExp);
@@ -140,7 +140,7 @@ const SeekerProfile = ({ user }) => {
     // Delete a Job experience
     const handleDeleteJobExp = async ex => {
         setLoading(true);
-        await axios.patch(`https://enlistco.co.in/api/delete-jobexp/${_id}`, { ex })
+        await axios.patch(`https://api.enlistco.co.in/delete-jobexp/${_id}`, { ex })
             .then(res => {
                 setLoading(false);
                 setSuccessMsg('A job experience remove successfully.');
@@ -170,7 +170,7 @@ const SeekerProfile = ({ user }) => {
         const resume = resumeURL.data.secure_url;
 
         // Send data to database
-        await axios.put(`https://enlistco.co.in/api/user-resume/${_id}`, { resume })
+        await axios.put(`https://api.enlistco.co.in/user-resume/${_id}`, { resume })
             .then((res) => {
                 if (res) {
                     setLoading(false);

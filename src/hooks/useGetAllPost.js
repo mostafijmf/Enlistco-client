@@ -7,7 +7,7 @@ const useGetAllPost = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
-        axios.get('https://enlistco.co.in/api/post')
+        axios.get('https://api.enlistco.co.in/post')
         .then(res => {
             setAllPost(res.data);
             setLoading(false)

@@ -14,7 +14,7 @@ const CandidatesProfile = () => {
     useEffect(() => {
         const email = location.state;
         if (email) {
-            axios.get(`https://enlistco.co.in/api/users/${email}`)
+            axios.get(`https://api.enlistco.co.in/users/${email}`)
                 .then(res => {
                     setCdData(res.data);
                     setLoading(false)

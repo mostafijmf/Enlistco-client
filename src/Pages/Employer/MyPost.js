@@ -27,7 +27,7 @@ const MyPost = ({ post }) => {
     
     const handleDelete = async id => {
         setLoading(true)
-        const url = `https://enlistco.co.in/api/post/${id}`;
+        const url = `https://api.enlistco.co.in/post/${id}`;
 
         await axios.delete(url)
             .then(res => {

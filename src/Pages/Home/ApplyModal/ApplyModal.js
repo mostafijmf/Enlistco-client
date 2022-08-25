@@ -83,7 +83,7 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
 
         const date = new Date();
         const applied = date.getDate() + '-' + date.toLocaleString('default', { month: 'long' }) + '-' + date.getFullYear();
-        await axios.post('https://enlistco.co.in/api/apply',
+        await axios.post('https://api.enlistco.co.in/apply',
             { resume, subject, coverLetter, seekerEmail, seekerPhone, seekerName, postID, receiveEmail, employerEmail, applied, jobTitle, company, bgCheck, certification, drivingLicense, drugTest, education, gpa, hybridWork, remoteWork, workExperience, urgentHiring, customQuestion })
             .then(res => {
                 localStorage.removeItem('screeningQuestions')

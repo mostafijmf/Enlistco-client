@@ -10,7 +10,7 @@ const useGetApply = () => {
     useEffect(()=>{
         const email = user?.email;
         if(email){
-            axios.get(`https://enlistco.co.in/api/apply/${email}`)
+            axios.get(`https://api.enlistco.co.in/apply/${email}`)
             .then(res => {
                 setApplied(res.data)
             })

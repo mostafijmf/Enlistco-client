@@ -11,7 +11,7 @@ const useAdmin = () => {
     useEffect(()=>{
         const email = user?.email;
         if(email){
-            const url = `https://enlistco.co.in/api/admin/${email}`;
+            const url = `https://api.enlistco.co.in/admin/${email}`;
             axios.get(url)
             .then(res => {
                 setAdmin(res.data);

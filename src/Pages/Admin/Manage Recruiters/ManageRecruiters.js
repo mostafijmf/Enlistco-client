@@ -15,7 +15,7 @@ const ManageRecruiters = () => {
 
     const handleDelete = async email => {
         setLoading(true);
-        const url = `https://enlistco.co.in/api/users/${email}`;
+        const url = `https://api.enlistco.co.in/users/${email}`;
         await axios.delete(url)
             .then(res => {
                 setDeleteUData(!deleteUData);

@@ -58,7 +58,7 @@ const UserEducation = () => {
 
         // Send data to database
         const email = user?.email;
-        const url = `https://enlistco.co.in/api/seeker/${email}`;
+        const url = `https://api.enlistco.co.in/seeker/${email}`;
         await fetch(url, {
             method: 'PUT',
             headers: {

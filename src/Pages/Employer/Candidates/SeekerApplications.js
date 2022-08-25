@@ -18,7 +18,7 @@ const SeekerApplications = () => {
 
     useEffect(() => {
         const email = user?.email;
-        axios.get(`https://enlistco.co.in/api/apply-emp/${email}`)
+        axios.get(`https://api.enlistco.co.in/apply-emp/${email}`)
             .then(res => {
                 setSeekerApplyList(res.data);
                 setLoading(false)

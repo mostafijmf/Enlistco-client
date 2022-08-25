@@ -10,7 +10,7 @@ const useGetPost = () => {
 
     useEffect(() => {
         const email = user?.email;
-        const url = `https://enlistco.co.in/api/post/${email}`;
+        const url = `https://api.enlistco.co.in/post/${email}`;
             axios.get(url,{
                 method: 'GET',
                 headers: {
