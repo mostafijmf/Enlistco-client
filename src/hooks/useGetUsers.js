@@ -11,7 +11,7 @@ const useGetUsers = () => {
     useEffect(()=>{
         const email = user?.email;
         if(email){
-            const url = `https://enlistco.co.in/api/users/${email}`;
+            const url = `https://api.enlistco.co.in/users/${email}`;
             axios.get(url,{
                 method: 'GET',
                 headers: {

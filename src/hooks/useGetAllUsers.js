@@ -5,7 +5,7 @@ const useGetAllUsers = () => {
     const [allUsers, setAllUsers] = useState([]);
 
     useEffect(()=>{
-        axios.get('https://enlistco.co.in/api/users')
+        axios.get('https://api.enlistco.co.in/users')
         .then(res => {
             setAllUsers(res.data)
         })

@@ -30,7 +30,7 @@ const Home = () => {
 
     // search bar
     useEffect(() => {
-        axios.get('https://enlistco.co.in/api/post')
+        axios.get('https://api.enlistco.co.in/post')
             .then(res => {
                 setLoading(false)
                 const data = res.data;

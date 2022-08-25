@@ -28,7 +28,7 @@ const AllPost = ({ posts }) => {
         const date = new Date();
         const publish = date.getDate() + '-' + date.toLocaleString('default', { month: 'long' }) + '-' + date.getFullYear();
 
-        const url = `https://enlistco.co.in/api/post/${id}`;
+        const url = `https://api.enlistco.co.in/post/${id}`;
         fetch(url, {
             method: 'PUT',
             headers: {
@@ -41,7 +41,7 @@ const AllPost = ({ posts }) => {
     };
 
     const handleDelete = id => {
-        const url = `https://enlistco.co.in/api/post/${id}`;
+        const url = `https://api.enlistco.co.in/post/${id}`;
         fetch(url, {
             method: 'DELETE'
         })

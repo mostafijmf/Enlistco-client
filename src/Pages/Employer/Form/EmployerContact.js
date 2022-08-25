@@ -41,7 +41,7 @@ const EmployerContact = () => {
         const employer = true;
         const email = user.email;
 
-        await fetch(`https://enlistco.co.in/api/users/${email}`, {
+        await fetch(`https://api.enlistco.co.in/users/${email}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'

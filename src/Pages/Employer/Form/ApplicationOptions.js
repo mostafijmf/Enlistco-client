@@ -160,7 +160,7 @@ const ApplicationOptions = () => {
         ] : '';
 
         if (receiveEmail.includes('@' && '.')) {
-            await axios.post('https://enlistco.co.in/api/post', {
+            await axios.post('https://api.enlistco.co.in/post', {
                 postOptions, employerContact, jobDescription, email, bgCheck, certification, drivingLicense, drugTest, education, gpa, hybridWork, remoteWork, workExperience, urgentHiring, customQuestion
             })
                 .then(res => {
