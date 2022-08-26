@@ -12,6 +12,12 @@ const ManageJobPost = () => {
         </div>
     };
 
+    if (allPost.length === 0) {
+        return <div className='h-screen top-0 w-full flex items-center justify-center'>
+            <h1 className='sm:text-3xl text-2xl text-gray-500'>No jobs posted yet.</h1>
+        </div>
+    }
+
     return (<>
         <PageTitle title='Manage Posts - Dashboard'></PageTitle>
         <div className='w-full flex justify-center'>
