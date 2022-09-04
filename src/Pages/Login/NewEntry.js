@@ -52,17 +52,15 @@ const NewEntry = () => {
                         <h3 className="text-2xl py-4 text-white">Do you want to post now?</h3>
                         <div className="flex justify-center gap-10 mt-5">
                             <button
-                                onClick={() => navigate('/')}
-                                className="btn btn-primary text-white min-h-0 h-10 px-10 tracking-wider">
-                                No
-                            </button>
-
-                            <button
                                 onClick={() => navigate('/employer-form/contact')}
-                                className="btn btn-outline text-white hover:bg-white hover:text-secondary min-h-0 h-10 px-10 tracking-wider">
+                                className="btn btn-primary text-white min-h-0 h-10 px-10 tracking-wider">
                                 Yes
                             </button>
-
+                            <button
+                                onClick={() => navigate('/')}
+                                className="btn btn-outline text-white hover:bg-white hover:text-secondary min-h-0 h-10 px-10 tracking-wider">
+                                No
+                            </button>
                         </div>
                     </div>
                 </div>
