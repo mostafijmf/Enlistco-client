@@ -58,6 +58,7 @@ const ApplicationOptions = () => {
 
     const employerContact = JSON.parse(localStorage.getItem('employerContact'));
     const jobDescription = JSON.parse(localStorage.getItem('jobDescription'));
+    const terms = JSON.parse(localStorage.getItem('terms'));
 
     if (!employerContact && !jobDescription) {
         return navigate('/employer-form/contact')
@@ -161,7 +162,7 @@ const ApplicationOptions = () => {
 
         if (receiveEmail.includes('@' && '.')) {
             await axios.post('https://api.enlistco.co.in/post', {
-                postOptions, employerContact, jobDescription, email, bgCheck, certification, drivingLicense, drugTest, education, gpa, hybridWork, remoteWork, workExperience, urgentHiring, customQuestion
+                postOptions, employerContact, jobDescription, terms, email, bgCheck, certification, drivingLicense, drugTest, education, gpa, hybridWork, remoteWork, workExperience, urgentHiring, customQuestion
             })
                 .then(res => {
                     setLoading(false);
@@ -745,6 +746,7 @@ const ApplicationOptions = () => {
                             onClick={() => {
                                 localStorage.removeItem('employerContact');
                                 localStorage.removeItem('jobDescription');
+                                localStorage.removeItem('terms');
                                 navigate('/')
                             }}
                             className="btn text-white capitalize"

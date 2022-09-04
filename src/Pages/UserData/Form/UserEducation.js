@@ -114,7 +114,12 @@ const UserEducation = () => {
                             }
                         </div>
                         <div className='md:mt-5 mt-3 flex items-center'>
-                            <input id='checkbox' ref={studyingRef} onChange={() => setStudying(!studying)} type="checkbox" className="checkbox bg-white" />
+                            <input
+                                id='checkbox'
+                                ref={studyingRef}
+                                onChange={() => setStudying(!studying)}
+                                type="checkbox" className="checkbox bg-white"
+                            />
                             <label className='text-base ml-3 cursor-pointer' htmlFor="checkbox">Currently studying</label>
                         </div>
                         <div className='mt-5'>

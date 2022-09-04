@@ -6,15 +6,17 @@ import PageTitle from '../../Shared/PageTitle';
 const JobDescription = () => {
     // Description
     const editorRef = useRef(null);
-    const navigate = useNavigate()
+    const termsRef = useRef();
+    const navigate = useNavigate();
+
     const handleJobDes = () => {
+        const terms = termsRef.current.value;
         if (editorRef.current) {
             localStorage.setItem('jobDescription', JSON.stringify(editorRef.current.getContent()));
+            localStorage.setItem('terms', JSON.stringify(terms))
             navigate('/employer-form/application-options')
         }
     };
-
-
 
     return (<>
         <PageTitle title='Description Form - Dashboard'></PageTitle>
@@ -37,6 +39,25 @@ const JobDescription = () => {
                     }}
 
                 />
+
+                <hr className='mt-8 mb-5' />
+                {/* =================Terms and Conditions================= */}
+                <div>
+                    <h1 className='font-medium sm:text-lg text-base text-left mb-2'>
+                        <label htmlFor='terms'>
+                            Add terms and conditions
+                            <span className='ml-2 font-normal'>(optional)</span>
+                        </label>
+                    </h1>
+                    <textarea
+                        id='terms'
+                        ref={termsRef}
+                        className='textarea border w-full p-2 border-gray-200 focus:outline-0 focus:shadow-md'
+                        placeholder='Ask something here'
+                        rows="3"
+                    />
+                </div>
+
                 <div className='flex sm:flex-row flex-col-reverse justify-between gap-4 md:mx-5 mt-10'>
                     <button
                         onClick={() => navigate('/employer-form/contact')}

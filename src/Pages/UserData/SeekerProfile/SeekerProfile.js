@@ -46,9 +46,10 @@ const SeekerProfile = ({ user }) => {
         const state = e.target.state.value;
         const country = e.target.country.value;
         const zip = e.target.zip.value;
+        const seekerAbout = e.target.about.value;
 
         await axios.patch(`https://api.enlistco.co.in/users/${_id}`, {
-            phone, address, state, country, zip
+            phone, address, state, country, zip, seekerAbout
         })
             .then((res) => {
                 if (res) {
@@ -244,6 +245,15 @@ const SeekerProfile = ({ user }) => {
                                         <label htmlFor="zip">Zip code :</label>
                                         <input required id='zip' type="text" placeholder="Update your zip code" className="input h-11 text-base sm:w-96 w-full sm:ml-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                                     </li>
+                                    <li className='mt-4 text-base font-medium'>
+                                        <label htmlFor='about' className='block font-medium sm:text-lg text-base'>About</label>
+                                        <textarea
+                                            rows="6"
+                                            id='about'
+                                            placeholder='Describe yourself'
+                                            className='text-base md:w-4/5 sm:w-11/12 w-full mt-1 p-2 border rounded-md border-gray-200 focus:outline-0 focus:shadow-md'
+                                        ></textarea>
+                                    </li>
                                     <li className='mt-5 text-lg'>
                                         <button type='submit' className='btn btn-outline btn-accent normal-case text-base tracking-wider px-16 min-h-0 h-10 sm:w-max w-full'>Save</button>
                                     </li>
@@ -269,11 +279,14 @@ const SeekerProfile = ({ user }) => {
                                 <li className='mt-2 text-base font-medium'>Zip code :
                                     <span className='font-normal ml-2'>{zip}</span>
                                 </li>
-                                <li className='mt-2'>
-                                    <h2 className='text-center font-medium sm:text-xl text-lg my-2'>About</h2>
-                                    <hr/>
-                                    <p className='p-3'>{seekerAbout}</p>
-                                </li>
+                                {
+                                    seekerAbout &&
+                                    <li className='mt-2'>
+                                        <h2 className='text-center font-medium sm:text-xl text-lg my-2'>About</h2>
+                                        <hr />
+                                        <p className='p-3'>{seekerAbout}</p>
+                                    </li>
+                                }
                             </ul>
                     }
                 </div>
@@ -499,7 +512,6 @@ const SeekerProfile = ({ user }) => {
                             <input
                                 type="submit"
                                 value="Upload"
-                                // className='px-8 py-2 bg-accent rounded-r-md text-lg text-white h-full w-max'
                                 className='btn btn-accent min-h-0 h-11 px-6 text-base hover:text-white normal-case rounded-l-none rounded-r-md'
                             />
                         </div>

@@ -2,11 +2,17 @@ import { XIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
 import BundledEditor from '../../../BundledEditor';
+import useGetUsers from '../../../hooks/useGetUsers';
 import PageTitle from '../../Shared/PageTitle';
 import Spinner from '../../Shared/Spinner';
 import AdditionalQuestions from './AdditionalQuestions';
 
 const ApplyModal = ({ setModal, jobPost, user }) => {
+    const [usersData] = useGetUsers();
+    const [openInput, setOpenInput] = useState(false);
+    const resumeRef = useRef('');
+    const [inputErr, setInputErr] = useState(false);
+    const [uploadLoading, setUploadLoading] = useState(false);
     const [loading, setLoading] = useState(false);
     const editorRef = useRef(null);
     const [progress, setProgress] = useState(0);
@@ -32,6 +38,36 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
         customQuestion
     } = jobPost;
 
+    // Apply job
+    const uploadResume = async () => {
+        const resumeFile = resumeRef.current.files[0];
+        const id = usersData[0]?._id;
+
+        if (resumeFile) {
+            setUploadLoading(true);
+            const pdf = new FormData();
+            pdf.append('file', resumeFile);
+            pdf.append('upload_preset', 'resume');
+
+            const resumeURL = await axios.post("https://api.cloudinary.com/v1_1/job-portal/upload", pdf);
+            const resume = resumeURL.data.secure_url;
+            const seeker = true;
+
+            await axios.put(`https://api.enlistco.co.in/user-resume/${id}`, { resume, seeker })
+                .then((res) => {
+                    setOpenInput(!openInput)
+                    setUploadLoading(false);
+                })
+                .catch(err => {
+                    setUploadLoading(false);
+                });
+        }
+        else {
+            setInputErr(true);
+        }
+    };
+
+    // Apply job
     const handleApply = async event => {
         event.preventDefault();
         setLoading(true);
@@ -121,67 +157,49 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
                     }
                 </div>
                 <div>
-                    {
-                        bgCheck || certification || drivingLicense || drugTest || education || gpa || hybridWork || remoteWork || workExperience || urgentHiring || customQuestion ?
-                            progress === 0 ?
-                                <AdditionalQuestions
-                                    questions={{ bgCheck, certification, drivingLicense, drugTest, education, gpa, hybridWork, remoteWork, workExperience, urgentHiring, customQuestion }}
-                                    setProgress={setProgress}
-                                ></AdditionalQuestions>
-                                :
-                                <form onSubmit={handleApply}>
-                                    <div>
-                                        <div className='sm:px-8 px-5 py-2'>
-                                            <h2 className='text-lg font-medium'>CV / Resume</h2>{
-                                                user?.resume ?
-                                                    <iframe title='Resume' className='mt-2' src={user?.resume}></iframe>
-                                                    : <div className='text-gray-500'>
-                                                        You don't have a resume.<button className='btn btn-link normal-case p-0 ml-2'>Upload your resume</button>
-                                                    </div>
-                                            }
-                                        </div>
-                                        <div className='sm:px-8 px-5 py-2'>
-                                            <h2 className='text-lg font-medium mb-1'>Add cover letter</h2>
-                                            <input
-                                                type="text"
-                                                placeholder="Subject"
-                                                name='subject'
-                                                className="input h-9 text-base w-full mb-2 border border-gray-200 focus:outline-0 focus:shadow-md"
-                                            />
-                                            <BundledEditor
-                                                onInit={(evt, editor) => editorRef.current = editor}
-                                                initialValue={
-                                                    'Write cover letter'
-                                                }
-                                                required
-                                                init={{
-                                                    height: 160,
-                                                    menubar: false,
-                                                    toolbar: false,
-                                                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; letter-spacing: 1px; line-height: 20px; margin-top:0}',
-                                                    statusbar: false,
-                                                }}
-
-                                            />
-                                            <button
-                                                type='submit'
-                                                disabled={loading}
-                                                className='btn btn-outline btn-primary hover:text-white md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>
-                                                {loading ? <Spinner /> : 'Submit'}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
+                    { bgCheck || certification || drivingLicense || drugTest || education || gpa || hybridWork || remoteWork || workExperience || urgentHiring || customQuestion ?
+                        progress === 0 ?
+                            <AdditionalQuestions
+                                questions={{ bgCheck, certification, drivingLicense, drugTest, education, gpa, hybridWork, remoteWork, workExperience, urgentHiring, customQuestion }}
+                                setProgress={setProgress}
+                            ></AdditionalQuestions>
                             :
                             <form onSubmit={handleApply}>
                                 <div>
                                     <div className='sm:px-8 px-5 py-2'>
                                         <h2 className='text-lg font-medium'>CV / Resume</h2>{
                                             user?.resume ?
-                                                <iframe title='Resume' className='mt-2' src={user?.resume}></iframe>
-                                                : <div className='text-gray-500'>
-                                                    You don't have a resume.<button className='btn btn-link normal-case p-0 ml-2'>Upload your resume</button>
-                                                </div>
+                                                <iframe
+                                                    title='Resume'
+                                                    className='mt-2'
+                                                    src={user?.resume}
+                                                ></iframe>
+                                                : <>
+                                                    <div className='text-gray-500'>
+                                                        You don't have a resume.
+                                                        <div
+                                                            onClick={() => {
+                                                                setOpenInput(!openInput);
+                                                                setInputErr(false)
+                                                            }}
+                                                            className='btn btn-link normal-case p-0 ml-2'>
+                                                            {openInput ? 'Cancel' : 'Upload your resume'}
+                                                        </div>
+                                                    </div> {openInput && <div className='flex items-center'>
+                                                        <input
+                                                            id='file'
+                                                            type="file"
+                                                            ref={resumeRef}
+                                                            className={`input rounded-r-none h-10 text-base w-full p-1 border ${inputErr ? 'border-red-600' : 'border-gray-200'} focus:outline-0 focus:shadow-md`} />
+                                                        <div
+                                                            onClick={uploadResume}
+                                                            className='btn btn-primary text-white rounded-l-none w-max min-h-0 h-10 normal-case text-base tracking-wide px-6'>{
+                                                                uploadLoading ? <Spinner></Spinner> : 'Upload'
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    }
+                                                </>
                                         }
                                     </div>
                                     <div className='sm:px-8 px-5 py-2'>
@@ -199,7 +217,7 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
                                             }
                                             required
                                             init={{
-                                                height: 200,
+                                                height: 160,
                                                 menubar: false,
                                                 toolbar: false,
                                                 content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; letter-spacing: 1px; line-height: 20px; margin-top:0}',
@@ -209,13 +227,84 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
                                         />
                                         <button
                                             type='submit'
-                                            disabled={loading}
-                                            className='btn btn-outline btn-primary hover:text-white md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>
+                                            disabled={openInput || loading}
+                                            className='btn btn-outline btn-primary hover:text-white md:w-max w-full mt-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>
                                             {loading ? <Spinner /> : 'Submit'}
                                         </button>
                                     </div>
                                 </div>
                             </form>
+                        :
+                        <form onSubmit={handleApply}>
+                            <div>
+                                <div className='sm:px-8 px-5 py-2'>
+                                    <h2 className='text-lg font-medium'>CV / Resume</h2>{
+                                        user?.resume ?
+                                            <iframe
+                                                title='Resume'
+                                                className='mt-2'
+                                                src={user?.resume}>
+                                            </iframe>
+                                            : <>
+                                                <div className='text-gray-500'>
+                                                    You don't have a resume.
+                                                    <div
+                                                        onClick={() => {
+                                                            setOpenInput(!openInput);
+                                                            setInputErr(false)
+                                                        }}
+                                                        className='btn btn-link normal-case p-0 ml-2'>
+                                                        {openInput ? 'Cancel' : 'Upload your resume'}
+                                                    </div>
+                                                </div> {openInput && <div className='flex items-center'>
+                                                    <input
+                                                        id='file'
+                                                        type="file"
+                                                        ref={resumeRef}
+                                                        className={`input rounded-r-none h-10 text-base w-full p-1 border ${inputErr ? 'border-red-600' : 'border-gray-200'} focus:outline-0 focus:shadow-md`} />
+                                                    <div
+                                                        onClick={uploadResume}
+                                                        className='btn btn-primary text-white rounded-l-none w-max min-h-0 h-10 normal-case text-base tracking-wide px-6'>{
+                                                            uploadLoading ? <Spinner></Spinner> : 'Upload'
+                                                        }
+                                                    </div>
+                                                </div>
+                                                }
+                                            </>
+                                    }
+                                </div>
+                                <div className='sm:px-8 px-5 py-2'>
+                                    <h2 className='text-lg font-medium mb-1'>Add cover letter</h2>
+                                    <input
+                                        type="text"
+                                        placeholder="Subject"
+                                        name='subject'
+                                        className="input h-9 text-base w-full mb-2 border border-gray-200 focus:outline-0 focus:shadow-md"
+                                    />
+                                    <BundledEditor
+                                        onInit={(evt, editor) => editorRef.current = editor}
+                                        initialValue={
+                                            'Write cover letter'
+                                        }
+                                        required
+                                        init={{
+                                            height: 160,
+                                            menubar: false,
+                                            toolbar: false,
+                                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; letter-spacing: 1px; line-height: 20px; margin-top:0}',
+                                            statusbar: false,
+                                        }}
+
+                                    />
+                                    <button
+                                        type='submit'
+                                        disabled={openInput || loading}
+                                        className='btn btn-outline btn-primary hover:text-white md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>
+                                        {loading ? <Spinner /> : 'Submit'}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     }
                 </div>
             </div>
