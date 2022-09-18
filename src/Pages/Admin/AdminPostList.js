@@ -29,7 +29,7 @@ const AdminPostList = ({ post }) => {
     };
 
     return (
-        <div className={`${open ? 'h-auto' : 'h-32'} overflow-hidden sm:py-6 sm:px-8 p-3 w-full border mb-6 shadow-lg relative`}>
+        <div className={`${open ? 'h-auto' : 'h-32'} bg-white overflow-hidden sm:py-6 sm:px-8 p-3 w-full border mb-6 shadow-md relative`}>
             <div className="">
                 <h2 className="text-center text-xl font-medium">{jobTitle}</h2>
                 <h5 className='text-center font-medium text-base'>{company}</h5>
@@ -55,15 +55,21 @@ const AdminPostList = ({ post }) => {
             </div>
             {
                 deletePost &&
-                <div className="fixed w-screen h-screen top-0 left-0 z-20 flex items-center justify-center">
+                <div className="fixed w-screen h-screen bg-black/60 top-0 left-0 z-30 flex items-center justify-center">
                     <div className="modal-box text-center bg-secondary">
                         <h3 className="font-medium text-2xl text-white">Are you sure!</h3>
                         <p className="text-lg py-4 text-gray-300">Do you want to delete it?</p>
-                        <div className="flex justify-center gap-5 mt-5">
-
-                            <button onClick={() => setDeletePost(!deletePost)} className="btn btn-primary text-white min-h-8 h-0 px-6 tracking-wider">No</button>
-
-                            <button onClick={() => handleDelete(_id)} className="btn btn-outline text-white min-h-8 h-0 px-6 tracking-wider">Yes</button>
+                        <div className="flex justify-center gap-10 mt-5">
+                            <button
+                                onClick={() => setDeletePost(!deletePost)}
+                                className='btn btn-primary text-white min-h-0 h-10 px-10'
+                            >No
+                            </button>
+                            <button
+                                onClick={() => handleDelete(_id)}
+                                className="btn btn-outline text-white min-h-0 h-10 px-10"
+                            >Yes
+                            </button>
 
                         </div>
                     </div>

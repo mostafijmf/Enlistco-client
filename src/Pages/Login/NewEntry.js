@@ -53,12 +53,12 @@ const NewEntry = () => {
                         <div className="flex justify-center gap-10 mt-5">
                             <button
                                 onClick={() => navigate('/employer-form/contact')}
-                                className="btn btn-primary text-white min-h-0 h-10 px-10 tracking-wider">
+                                className="btn btn-primary text-white min-h-0 h-10 px-10 ">
                                 Yes
                             </button>
                             <button
                                 onClick={() => navigate('/')}
-                                className="btn btn-outline text-white hover:bg-white hover:text-secondary min-h-0 h-10 px-10 tracking-wider">
+                                className="btn btn-outline text-white hover:bg-white hover:text-secondary min-h-0 h-10 px-10 ">
                                 No
                             </button>
                         </div>

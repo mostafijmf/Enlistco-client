@@ -34,7 +34,7 @@ const SocialLogin = () => {
     return (
         <div className='text-center'>
             <div className="divider my-5">OR</div>
-            <button onClick={() => signInWithGoogle()} className='btn btn-outline text-blue-600 w-full capitalize sm:text-lg text-base'>
+            <button onClick={() => signInWithGoogle()} className='btn btn-outline min-h-0 h-11 text-blue-600 w-full capitalize sm:text-lg text-base'>
                 {
                     isLoading || gLoading ? <Spinner></Spinner> : <>
                         <img className='w-8 h-8 mr-2' src={google} alt="" />Continue With Google

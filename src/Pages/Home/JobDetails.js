@@ -57,7 +57,7 @@ const JobDetails = ({ open }) => {
     };
 
     return (<>
-        <div className="rounded-lg border shadow-md sticky top-6 h-screen overflow-y-auto scrollBar">
+        <div className="bg-white rounded-lg border shadow-md sticky top-14 h-screen overflow-y-auto scrollBar">
             <div className="card-body sm:p-6 p-3">
                 <h1 className='text-2xl font-bold text-center'>Job Details</h1>
                 <div className='flex justify-between'>
@@ -83,7 +83,7 @@ const JobDetails = ({ open }) => {
                         app[0] === undefined ?
                             <button
                                 onClick={handleApply}
-                                className='btn btn-primary min-h-0 sm:h-11 h-10 normal-case text-base text-white px-6 tracking-wider'>
+                                className='btn btn-primary min-h-0 sm:h-11 h-10 normal-case text-base text-white px-6 '>
                                 Apply
                             </button> :
                             <h4 className='text-success text-base flex items-center'>
@@ -124,7 +124,7 @@ const JobDetails = ({ open }) => {
 
         {/* ==============Terms and conditions Modal============== */}
         {
-            openTerms && <div className='w-full h-screen flex items-center justify-center fixed top-0 left-0 bg-black/50 z-10'>
+            openTerms && <div className='fixed top-0 left-0 z-30 w-full h-screen flex items-center justify-center bg-black/50'>
                 <div className='pb-2 xl:w-2/5 md:w-1/2 sm:w-4/5 w-11/12 h-max bg-white rounded-md shadow-2xl relative'>
                     <div>
                         <button

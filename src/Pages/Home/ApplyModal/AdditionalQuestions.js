@@ -645,7 +645,7 @@ const AdditionalQuestions = ({ questions, setProgress }) => {
                 <div className='text-right'>
                     <button
                         type='submit'
-                        className='btn btn-primary text-white md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>
+                        className='btn btn-primary text-white md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg  px-10'>
                         Next
                     </button>
                 </div>

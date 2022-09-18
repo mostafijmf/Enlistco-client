@@ -15,7 +15,7 @@ const EmailVerify = () => {
         if (sentMsg) {
             setTimeout(() => {
                 setSentMsg('')
-                setAgainMsg("Didn't recieve email, Send again!");
+                setAgainMsg("Didn't receive email, Send again!");
                 setReload("After verified, reload this page");
             }, 5000);
         }
@@ -23,7 +23,7 @@ const EmailVerify = () => {
 
     const handleSendEmail = async () => {
         await sendEmailVerification();
-        setSentMsg('Email sent succesfully, check inbox or spam folder');
+        setSentMsg('Email sent successfully, check inbox or spam folder');
         setTimeout(() => {
             setReload("After verified, reload this page");
         }, 6000);

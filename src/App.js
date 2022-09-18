@@ -3,7 +3,7 @@ import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
 import SignUp from './Pages/Login/SignUp';
 import RequireAuth from './Pages/Login/RequireAuth';
-import UserProfile from './Pages/UserData/SeekerProfile/UserProfile';
+import UserProfile from './Pages/Dashboard/UserProfile';
 import HelpCenter from './Pages/Shared/HelpCenter';
 import NotFound from './Pages/Shared/NotFound';
 import Dashboard from './Pages/Dashboard/Dashboard';
@@ -33,7 +33,7 @@ import ViewApplicants from "./Pages/Admin/Manage Job-post/ViewApplicants";
 
 function App() {
   return (
-    <div>
+    <div className="bg-slate-100">
       <Routes>
         <Route path='/' element={<Home></Home>}>
           <Route path='/job/:id' element={<JobDetails></JobDetails>}></Route>
@@ -126,7 +126,7 @@ function App() {
               <SendOfferLetter></SendOfferLetter>
             </RequireAuth>
           }></Route>
-          <Route path='/dashboard/seeker-profile' element={
+          <Route path='/dashboard/candidate-profile' element={
             <RequireAuth>
               <CandidatesProfile></CandidatesProfile>
             </RequireAuth>

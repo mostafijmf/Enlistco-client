@@ -40,12 +40,12 @@ const ViewApplicants = () => {
                 <table className="table w-full">
                     <thead>
                         <tr>
-                            <th className='bg-slate-100 py-3 rounded-l-none normal-case text-base font-medium'>({appliedList.length})</th>
-                            <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Name</th>
-                            <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Seeker email</th>
-                            <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Phone number</th>
-                            <th className='bg-slate-100 py-3 normal-case text-base font-medium'>Job title</th>
-                            <th className='bg-slate-100 py-3 rounded-r-none normal-case text-base font-medium'>Applied</th>
+                            <th className='py-3 rounded-l-none normal-case text-base font-medium'>({appliedList.length})</th>
+                            <th className='py-3 normal-case text-base font-medium'>Name</th>
+                            <th className='py-3 normal-case text-base font-medium'>Seeker email</th>
+                            <th className='py-3 normal-case text-base font-medium'>Phone number</th>
+                            <th className='py-3 normal-case text-base font-medium'>Job title</th>
+                            <th className='py-3 rounded-r-none normal-case text-base font-medium'>Applied</th>
                         </tr>
                     </thead>
                     {

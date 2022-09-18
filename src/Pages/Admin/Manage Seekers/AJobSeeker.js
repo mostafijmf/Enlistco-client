@@ -24,12 +24,12 @@ const AJobSeeker = ({ user, index, setDeleteUData, setUserData }) => {
                                 onClick={() => navigate('/dashboard/manage-seekers/details', {
                                     state: user
                                 })}
-                                className='btn btn-link mr-6 normal-case text-base min-h-0 h-9 tracking-wider'>
+                                className='btn btn-link mr-6 normal-case text-base min-h-0 h-9 '>
                                 View
                             </button>
                             <button
                                 onClick={() => handleDelete(user)}
-                                className='btn btn-outline normal-case text-base min-h-0 h-9 tracking-wider'>
+                                className='btn btn-outline normal-case text-base min-h-0 h-9 '>
                                 Delete
                             </button>
                         </>

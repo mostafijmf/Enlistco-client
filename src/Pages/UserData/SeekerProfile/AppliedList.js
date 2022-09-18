@@ -3,7 +3,13 @@ import React from 'react';
 import { useState } from 'react';
 
 const AppliedList = ({ appliedJob, allPost }) => {
-    const { postID, applied, receiveEmail, resume, seekerEmail, seekerName, subject, coverLetter } = appliedJob;
+    const {
+        postID,
+        applied,
+        resume,
+        subject,
+        coverLetter
+    } = appliedJob;
     const allJobPost = allPost.filter(post => post._id === postID);
     const [openModal, setOpenModal] = useState(false);
     const [openPost, setOpenPost] = useState();
@@ -14,16 +20,16 @@ const AppliedList = ({ appliedJob, allPost }) => {
         {
             allJobPost.map(aj => <div key={aj._id}>{
                 openPost ?
-                    <div className="rounded-lg border shadow-md mb-10">
+                    <div className="bg-white rounded-lg border shadow-md mb-8 sm:mx-0 mx-2">
                         <div className="card-body sm:p-8 p-5">
                             <h1 className='sm:text-2xl text-xl font-bold text-center'>Job Details</h1>
                             <div className='flex justify-between items-center'>
                                 <span className='text-accent text-sm tracking-wide'>Published: {aj.publish}</span>
                                 <button
                                     onClick={() => setOpenPost('')}
-                                    className='btn btn-link sm:text-lg text-base min-h-0 h-8 p-0 tracking-wider normal-case'>
+                                    className='btn btn-link sm:text-lg text-base min-h-0 h-8 p-0 normal-case'>
                                     Back
-                                    <ArrowRightIcon className='sm:w-5 sm:h-5 w-4 h-4 sm:ml-2 ml-1'></ArrowRightIcon>
+                                    <ArrowRightIcon className='w-4 h-4 sm:ml-2 ml-1'></ArrowRightIcon>
                                 </button>
                             </div>
                             <h2 className="sm:text-2xl text-xl font-medium">{aj.jobTitle}</h2>
@@ -46,42 +52,54 @@ const AppliedList = ({ appliedJob, allPost }) => {
                         </div>
                     </div>
                     : <>
-                        <div className='w-full border-t-2 mb-3 relative'>
-                            <div>
-                                <h1 className='text-xl text-left font-medium'>{aj.jobTitle}</h1>
-                                <p className='sm:text-lg text-base'>{aj.company}</p>
-                                <div className='flex items-center'>
-                                    <p className='sm:text-base text-sm mr-5'>{aj.jobLocation}</p>
-                                    <span className='sm:text-base text-sm font-medium bg-slate-200 px-2 py-1 rounded w-max'>{aj.workplace}</span>
-                                </div>
-                                <h5 className='sm:text-base text-sm text-accent'><span className='mr-2'>Applied</span>{applied}</h5>
-                            </div>
-                            <div className='absolute sm:top-12 -bottom-1 right-0 flex items-center justify-center gap-5'>
-                                <button  onClick={() => handlePostView(aj)} className="btn btn-outline btn-accent normal-case text-base min-h-0 sm:h-8 h-9 px-6">View</button>
-                                <button onClick={() => setOpenModal(!openModal)} className="btn btn-outline normal-case text-base min-h-0 sm:h-8 h-9 px-6">See cover letter</button>
-                            </div>
+                        <div className='bg-white w-full shadow-md p-5 border mb-3 sm:mx-0 mx-2 relative'>
+                            <ul className='grid sm:grid-cols-2 sm:grid-rows-1 grid-rows-2 items-center'>
+                                <li>
+                                    <h1 className='text-xl text-left font-medium'>{aj.jobTitle}</h1>
+                                    <p className='sm:text-lg text-base'>{aj.company}</p>
+                                </li>
+                                <li className='flex justify-between items-center'>
+                                    <div>
+                                        <h5 className='text-base font-medium text-gray-500'>Applied</h5>
+                                        <h4>{applied}</h4>
+                                    </div>
+                                    <div className='flex items-center justify-center gap-5'>
+                                        <button
+                                            onClick={() => handlePostView(aj)}
+                                            className="btn btn-link normal-case text-base min-h-0 h-max px-0"
+                                        >View
+                                        </button>
+                                        <button
+                                            onClick={() => setOpenModal(!openModal)}
+                                            className="btn btn-link text-accent normal-case text-base min-h-0 h-max px-0"
+                                        >Cover letter
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                         {
-                            openModal && <div className='w-full pt-10 pb-40 flex items-center justify-center absolute z-10 top-0 left-0 glass'>
-                                <div className='lg:w-9/12 md:w-4/5 w-11/12 h-max bg-white rounded-md shadow-2xl relative z-50'>
+                            openModal && 
+                            <div className='w-full h-full overflow-y-auto scrollBar-sm bg-black/60 fixed z-30 top-0 left-0 flex justify-center'>
+                                <div className='lg:w-1/2 md:w-4/6 sm:w-11/12 w-full mx-2 h-max md:mt-5 my-10 bg-white rounded-md shadow-md relative'>
                                     <button
                                         onClick={() => setOpenModal(!openModal)}
-                                        className='absolute top-5 sm:right-5 right-3 w-10 h-10 hover:bg-gray-200 hover:rounded-full duration-300 p-1'>
+                                        className='absolute top-5 sm:right-5 right-3 w-9 h-9 hover:bg-gray-100 hover:rounded-full duration-300 p-1'>
                                         <XIcon></XIcon>
                                     </button>
-                                    <div className='pt-5 pb-3 border-b-2 sm:px-8 px-5'>
+                                    <div className='pt-5 pb-3 border-b sm:px-8 px-5'>
                                         <h1 className='sm:text-2xl text-xl font-medium'>Applied to {aj.jobTitle}</h1>
                                     </div>
                                     <div className='py-3 sm:px-8 px-5'>
                                         <h2 className='sm:text-lg text-base font-medium'>CV / Resume</h2>
                                         <iframe title='Resume' className='mt-2' src={resume}></iframe>
                                     </div>
-                                    <div className='pb-8 sm:px-8 px-5 border-t-2'>
+                                    <div className='pb-8 sm:px-8 px-5 border-t'>
                                         <h2 className='sm:text-lg base mt-2 font-medium'>Cover letter</h2>
                                         <h2 className='text-base mb-1 font-medium'>Subject :
                                             <span className='font-normal ml-2'>{subject}</span>
                                         </h2>
-                                        <div className='ml-3 sm:h-80 sm:overflow-y-auto scrollBar sm:text-base text-sm' dangerouslySetInnerHTML={{ __html: coverLetter }}></div>
+                                        <div className='ml-3 h-max sm:text-base text-sm' dangerouslySetInnerHTML={{ __html: coverLetter }}></div>
                                     </div>
                                 </div>
                             </div>

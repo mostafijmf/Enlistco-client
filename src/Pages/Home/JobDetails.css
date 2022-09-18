@@ -7,6 +7,15 @@
     background:  #ccc;
     border-radius: 0.5rem;
 }
+.scrollBar-sm::-webkit-scrollbar {
+    width: 0.5rem;
+    background: rgba(238, 238, 238, 0.2);
+}
+
+.scrollBar-sm::-webkit-scrollbar-thumb {
+    background:  #cccccc;
+    border-radius: 0.5rem;
+}
 
 .scrollBar-none::-webkit-scrollbar {
     width: 0;

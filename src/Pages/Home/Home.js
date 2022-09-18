@@ -14,7 +14,7 @@ const Home = () => {
     const [allPost, setAllPost] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchingPost, setSearchingPost] = useState([]);
-    
+
     // search title input state
     const [check, setCheck] = useState(false);
     const [titleValue, setTitleValue] = useState('');
@@ -129,13 +129,15 @@ const Home = () => {
     return (<>
         <PageTitle title='Home'></PageTitle>
         <Header></Header>
-        <main onClick={() => {
-            setFocusTitle(false);
-            setFocusAddress(false)
-        }}>
+        <main
+            onClick={() => {
+                setFocusTitle(false);
+                setFocusAddress(false)
+            }}
+        >
 
             {/* ----------------search box---------------- */}
-            <section className='bg-slate-100'>
+            <section className='bg-slate-100 shadow'>
                 <form onSubmit={handleSearch}
                     className='flex md:justify-between justify-center items-center flex-col md:flex-row gap-5 h-96 lg:w-3/5 md:w-4/5 w-11/12 mx-auto' >
                     <div className="form-control w-full relative">
@@ -213,7 +215,7 @@ const Home = () => {
                     </div>
                     <button
                         type='sumbit'
-                        className="btn btn-primary min-h-0 h-11 px-8 text-white tracking-wider mt-10 md:mt-0">
+                        className="btn btn-primary min-h-0 h-11 px-8 text-white  mt-10 md:mt-0">
                         Search
                     </button>
                 </form>
@@ -236,7 +238,7 @@ const Home = () => {
                         <h1 className='text-center md:text-5xl sm:text-4xl text-3xl my-10 relative'>All Jobs
                             <span className='sm:text-base text-sm bg-accent text-white md:px-2 px-1 md:py-1 absolute top-3 ml-3 rounded-md'>{aPost.length}</span>
                         </h1>
-                        <div className='md:w-4/5 sm:w-10/12 w-11/12 mx-auto flex justify-between gap-5 mb-10'>
+                        <div className='md:w-4/5 sm:w-10/12 w-11/12 mx-auto flex justify-between gap-5 pb-10'>
                             <div className={`lg:block w-full ${pathname !== '/' ? 'hidden' : 'block'}`}>
                                 {
                                     aPost?.map(post => <PostList key={post._id} post={post}></PostList>)

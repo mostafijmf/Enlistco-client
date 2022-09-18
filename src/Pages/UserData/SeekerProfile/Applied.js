@@ -13,7 +13,7 @@ const Applied = () => {
     return (<>
         <PageTitle title='Applied - Dashboard'></PageTitle>
         <div className='w-full flex justify-center relative'>
-            <div className='sm:w-4/5 w-11/12 mx-auto'>
+            <div className='md:w-4/5 sm:w-11/12 w-full mx-auto'>
                 <h1 className='text-2xl font-medium text-accent sm:text-left text-center mt-5 mb-3'>My applied jobs</h1>
                 {
                     applied.length === 0 ?

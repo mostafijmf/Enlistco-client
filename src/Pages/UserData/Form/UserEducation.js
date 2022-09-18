@@ -88,28 +88,28 @@ const UserEducation = () => {
                                 ref={degreeRef}
                                 required type="text"
                                 placeholder="Ex: Bachelor's"
-                                className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md"
+                                className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md"
                             />
                         </div>
                         <div className='mt-5'>
                             <label htmlFor='institution' className='font-medium sm:text-lg text-base'>Institution<span className='text-orange-600 ml-1'>*</span></label>
-                            <input id='institution' ref={institutionRef} required type="text" placeholder="Ex: Oxford University" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                            <input id='institution' ref={institutionRef} required type="text" placeholder="Ex: Oxford University" className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                         <div className='mt-5'>
                             <label htmlFor='group' className='font-medium sm:text-lg text-base'>Subject or Group<span className='text-orange-600 ml-1'>*</span>
                             </label>
-                            <input id='group' ref={groupRef} required type="text" placeholder="Ex: Business" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                            <input id='group' ref={groupRef} required type="text" placeholder="Ex: Business" className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                         <div className='flex sm:flex-row flex-col justify-between sm:gap-4'>
                             <div className='mt-5'>
                                 <label htmlFor='startDate' className='font-medium sm:text-lg text-base'>Start date<span className='text-orange-600 ml-1'>*</span></label>
-                                <input id='startDate' ref={startDateRef} required type="date" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                <input id='startDate' ref={startDateRef} required type="date" className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                             </div>
                             {
                                 studying ? '' :
                                     <div className='mt-5'>
                                         <label htmlFor='endDate' className='font-medium sm:text-lg text-base'>End date</label>
-                                        <input name='endDate' id='endDate' type='date' className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                        <input name='endDate' id='endDate' type='date' className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                                     </div>
                             }
                         </div>
@@ -118,7 +118,7 @@ const UserEducation = () => {
                                 id='checkbox'
                                 ref={studyingRef}
                                 onChange={() => setStudying(!studying)}
-                                type="checkbox" className="checkbox bg-white"
+                                type="checkbox" className="checkbox bg-slate-100"
                             />
                             <label className='text-base ml-3 cursor-pointer' htmlFor="checkbox">Currently studying</label>
                         </div>
@@ -129,7 +129,7 @@ const UserEducation = () => {
                                 ref={resumeRef}
                                 type="file"
                                 required
-                                className="input h-10 text-base w-full mt-2 p-1 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                className="input h-10 text-base bg-slate-100 w-full mt-2 p-1 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                         <div className='mt-5'>
                             <label htmlFor='about' className='font-medium sm:text-lg text-base'>About</label>
@@ -137,7 +137,7 @@ const UserEducation = () => {
                                 rows="6" cols=""
                                 id='about'
                                 placeholder='Describe yourself'
-                                className='text-base w-full mt-2 p-2 border rounded-md border-gray-200 focus:outline-0 focus:shadow-md'
+                                className='text-base bg-slate-100 w-full mt-2 p-2 border rounded-md border-gray-200 focus:outline-0 focus:shadow-md'
                             ></textarea>
                         </div>
                     </div>

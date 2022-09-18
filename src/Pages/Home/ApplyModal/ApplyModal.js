@@ -132,7 +132,7 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
 
     return (<>
         <PageTitle title={`Apply to ${company}`}></PageTitle>
-        <div className='w-full h-screen flex items-center justify-center fixed top-0 left-0 bg-black/50 z-10'>
+        <div className='fixed top-0 left-0 w-full h-screen flex items-center justify-center bg-black/50 z-30'>
             <div className='pb-2 xl:w-1/2 md:w-3/5 sm:w-4/5 w-full h-max bg-white rounded-md shadow-2xl relative'>
                 <div>
                     <button
@@ -228,7 +228,7 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
                                         <button
                                             type='submit'
                                             disabled={openInput || loading}
-                                            className='btn btn-outline btn-primary hover:text-white md:w-max w-full mt-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>
+                                            className='btn btn-outline btn-primary hover:text-white md:w-max w-full mt-5 min-h-0 h-10 normal-case text-lg  px-10'>
                                             {loading ? <Spinner /> : 'Submit'}
                                         </button>
                                     </div>
@@ -299,7 +299,7 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
                                     <button
                                         type='submit'
                                         disabled={openInput || loading}
-                                        className='btn btn-outline btn-primary hover:text-white md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>
+                                        className='btn btn-outline btn-primary hover:text-white md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg  px-10'>
                                         {loading ? <Spinner /> : 'Submit'}
                                     </button>
                                 </div>

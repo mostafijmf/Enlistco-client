@@ -65,18 +65,36 @@ const Login = () => {
                 <h1 className='text-center text-4xl font-semibold mb-5'>Login</h1>
                 <form onSubmit={handleSignIn}>
                     <div>
-                        <label htmlFor='email' className='font-medium text-lg'>Email Address <span className='text-orange-600'>*</span></label>
-                        <input ref={emailRef} required id='email' type="email" placeholder="Enter your email" className="input text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                        <label htmlFor='email' className='font-medium text-lg'>
+                            Email Address <span className='text-orange-600'>*</span>
+                        </label>
+                        <input
+                            ref={emailRef}
+                            required
+                            id='email'
+                            type="email"
+                            placeholder="Enter your email"
+                            className="input text-base bg-slate-100 min-h-0 h-11 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md"
+                        />
                     </div>
                     <div className='mt-5'>
-                        <label htmlFor='password' className='font-medium text-lg'>Password <span className='text-orange-600'>*</span></label>
-                        <input ref={passwordRef} required id='password' type="password" placeholder="Password" className="input text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                        <label htmlFor='password' className='font-medium text-lg'>
+                            Password <span className='text-orange-600'>*</span>
+                        </label>
+                        <input
+                            ref={passwordRef}
+                            required
+                            id='password'
+                            type="password"
+                            placeholder="Password"
+                            className="input text-base bg-slate-100 min-h-0 h-11 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md"
+                        />
                     </div>
                     {
                         error && <p className='text-sm text-red-600 mt-3'>Invalid email or password</p>
                     }
                     <div className='mt-6'>
-                        <button className='btn btn-primary capitalize text-lg text-white w-full' type="submit">
+                        <button className='btn btn-primary min-h-0 h-11 capitalize text-lg text-white w-full' type="submit">
                             {
                                 loading ? <Spinner></Spinner> : 'Login'
                             }

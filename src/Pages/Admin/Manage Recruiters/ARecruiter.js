@@ -30,12 +30,12 @@ const ARecruiter = ({ emp, index, setDeleteUData, setUserData }) => {
                                 onClick={() => navigate('/dashboard/manage-recruiters/details', {
                                     state: {emp, company}
                                 })}
-                                className='btn btn-link mr-6 normal-case text-base min-h-0 h-9 tracking-wider'>
+                                className='btn btn-link mr-6 normal-case text-base min-h-0 h-9'>
                                 View
                             </button>
                             <button
                                 onClick={() => handleDelete(emp)}
-                                className='btn btn-outline normal-case text-base min-h-0 h-9 tracking-wider'>
+                                className='btn btn-outline normal-case text-base min-h-0 h-9'>
                                 Delete
                             </button>
                         </>
