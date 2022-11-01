@@ -20,7 +20,7 @@ const ApplicantsList = ({ items, index }) => {
                 <td className='py-3 text-sm'>
                     <button
                         className='btn btn-link normal-case font-normal p-0 min-h-0 h-auto'
-                        onClick={() => navigate('/dashboard/seeker-profile', { state: seekerEmail })}
+                        onClick={() => navigate('/dashboard/candidate-profile', { state: seekerEmail })}
                     >
                         {seekerName}
                     </button>

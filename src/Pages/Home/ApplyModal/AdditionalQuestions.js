@@ -400,10 +400,7 @@ const AdditionalQuestions = ({ questions, setProgress }) => {
     };
 
     return (
-        <div
-            style={{ height: '30rem' }}
-            className='scrollBar overflow-y-auto'
-        >
+        <div>
             <h1 className='text-xl sm:px-8 px-5'>Additional Questions</h1>
             <form onSubmit={handleNext} className='w-full sm:px-8 px-5 my-5'>
                 {
@@ -645,7 +642,7 @@ const AdditionalQuestions = ({ questions, setProgress }) => {
                 <div className='text-right'>
                     <button
                         type='submit'
-                        className='btn btn-primary text-white md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>
+                        className='btn btn-primary text-white md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg  px-10'>
                         Next
                     </button>
                 </div>

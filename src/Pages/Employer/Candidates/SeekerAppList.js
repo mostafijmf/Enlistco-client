@@ -14,7 +14,6 @@ const SeekerAppList = ({ items, index, setOpenModal }) => {
         coverLetter,
         subject,
         resume,
-        
         // Screening question
         bgCheck,
         certification,
@@ -54,7 +53,7 @@ const SeekerAppList = ({ items, index, setOpenModal }) => {
                 <td className='py-0 text-sm'>
                     <button
                         className='btn btn-link normal-case font-normal p-0 min-h-0 h-auto'
-                        onClick={() => navigate('/dashboard/seeker-profile', { state: seekerEmail })}
+                        onClick={() => navigate('/dashboard/candidate-profile', { state: seekerEmail })}
                     >
                         {seekerName}
                     </button>

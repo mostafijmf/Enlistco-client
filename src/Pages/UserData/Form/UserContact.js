@@ -1,33 +1,27 @@
 import React, { useRef, useState } from 'react';
-import { useEffect } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import auth from '../../../firebase.init';
 import PageTitle from '../../Shared/PageTitle';
 import Spinner from '../../Shared/Spinner';
 import CountryList from '../../Shared/CountryList';
+import useGetUsers from '../../../hooks/useGetUsers';
+import axios from 'axios';
+import { ExclamationIcon } from '@heroicons/react/solid';
 
 const UserContact = () => {
-    const [user] = useAuthState(auth);
+    const [usersData] = useGetUsers();
 
-    const emailRef = useRef('');
-    const fNameRef = useRef('');
-    const lNameRef = useRef('');
-    const phoneRef = useRef('');
-    const countryRef = useRef('');
-    const addressRef = useRef('');
-    const stateRef = useRef('');
-    const zipRef = useRef('');
+    const emailRef = useRef();
+    const fNameRef = useRef();
+    const lNameRef = useRef();
+    const phoneRef = useRef();
+    const countryRef = useRef();
+    const addressRef = useRef();
+    const stateRef = useRef();
+    const zipRef = useRef();
 
     const navigate = useNavigate();
-    const [token, setToken] = useState('');
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        if (token) {
-            navigate('/form/job-experience');
-        }
-    }, [token, navigate]);
+    const [error, setError] = useState('');
 
     const handleContact = async event => {
         event.preventDefault();
@@ -43,22 +37,32 @@ const UserContact = () => {
         localStorage.setItem('userContact', JSON.stringify({ firstName, lastName, phone, country, address, state, zip }));
 
         const seeker = true;
-        const email = user?.email;
+        const email = usersData?.email;
 
-        await fetch(`https://api.enlistco.co.in/users/${email}`, {
-            method: 'PUT',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({ email, seeker })
-        })
-            .then(res => res.json())
-            .then(data => {
-                const accessToken = data.token;
-                localStorage.setItem('accessToken', accessToken);
-                setToken(accessToken);
+        await axios.put('https://api.enlistco.co.in/seeker_data/update',
+            { email, seeker },
+            {
+                method: 'PUT',
+                headers: {
+                    'Authorization': localStorage.getItem('user_token')
+                }
+            })
+            .then(res => {
+                if (res.data) {
+                    setLoading(false);
+                    navigate('/form/job-experience');
+                }
+            })
+            .catch(err => {
+                const { logout, message } = err.response.data;
+                if (logout) {
+                    setLoading(false);
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
+                setError(message)
+                setLoading(false);
             });
-        setLoading(false);
     };
 
     return (<>
@@ -70,19 +74,19 @@ const UserContact = () => {
                     <div>
                         <div>
                             <label htmlFor='email' className='font-medium sm:text-lg text-base'>First name<span className='text-orange-600 ml-1'>*</span></label>
-                            <input ref={fNameRef} required type="text" placeholder="Enter your first name" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                            <input ref={fNameRef} required type="text" placeholder="Enter your first name" className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                         <div className='mt-5'>
                             <label htmlFor='password' className='font-medium sm:text-lg text-base'>Last name<span className='text-orange-600 ml-1'>*</span></label>
-                            <input ref={lNameRef} required type="text" placeholder="Enter your last name" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                            <input ref={lNameRef} required type="text" placeholder="Enter your last name" className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                         <div className='mt-5'>
                             <label htmlFor='password' className='font-medium sm:text-lg text-base'>Phone</label>
-                            <input ref={phoneRef} required type="number" placeholder="Your phone number" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                            <input ref={phoneRef} required type="number" placeholder="Your phone number" className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                         <div className='mt-5'>
                             <label htmlFor='password' className='font-medium sm:text-lg text-base'>Email</label>
-                            <input ref={emailRef} disabled required value={user?.email} className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                            <input ref={emailRef} disabled required value={usersData?.email} className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                     </div>
 
@@ -91,24 +95,30 @@ const UserContact = () => {
                     <div>
                         <div className='mt-5'>
                             <label htmlFor='country' className='font-medium sm:text-lg text-base'>Country</label>
-                            <select ref={countryRef} id='country' className="select w-max ml-5 border border-gray-200 focus:outline-0 focus:shadow-md">
+                            <select ref={countryRef} id='country' className="select bg-slate-100 min-h-0 h-11 w-max ml-5 border border-gray-200 focus:outline-0 focus:shadow-md">
                                 <option defaultValue disabled>Select country</option>
                                 <CountryList></CountryList>
                             </select>
                         </div>
                         <div className='mt-5'>
                             <label htmlFor='streetAddress' className='font-medium sm:text-lg text-base'>Street address</label>
-                            <input id='streetAddress' ref={addressRef} type="text" placeholder="Your address" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                            <input id='streetAddress' ref={addressRef} type="text" placeholder="Your address" className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                         <div className='mt-5'>
                             <label htmlFor='city' className='font-medium sm:text-lg text-base'>City / State</label>
-                            <input id='city' ref={stateRef} type="text" placeholder="Your city / state" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                            <input id='city' ref={stateRef} type="text" placeholder="Your city / state" className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                         <div className='mt-5'>
                             <label htmlFor='zipCode' className='font-medium sm:text-lg text-base'>Zip code</label>
-                            <input id='zipCode' ref={zipRef} type="number" placeholder="Zip code" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                            <input id='zipCode' ref={zipRef} type="number" placeholder="Zip code" className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                         </div>
                     </div>
+                    {
+                        error && <p className='text-sm text-red-600 mt-3 flex items-center gap-1'>
+                            <ExclamationIcon className='w-4 h-4'></ExclamationIcon>
+                            {error}
+                        </p>
+                    }
                     <div className='mt-6 flex sm:flex-row flex-col-reverse justify-between gap-4'>
                         <button
                             onClick={() => navigate('/form/job-experience')}

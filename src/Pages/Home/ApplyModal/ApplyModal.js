@@ -1,14 +1,13 @@
 import { XIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import BundledEditor from '../../../BundledEditor';
-import useGetUsers from '../../../hooks/useGetUsers';
 import PageTitle from '../../Shared/PageTitle';
 import Spinner from '../../Shared/Spinner';
 import AdditionalQuestions from './AdditionalQuestions';
 
 const ApplyModal = ({ setModal, jobPost, user }) => {
-    const [usersData] = useGetUsers();
     const [openInput, setOpenInput] = useState(false);
     const resumeRef = useRef('');
     const [inputErr, setInputErr] = useState(false);
@@ -16,6 +15,7 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
     const [loading, setLoading] = useState(false);
     const editorRef = useRef(null);
     const [progress, setProgress] = useState(0);
+    const navigate = useNavigate();
 
     const {
         _id,
@@ -23,7 +23,6 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
         company,
         employerEmail,
         receiveEmail,
-
         // Screening question
         bgCheck,
         certification,
@@ -37,11 +36,10 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
         urgentHiring,
         customQuestion
     } = jobPost;
-
+    
     // Apply job
     const uploadResume = async () => {
         const resumeFile = resumeRef.current.files[0];
-        const id = usersData[0]?._id;
 
         if (resumeFile) {
             setUploadLoading(true);
@@ -53,13 +51,22 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
             const resume = resumeURL.data.secure_url;
             const seeker = true;
 
-            await axios.put(`https://api.enlistco.co.in/user-resume/${id}`, { resume, seeker })
+            await axios.put('https://api.enlistco.co.in/seeker/update-resume', { resume, seeker }, {
+                method: 'GET',
+                headers: {
+                    'Authorization': localStorage.getItem('user_token')
+                }
+            })
                 .then((res) => {
                     setOpenInput(!openInput)
                     setUploadLoading(false);
                 })
                 .catch(err => {
                     setUploadLoading(false);
+                    if (err?.response?.data?.logout) {
+                        localStorage.removeItem('user_token');
+                        return navigate('/login');
+                    }
                 });
         }
         else {
@@ -68,7 +75,7 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
     };
 
     // Apply job
-    const handleApply = async event => {
+    const handleApply = async (event) => {
         event.preventDefault();
         setLoading(true);
 
@@ -121,19 +128,33 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
         const date = new Date();
         const applied = date.getDate() + '-' + date.toLocaleString('default', { month: 'long' }) + '-' + date.getFullYear();
         await axios.post('https://api.enlistco.co.in/apply',
-            { resume, subject, coverLetter, seekerEmail, seekerPhone, seekerName, postID, receiveEmail, employerEmail, applied, jobTitle, company, bgCheck, certification, drivingLicense, drugTest, education, gpa, hybridWork, remoteWork, workExperience, urgentHiring, customQuestion })
-            .then(res => {
-                localStorage.removeItem('screeningQuestions')
-                setLoading(false);
-                setModal(false)
+            { resume, subject, coverLetter, seekerEmail, seekerPhone, seekerName, postID, receiveEmail, employerEmail, applied, jobTitle, company, bgCheck, certification, drivingLicense, drugTest, education, gpa, hybridWork, remoteWork, workExperience, urgentHiring, customQuestion },
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': localStorage.getItem('user_token')
+                }
             })
-            .catch(err => { });
+            .then(res => {
+                if (res) {
+                    localStorage.removeItem('screeningQuestions')
+                    setLoading(false);
+                    setModal(false)
+                }
+            })
+            .catch(err => {
+                setLoading(false);
+                if (err?.response?.data?.logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
+            });
     };
 
     return (<>
         <PageTitle title={`Apply to ${company}`}></PageTitle>
-        <div className='w-full h-screen flex items-center justify-center fixed top-0 left-0 bg-black/50 z-10'>
-            <div className='pb-2 xl:w-1/2 md:w-3/5 sm:w-4/5 w-full h-max bg-white rounded-md shadow-2xl relative'>
+        <div className='fixed top-0 left-0 w-full h-full overflow-y-auto scrollBar-sm flex justify-center bg-black/50 z-30'>
+            <div className='mt-8 mb-10 xl:w-1/2 md:w-3/5 sm:w-4/5 w-full h-max bg-white rounded-md shadow-2xl relative'>
                 <div>
                     <button
                         onClick={() => setModal(false)}
@@ -157,14 +178,14 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
                     }
                 </div>
                 <div>
-                    { bgCheck || certification || drivingLicense || drugTest || education || gpa || hybridWork || remoteWork || workExperience || urgentHiring || customQuestion ?
+                    {bgCheck || certification || drivingLicense || drugTest || education || gpa || hybridWork || remoteWork || workExperience || urgentHiring || customQuestion ?
                         progress === 0 ?
                             <AdditionalQuestions
                                 questions={{ bgCheck, certification, drivingLicense, drugTest, education, gpa, hybridWork, remoteWork, workExperience, urgentHiring, customQuestion }}
                                 setProgress={setProgress}
                             ></AdditionalQuestions>
                             :
-                            <form onSubmit={handleApply}>
+                            <form onSubmit={handleApply} className='pb-5'>
                                 <div>
                                     <div className='sm:px-8 px-5 py-2'>
                                         <h2 className='text-lg font-medium'>CV / Resume</h2>{
@@ -217,7 +238,7 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
                                             }
                                             required
                                             init={{
-                                                height: 160,
+                                                height: 200,
                                                 menubar: false,
                                                 toolbar: false,
                                                 content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; letter-spacing: 1px; line-height: 20px; margin-top:0}',
@@ -228,14 +249,14 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
                                         <button
                                             type='submit'
                                             disabled={openInput || loading}
-                                            className='btn btn-outline btn-primary hover:text-white md:w-max w-full mt-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>
+                                            className='btn btn-outline btn-primary hover:text-white md:w-max w-full mt-5 min-h-0 h-10 normal-case text-lg px-10'>
                                             {loading ? <Spinner /> : 'Submit'}
                                         </button>
                                     </div>
                                 </div>
                             </form>
                         :
-                        <form onSubmit={handleApply}>
+                        <form onSubmit={handleApply} className='pb-5'>
                             <div>
                                 <div className='sm:px-8 px-5 py-2'>
                                     <h2 className='text-lg font-medium'>CV / Resume</h2>{
@@ -299,7 +320,7 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
                                     <button
                                         type='submit'
                                         disabled={openInput || loading}
-                                        className='btn btn-outline btn-primary hover:text-white md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>
+                                        className='btn btn-outline btn-primary hover:text-white md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg  px-10'>
                                         {loading ? <Spinner /> : 'Submit'}
                                     </button>
                                 </div>

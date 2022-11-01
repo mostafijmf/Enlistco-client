@@ -15,6 +15,7 @@ const SendOfferLetter = () => {
     const [successMsg, setSuccessMsg] = useState('');
     const editorRef = useRef(null);
 
+
     useEffect(() => {
         if (successMsg) {
             setTimeout(() => {
@@ -23,14 +24,20 @@ const SendOfferLetter = () => {
         };
     }, [successMsg]);
 
+    // ============Offer letter send button============
     const handleOfferLetter = async e => {
         e.preventDefault();
         setLoading(true);
         const subject = e.target.subject.value;
         const offerLetter = editorRef.current.getContent();
 
-        await axios.put(`https://api.enlistco.co.in/apply/${_id}`, {
+        await axios.put(`https://api.enlistco.co.in/apply/offer_letter_send/${_id}`, {
             _id, seekerEmail, seekerName, jobTitle, company, subject, offerLetter
+        }, {
+            method: 'GET',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
         })
             .then(res => {
                 if (res.data) {
@@ -40,24 +47,28 @@ const SendOfferLetter = () => {
             })
             .catch(err => {
                 setLoading(false);
+                if (err?.response?.data?.logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
     };
 
     return (<>
         <PageTitle title='Send Offer Letter - Dashboard'></PageTitle>
-        <div className='bg-white top-0 left-0 h-full w-full py-10'>
+        <div className='top-0 left-0 h-full w-full py-7'>
             <div className={`fixed top-20 ${successMsg ? 'right-10' : '-right-96'} z-10 duration-300 bg-white flex items-center py-3 px-5 border rounded-lg shadow-md`}>
                 <CheckCircleIcon className='w-7 h-7 text-success mr-2'></CheckCircleIcon>
                 <p className='text-success text-base'>{successMsg}</p>
             </div>
-            <div className='xl:w-3/5 md:w-3/4 sm:w-11/12 w-full mx-auto py-5 sm:px-8 px-5 shadow-xl border rounded-md relative'>
+            <div className='bg-white xl:w-3/5 md:w-3/4 sm:w-11/12 w-full mx-auto py-5 sm:px-8 px-5 shadow-md border rounded-md relative'>
                 <div className='absolute top-3 right-3'>
                     <XIcon
                         onClick={() => navigate(-1)}
-                        className='w-8 h-8 hover:bg-slate-200 p-1 rounded-full cursor-pointer'>
+                        className='w-8 h-8 hover:bg-slate-100 p-1 rounded-full cursor-pointer'>
                     </XIcon>
                 </div>
-                <h1 className='text-center sm:text-2xl text-xl mb-5'>Write an offer letter</h1>
+                <h1 className='text-center sm:text-2xl text-xl mb-3'>Write an offer letter</h1>
 
                 <hr />
 
@@ -93,7 +104,7 @@ const SendOfferLetter = () => {
                         />
                         <button
                             disabled={loading}
-                            className='btn btn-outline btn-accent md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg tracking-wider px-10'>
+                            className='btn btn-outline btn-accent md:w-max w-full my-5 min-h-0 h-10 normal-case text-lg  px-10'>
                             {loading ? <Spinner /> : 'Send'}
                         </button>
                     </form>

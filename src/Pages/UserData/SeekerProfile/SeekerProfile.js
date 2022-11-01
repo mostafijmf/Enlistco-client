@@ -1,19 +1,41 @@
-import { CheckCircleIcon, PlusIcon } from '@heroicons/react/solid';
+import { 
+    AcademicCapIcon, 
+    BookOpenIcon, 
+    BriefcaseIcon, 
+    CheckCircleIcon, 
+    ClockIcon, 
+    HomeIcon, 
+    LocationMarkerIcon, 
+    MailIcon, 
+    OfficeBuildingIcon, 
+    PhoneIcon, 
+    PlusIcon 
+} from '@heroicons/react/solid';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import CountryList from '../../Shared/CountryList';
 import Spinner from '../../Shared/Spinner';
+import schoolIcon from '../../../images/icons/school.png';
+import studyingIcon from '../../../images/icons/studying.png';
+import companyIcon from '../../../images/icons/company.png';
+import dutyIcon from '../../../images/icons/duty.png';
+import { useNavigate } from 'react-router-dom';
 
-const SeekerProfile = ({ user }) => {
+const SeekerProfile = ({ usersData }) => {
     const [editPData, setEditPData] = useState(false);
     const [addEduData, setAddEduData] = useState(false);
     const [addJobExp, setAddJobExp] = useState(false);
+    const [updateResume, setUpdateResume] = useState(true);
     const [studying, setStudying] = useState(false);
     const [currentWork, setCurrentWork] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [personalLoading, setPersonalLoading] = useState(false);
+    const [eduLoading, setEduLoading] = useState(false);
+    const [resumeLoading, setResumeLoading] = useState(false);
     const [successMsg, setSuccessMsg] = useState('');
+    const navigate = useNavigate();
 
-    const { _id,
+    const {
         firstName,
         lastName,
         email,
@@ -26,7 +48,7 @@ const SeekerProfile = ({ user }) => {
         jobExperience,
         resume,
         seekerAbout
-    } = user;
+    } = usersData;
     const exJobTitle = jobExperience && jobExperience[jobExperience.length - 1]?.exJobTitle;
 
     useEffect(() => {
@@ -40,7 +62,9 @@ const SeekerProfile = ({ user }) => {
     // Update personal data
     const updatePersonalData = async e => {
         e.preventDefault();
-        setLoading(true);
+        setPersonalLoading(true);
+        const firstName = e.target.firstName.value;
+        const lastName = e.target.lastName.value;
         const phone = e.target.phone.value;
         const address = e.target.address.value;
         const state = e.target.state.value;
@@ -48,23 +72,39 @@ const SeekerProfile = ({ user }) => {
         const zip = e.target.zip.value;
         const seekerAbout = e.target.about.value;
 
-        await axios.patch(`https://api.enlistco.co.in/users/${_id}`, {
-            phone, address, state, country, zip, seekerAbout
-        })
+        await axios.put('https://api.enlistco.co.in/seeker_data/update',
+            {
+                firstName, lastName, phone, address, state, country, zip, seekerAbout
+            },
+            {
+                method: 'PUT',
+                headers: {
+                    'Authorization': localStorage.getItem('user_token')
+                }
+            })
             .then((res) => {
                 if (res) {
                     setSuccessMsg('Data update successfully.')
-                    setLoading(false);
+                    setPersonalLoading(false);
                     setEditPData(!editPData);
                 }
             })
-            .catch(err => { });
+            .catch(err => {
+                const { logout, message } = err.response.data;
+                setPersonalLoading(false);
+                setSuccessMsg(message);
+                if (logout) {
+                    setLoading(false);
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
+            });
     };
 
     // Add new education
     const handleAddEdu = async e => {
         e.preventDefault();
-        setLoading(true);
+        setEduLoading(true);
         const degree = e.target.degree.value;
         const institution = e.target.institution.value;
         const edugroup = e.target.group.value;
@@ -82,33 +122,57 @@ const SeekerProfile = ({ user }) => {
         };
         const education = { degree, institution, edugroup, eduStartDate, eduEndDate, eduStudying };
 
-        await axios.put(`https://api.enlistco.co.in/add-edu/${_id}`, education)
+        await axios.put('https://api.enlistco.co.in/seeker/add-education', education, {
+            method: 'PUT',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
             .then(res => {
-                setLoading(false);
+                setEduLoading(false);
                 setAddEduData(!addEduData);
                 setSuccessMsg('Education add successfully.')
             })
             .catch(err => {
-                setLoading(false);
+                const { logout, message } = err.response.data;
+                setEduLoading(false);
+                setSuccessMsg(message);
+                if (logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
     };
 
     // Delete an education
     const handleDeleteEdu = async edu => {
         setLoading(true);
-        await axios.patch(`https://api.enlistco.co.in/delete-edu/${_id}`, { edu })
+        await axios.patch('https://api.enlistco.co.in/seeker/delete-education', { edu },
+            {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': localStorage.getItem('user_token')
+                }
+            })
             .then(res => {
                 setLoading(false);
                 setSuccessMsg('Education remove successfully.');
             })
             .catch(err => {
+                const { logout, message } = err.response.data;
                 setLoading(false);
+                setSuccessMsg(message);
+                if (logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
     };
 
     // Add new Job experience
     const handleAddJobExp = async e => {
         e.preventDefault();
+        setLoading(true);
         const exJobTitle = e.target.exJobTitle.value;
         const exCompany = e.target.exCompany.value;
         const exStartDate = e.target.exStartDate.value;
@@ -127,27 +191,49 @@ const SeekerProfile = ({ user }) => {
 
         const jobExperience = { exJobTitle, exCompany, exStartDate, exEndDate, exWorking, exResponsibilities };
 
-        await axios.put(`https://api.enlistco.co.in/add-jobexp/${_id}`, jobExperience)
+        await axios.put('https://api.enlistco.co.in/seeker/add-jobExperience', jobExperience, {
+            method: 'PUT',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
             .then(res => {
                 setLoading(false);
                 setAddJobExp(!addJobExp);
                 setSuccessMsg('Job experience add successfully.')
             })
             .catch(err => {
+                const { logout, message } = err.response.data;
                 setLoading(false);
+                setSuccessMsg(message)
+                if (logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
     };
 
     // Delete a Job experience
     const handleDeleteJobExp = async ex => {
         setLoading(true);
-        await axios.patch(`https://api.enlistco.co.in/delete-jobexp/${_id}`, { ex })
+        await axios.patch('https://api.enlistco.co.in/seeker/delete-jobExperience', { ex }, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
             .then(res => {
                 setLoading(false);
                 setSuccessMsg('A job experience remove successfully.');
             })
             .catch(err => {
+                const { logout, message } = err.response.data;
                 setLoading(false);
+                setSuccessMsg(message);
+                if (logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
     };
 
@@ -155,7 +241,7 @@ const SeekerProfile = ({ user }) => {
     // Upload resume
     const handleResumeUpload = async (e) => {
         e.preventDefault();
-        setLoading(true);
+        setResumeLoading(true);
 
         // ---------resume url generate----------
         const resumeFile = e.target.resume.files[0];
@@ -171,30 +257,45 @@ const SeekerProfile = ({ user }) => {
         const resume = resumeURL.data.secure_url;
 
         // Send data to database
-        await axios.put(`https://api.enlistco.co.in/user-resume/${_id}`, { resume })
+        await axios.put('https://api.enlistco.co.in/seeker/update-resume', { resume }, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
             .then((res) => {
                 if (res) {
-                    setLoading(false);
+                    setResumeLoading(false);
                     setSuccessMsg('Resume upload successfully.');
                 }
             })
-            .catch(err => { setLoading(false) });
+            .catch(err => {
+                const { logout, message } = err.response.data;
+                setResumeLoading(false);
+                setSuccessMsg(message)
+                if (logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
+            });
     };
 
 
     return (
-        <div>
+        <div className='xl:w-9/12 md:w-4/5 sm:w-11/12 w-full mx-auto'>
             <div className={`fixed top-20 ${successMsg ? 'right-10' : '-right-96'} z-10 duration-300 bg-white flex items-center py-3 px-5 border rounded-lg shadow-md`}>
                 <CheckCircleIcon className='w-7 h-7 text-success mr-2'></CheckCircleIcon>
                 <p className='text-success text-base'>{successMsg}</p>
             </div>
             {
                 loading &&
-                <div className='sticky bg-black/20 z-50 top-0 left-0 h-screen w-full flex items-center justify-center'>
+                <div className='fixed bg-black/50 z-50 top-0 left-0 h-screen w-full flex items-center justify-center'>
                     <Spinner></Spinner>
                 </div>
             }
-            <div className='md:w-4/5 sm:w-11/12 w-full mx-auto sm:p-8 p-4 shadow-lg border rounded-md'>
+
+            {/* ======================Seeker about====================== */}
+            <div className='bg-white w-full mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
                 <div>
                     <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>{firstName} {lastName}</h1>
                     <h2 className='text-center sm:text-xl text-lg'>{exJobTitle}</h2>
@@ -218,71 +319,135 @@ const SeekerProfile = ({ user }) => {
                     {
                         editPData ?
                             <form onSubmit={updatePersonalData}>
-                                <ul>
-                                    <li className='mt-2 text-base font-medium'>Email :
-                                        <span className='font-normal ml-2'>{email}</span>
+                                <ul className='list-none'>
+                                    <li className='mt-2 text-base flex'>
+                                        <div className='font-medium flex items-center gap-3'>
+                                            <MailIcon className='w-6 h-6 text-gray-500'></MailIcon>
+                                            Email :
+                                        </div>
+                                        <span className='ml-2'>{email}</span>
                                     </li>
-                                    <li className='mt-2 text-base font-medium'>
+                                    <li className='mt-2 text-base font-medium sm:flex sm:gap-2 sm:items-center'>
+                                        <label htmlFor="firstName">First Name :</label>
+                                        <input
+                                            required
+                                            id='firstName'
+                                            type="text"
+                                            placeholder="Your first name"
+                                            className="input bg-slate-100 font-normal h-11 text-base sm:w-96 w-full border border-gray-200 focus:outline-0 focus:shadow-md"
+                                        />
+                                    </li>
+                                    <li className='mt-2 text-base font-medium sm:flex sm:gap-2 sm:items-center'>
+                                        <label htmlFor="lastName">Last Name :</label>
+                                        <input
+                                            required
+                                            id='lastName'
+                                            type="text"
+                                            placeholder="Your last name"
+                                            className="input bg-slate-100 font-normal h-11 text-base sm:w-96 w-full border border-gray-200 focus:outline-0 focus:shadow-md"
+                                        />
+                                    </li>
+                                    <li className='mt-2 text-base font-medium sm:flex sm:gap-10 sm:items-center'>
                                         <label htmlFor="phone">Phone :</label>
-                                        <input required id='phone' type="number" placeholder="Update your phone number?" className="input font-normal h-11 text-base sm:w-96 w-full sm:ml-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                        <input
+                                            required
+                                            id='phone'
+                                            type="number"
+                                            placeholder="Update your phone number?"
+                                            className="input bg-slate-100 font-normal h-11 text-base sm:w-96 w-full border border-gray-200 focus:outline-0 focus:shadow-md"
+                                        />
                                     </li>
-                                    <li className='mt-2 text-base font-medium'>
+                                    <li className='mt-2 text-base font-medium sm:flex sm:gap-7 sm:items-center'>
                                         <label htmlFor="address">Address :</label>
-                                        <input required id='address' type="text" placeholder="Update your address?" className="input h-11 text-base font-normal sm:w-96 w-full sm:ml-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                        <input required id='address' type="text" placeholder="Update your address?" className="input bg-slate-100 h-11 text-base font-normal sm:w-96 w-full border border-gray-200 focus:outline-0 focus:shadow-md" />
                                     </li>
-                                    <li className='mt-2 text-base font-medium'>
+                                    <li className='mt-2 text-base font-medium sm:flex sm:gap-4 sm:items-center'>
                                         <label htmlFor="state">City/State :</label>
-                                        <input required id='state' type="text" placeholder="City / State" className="input h-11 text-base font-normal sm:w-96 w-full sm:ml-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                        <input required id='state' type="text" placeholder="City / State" className="input bg-slate-100 h-11 text-base font-normal sm:w-96 w-full border border-gray-200 focus:outline-0 focus:shadow-md" />
                                     </li>
-                                    <li className='mt-2 text-base font-medium'>
+                                    <li className='mt-2 text-base font-medium sm:flex sm:gap-7 sm:items-center'>
                                         <label htmlFor="country">Country :</label>
-                                        <select required id='country' className="select w-max sm:ml-5 border border-gray-200 focus:outline-0 focus:shadow-md">
+                                        <select required id='country' className="select bg-slate-100 w-max min-h-0 h-11 border sm:ml-0 ml-2 border-gray-200 focus:outline-0 focus:shadow-md">
                                             <option defaultValue>Select country</option>
                                             <CountryList></CountryList>
                                         </select>
                                     </li>
-                                    <li className='mt-2 text-base font-medium'>
+                                    <li className='mt-2 text-base font-medium sm:flex sm:gap-6 sm:items-center'>
                                         <label htmlFor="zip">Zip code :</label>
-                                        <input required id='zip' type="text" placeholder="Update your zip code" className="input h-11 text-base sm:w-96 w-full sm:ml-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                        <input required id='zip' type="text" placeholder="Update your zip code" className="input bg-slate-100 h-11 text-base sm:w-96 w-full border border-gray-200 focus:outline-0 focus:shadow-md" />
                                     </li>
-                                    <li className='mt-4 text-base font-medium'>
-                                        <label htmlFor='about' className='block font-medium sm:text-lg text-base'>About</label>
+                                    <li className='mt-4 text-base font-medium sm:flex sm:gap-9 sm:items-start'>
+                                        <label htmlFor='about' className='block font-medium sm:text-lg text-base'>About :</label>
                                         <textarea
                                             rows="6"
                                             id='about'
                                             placeholder='Describe yourself'
-                                            className='text-base md:w-4/5 sm:w-11/12 w-full mt-1 p-2 border rounded-md border-gray-200 focus:outline-0 focus:shadow-md'
+                                            className='text-base bg-slate-100 md:w-4/5 sm:w-11/12 w-full mt-1 p-2 border rounded-md border-gray-200 focus:outline-0 focus:shadow-md'
                                         ></textarea>
                                     </li>
-                                    <li className='mt-5 text-lg'>
-                                        <button type='submit' className='btn btn-outline btn-accent normal-case text-base tracking-wider px-16 min-h-0 h-10 sm:w-max w-full'>Save</button>
+                                    <li className='mt-8 text-lg text-center'>
+                                        <button
+                                            type='submit'
+                                            disabled={personalLoading}
+                                            className='btn btn-outline btn-accent normal-case text-base  px-16 min-h-0 h-10 sm:w-max w-full'
+                                        >{
+                                                personalLoading ? <Spinner></Spinner> : 'Save'
+                                            }
+                                        </button>
                                     </li>
                                 </ul>
                             </form>
                             :
-                            <ul>
-                                <li className='mt-2 text-base font-medium'>Email :
-                                    <span className='font-normal ml-2'>{email}</span>
+                            <ul className='list-none'>
+                                <li className='mt-2 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <MailIcon className='w-6 h-6 text-gray-500'></MailIcon>
+                                        Email :
+                                    </div>
+                                    <span className='ml-2'>{email}</span>
                                 </li>
-                                <li className='mt-2 text-base font-medium'>Phone :
-                                    <span className='font-normal ml-2'>{phone}</span>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <PhoneIcon className='w-6 h-6 text-gray-500'></PhoneIcon>
+                                        Phone :
+                                    </div>
+                                    <span className='ml-2'>{phone}</span>
                                 </li>
-                                <li className='mt-2 text-base font-medium'>Address :
-                                    <span className='font-normal ml-2'>{address}</span>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <HomeIcon className='w-6 h-6 text-gray-500'></HomeIcon>
+                                        Address :
+                                    </div>
+                                    <span className='ml-2'>{address}</span>
                                 </li>
-                                <li className='mt-2 text-base font-medium'>City/State :
-                                    <span className='font-normal ml-2'>{state}</span>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <OfficeBuildingIcon className='w-6 h-6 text-gray-500'></OfficeBuildingIcon>
+                                        City/State :
+                                    </div>
+                                    <span className='ml-2'>{state}</span>
                                 </li>
-                                <li className='mt-2 text-base font-medium'>Country :
-                                    <span className='font-normal ml-2'>{country}</span>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <LocationMarkerIcon className='w-6 h-6 text-gray-500'></LocationMarkerIcon>
+                                        Country :
+                                    </div>
+                                    <span className='ml-2'>{country}</span>
                                 </li>
-                                <li className='mt-2 text-base font-medium'>Zip code :
-                                    <span className='font-normal ml-2'>{zip}</span>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-gray-500">
+                                            <path d="M19.5 22.5a3 3 0 003-3v-8.174l-6.879 4.022 3.485 1.876a.75.75 0 01-.712 1.321l-5.683-3.06a1.5 1.5 0 00-1.422 0l-5.683 3.06a.75.75 0 01-.712-1.32l3.485-1.877L1.5 11.326V19.5a3 3 0 003 3h15z" />
+                                            <path d="M1.5 9.589v-.745a3 3 0 011.578-2.641l7.5-4.039a3 3 0 012.844 0l7.5 4.039A3 3 0 0122.5 8.844v.745l-8.426 4.926-.652-.35a3 3 0 00-2.844 0l-.652.35L1.5 9.59z" />
+                                        </svg>
+                                        Zip code :
+                                    </div>
+                                    <span className='ml-2'>{zip}</span>
                                 </li>
                                 {
                                     seekerAbout &&
                                     <li className='mt-2'>
-                                        <h2 className='text-center font-medium sm:text-xl text-lg my-2'>About</h2>
+                                        <h2 className='text-center font-medium sm:text-xl text-lg my-2'>About You</h2>
                                         <hr />
                                         <p className='p-3'>{seekerAbout}</p>
                                     </li>
@@ -292,14 +457,14 @@ const SeekerProfile = ({ user }) => {
                 </div>
             </div>
 
-            <hr className='my-7' />
 
-            <div className='md:w-4/5 sm:w-11/12 w-full mx-auto sm:p-8 p-4 shadow-lg border rounded-md'>
+            {/* ======================Seeker Education====================== */}
+            <div className='bg-white w-full mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
                 <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Education</h1>
                 <div className='mt-5 relative'>
                     {
                         education?.map((edu, index) =>
-                            <ul key={index} className='border-t mb-5 relative'>
+                            <ul key={index} className='list-none border-t mb-5 relative'>
                                 <span
                                     onClick={() => handleDeleteEdu(edu)}
                                     className='absolute top-5 right-0 cursor-pointer text-gray-500 hover:text-red-500 duration-300 hover:before:content-["Remove"] hover:before:text-sm hover:before:bg-slate-200 hover:before:absolute hover:before:-bottom-9 hover:before:-right-5 hover:before:px-2 hover:before:py-1 hover:before:rounded'
@@ -308,25 +473,50 @@ const SeekerProfile = ({ user }) => {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
                                 </span>
-                                <li className='mt-2 text-base font-medium'>Degree :
-                                    <span className='font-normal ml-2'>{edu.degree}</span>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <AcademicCapIcon className='w-6 h-6 text-gray-500'></AcademicCapIcon>
+                                        Degree :
+                                    </div>
+                                    <span className='ml-2'>{edu.degree}</span>
                                 </li>
-                                <li className='mt-2 text-base font-medium'>Institution :
-                                    <span className='font-normal ml-2'>{edu.institution}</span>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <img className='w-6 h-6' src={schoolIcon} alt="school icon" />
+                                        Institution :
+                                    </div>
+                                    <span className='ml-2'>{edu.institution}</span>
                                 </li>
-                                <li className='mt-2 text-base font-medium'>Subject/Group :
-                                    <span className='font-normal ml-2'>{edu.edugroup}</span>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <BookOpenIcon className='w-6 h-6 text-gray-500'></BookOpenIcon>
+                                        Subject/Group :
+                                    </div>
+                                    <span className='ml-2'>{edu.edugroup}</span>
                                 </li>
-                                <li className='mt-2 text-base font-medium'>Start Date :
-                                    <span className='font-normal ml-2'>{edu.eduStartDate}</span>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <ClockIcon className='w-6 h-6 text-gray-500'></ClockIcon>
+                                        Start Date :
+                                    </div>
+                                    <span className='ml-2'>{edu.eduStartDate}</span>
                                 </li>
                                 {
                                     edu.eduEndDate ?
-                                        <li className='mt-2 text-base font-medium'>End Date :
-                                            <span className='font-normal ml-2'>{edu.eduEndDate}</span>
+                                        <li className='mt-4 text-base flex'>
+                                            <div className='font-medium flex items-center gap-3'>
+                                                <CheckCircleIcon className='w-6 h-6 text-gray-500'></CheckCircleIcon>
+                                                End Date :
+                                            </div>
+                                            <span className='ml-2'>{edu.eduEndDate}</span>
                                         </li>
                                         :
-                                        <li className='mt-2 text-base font-medium'>{edu.eduStudying}</li>
+                                        <li className='mt-4 text-base flex'>
+                                            <div className='font-medium flex items-center gap-3'>
+                                                <img className='w-6 h-6' src={studyingIcon} alt="studying icon" />
+                                                {edu.eduStudying}
+                                            </div>
+                                        </li>
                                 }
                             </ul>)
                     }
@@ -345,38 +535,42 @@ const SeekerProfile = ({ user }) => {
                             <form onSubmit={handleAddEdu}>
                                 <div>
                                     <label htmlFor='degree' className='font-medium text-base'>Degree<span className='text-orange-600 ml-1'>*</span></label>
-                                    <input id='degree' required type="text" placeholder="Enter your degree" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                    <input id='degree' required type="text" placeholder="Enter your degree" className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                                 </div>
                                 <div className='mt-5'>
                                     <label htmlFor='institution' className='font-medium text-base'>Institution<span className='text-orange-600 ml-1'>*</span></label>
-                                    <input id='institution' required type="text" placeholder="Enter your institution name" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                    <input id='institution' required type="text" placeholder="Enter your institution name" className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                                 </div>
                                 <div className='mt-5'>
                                     <label htmlFor='group' className='font-medium text-base'>Subject/Group<span className='text-orange-600 ml-1'>*</span></label>
-                                    <input id='group' required type="text" placeholder="Enter your subject / group?" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                    <input id='group' required type="text" placeholder="Enter your subject / group?" className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                                 </div>
                                 <div className='flex sm:justify-between sm:gap-5 sm:flex-row flex-col'>
                                     <div className='mt-5'>
                                         <label htmlFor='eduStartDate' className='font-medium text-base'>Start date<span className='text-orange-600 ml-1'>*</span></label>
-                                        <input id='eduStartDate' required type="date" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                        <input id='eduStartDate' required type="date" className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                                     </div>
                                     {
                                         !studying &&
                                         <div className='mt-5'>
                                             <label htmlFor='eduEndDate' className='font-medium text-base'>End date<span className='text-orange-600 ml-1'>*</span></label>
-                                            <input id='eduEndDate' required type='date' className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                            <input id='eduEndDate' required type='date' className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                                         </div>
                                     }
                                 </div>
                                 <div className='md:mt-5 mt-3 flex items-center'>
-                                    <input id='checkbox' onChange={() => setStudying(!studying)} type="checkbox" className="checkbox bg-white" />
+                                    <input id='checkbox' onChange={() => setStudying(!studying)} type="checkbox" className="checkbox bg-slate-100" />
                                     <label className='text-base ml-3 cursor-pointer' htmlFor="checkbox">Currently Studying</label>
                                 </div>
                                 <div className='mt-6 flex sm:flex-row flex-col justify-between gap-4'>
                                     <button
-                                        className='sm:w-max w-full btn btn-outline btn-accent normal-case text-base tracking-wider sm:px-16 px-10 min-h-0 h-11'
-                                        type="submit">
-                                        Save
+                                        type="submit"
+                                        disabled={eduLoading}
+                                        className='sm:w-max w-full btn btn-outline btn-accent normal-case text-base  sm:px-16 px-10 min-h-0 h-11'
+                                    >
+                                        {
+                                            eduLoading ? <Spinner></Spinner> : 'Save'
+                                        }
                                     </button>
                                     <button
                                         onClick={() => setAddEduData(!addEduData)}
@@ -390,14 +584,14 @@ const SeekerProfile = ({ user }) => {
                 </div>
             </div>
 
-            <hr className='my-7' />
 
-            <div className='md:w-4/5 sm:w-11/12 w-full mx-auto sm:p-8 p-4 shadow-lg border rounded-md'>
+            {/* ======================Seeker Job Experience====================== */}
+            <div className='bg-white w-full mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
                 <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Job Experience</h1>
                 <div className='mt-5 relative'>
                     {jobExperience &&
                         jobExperience.map((ex, index) =>
-                            <ul key={index} className='border-t mb-5 relative'>
+                            <ul key={index} className='list-none border-t mb-5 relative'>
                                 <span
                                     onClick={() => handleDeleteJobExp(ex)}
                                     className='absolute top-5 right-0 cursor-pointer text-gray-500 hover:text-red-500 duration-300 hover:before:content-["Remove"] hover:before:text-sm hover:before:bg-slate-200 hover:before:absolute hover:before:-bottom-9 hover:before:-right-5 hover:before:px-2 hover:before:py-1 hover:before:rounded'
@@ -406,25 +600,52 @@ const SeekerProfile = ({ user }) => {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
                                 </span>
-                                <li className='mt-2 text-base font-medium'>Job Title :
-                                    <span className='font-normal ml-2'>{ex.exJobTitle}</span>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <BriefcaseIcon className='w-6 h-6 text-gray-500'></BriefcaseIcon>
+                                        Job Title :
+                                    </div>
+                                    <span className='ml-2'>{ex.exJobTitle}</span>
                                 </li>
-                                <li className='mt-2 text-base font-medium'>Company :
-                                    <span className='font-normal ml-2'>{ex.exCompany}</span>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <img className='w-6 h-6' src={companyIcon} alt="company icon" />
+                                        Company :
+                                    </div>
+                                    <span className='ml-2'>{ex.exCompany}</span>
                                 </li>
-                                <li className='mt-2 text-base font-medium'>Start Date :
-                                    <span className='font-normal ml-2'>{ex.exStartDate}</span>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='font-medium flex items-center gap-3'>
+                                        <ClockIcon className='w-6 h-6 text-gray-500'></ClockIcon>
+                                        Start Date :
+                                    </div>
+                                    <span className='ml-2'>{ex.exStartDate}</span>
                                 </li>
                                 {
                                     ex.exEndDate ?
-                                        <li className='mt-2 text-base font-medium'>End Date :
-                                            <span className='font-normal ml-2'>{ex.exEndDate}</span>
+                                        <li className='mt-4 text-base flex'>
+                                            <div className='font-medium flex items-center gap-3'>
+                                                <CheckCircleIcon className='w-6 h-6 text-gray-500'></CheckCircleIcon>
+                                                End Date :
+                                            </div>
+                                            <span className='ml-2'>{ex.exEndDate}</span>
                                         </li>
                                         :
-                                        <li className='mt-2 text-base font-medium'>{ex.exWorking}</li>
+                                        <li className='mt-4 text-base flex'>
+                                            <div className='font-medium flex items-center gap-3'>
+                                                <BriefcaseIcon className='w-6 h-6 text-gray-500'></BriefcaseIcon>
+                                                {ex.exWorking}
+                                            </div>
+                                        </li>
                                 }
-                                <li className='mt-2 text-base font-medium'>Responsibilities :
-                                    <p className='font-normal'>{ex.exResponsibilities}</p>
+                                <li className='mt-4 text-base flex'>
+                                    <div className='flex items-start gap-3'>
+                                        <img className='w-6 h-6' src={dutyIcon} alt="company icon" />
+                                        <div>
+                                            <h3 className='font-medium'>Responsibilities :</h3>
+                                            <span>{ex.exResponsibilities}</span>
+                                        </div>
+                                    </div>
                                 </li>
                             </ul>
                         )
@@ -475,7 +696,7 @@ const SeekerProfile = ({ user }) => {
                                 </div>
                                 <div className='mt-6 flex sm:flex-row flex-col justify-between gap-4'>
                                     <button
-                                        className='btn btn-outline btn-accent normal-case text-base tracking-wider px-16 min-h-0 h-11 sm:w-max w-full' type="submit">
+                                        className='btn btn-outline btn-accent normal-case text-base  px-16 min-h-0 h-11 sm:w-max w-full' type="submit">
                                         Save
                                     </button>
                                     <button
@@ -489,31 +710,56 @@ const SeekerProfile = ({ user }) => {
                     }
                 </div>
             </div>
-            <hr className='my-7' />
+
+            {/* ======================Seeker Resume====================== */}
             {
-                resume ? <>
-                    <div className='lg:w-3/5 sm:w-11/12 w-full mx-auto overflow-y-auto'>
-                        <h1 className='text-center my-5 md:text-3xl sm:text-2xl text-xl font-medium'>CV / Resume</h1>
+                updateResume && resume ? <div className='bg-white w-full mb-5 shadow-md border rounded-md relative'>
+                    <span
+                        onClick={() => setUpdateResume(!updateResume)}
+                        className='absolute top-10 sm:right-10 right-4 text-primary hover:text-accent duration-300 cursor-pointer'
+                        title='Update resume'>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                            <path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
+                        </svg>
+                    </span>
+                    <div className='lg:w-4/5 sm:w-11/12 w-full mx-auto mb-10 overflow-y-auto'>
+                        <h1 className='text-center my-8 md:text-3xl sm:text-2xl text-xl font-medium'>
+                            CV / Resume
+                        </h1>
                         <iframe title='Resume' className='w-full h-screen' src={resume}></iframe>
                     </div>
-                    <hr className='my-7' />
-                </> :
+                </div> :
                     <form
                         onSubmit={handleResumeUpload}
-                        className='md:w-4/5 sm:w-11/12 w-full mx-auto sm:p-8 p-4 shadow-lg border rounded-md mb-10'>
-                        <h1 className='text-center mb-5 md:text-3xl sm:text-2xl text-xl font-medium'>Upload your CV / Resume</h1>
+                        className='bg-white w-full sm:p-8 p-4 shadow-md border rounded-md mb-5 relative'>
+                        {
+                            resume && <span
+                                onClick={() => setUpdateResume(!updateResume)}
+                                className='absolute top-10 sm:right-10 right-4 text-primary hover:text-accent duration-300 cursor-pointer'
+                                title='Update resume'>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </span>
+                        }
+                        <h1 className='text-center mb-10 md:text-3xl sm:text-2xl text-xl font-medium'>
+                            Upload your CV / Resume
+                        </h1>
                         <div className='flex items-center justify-between w-full border rounded-md '>
                             <input
                                 id='resume'
                                 required
                                 type="file"
-                                className="input h-11 py-2 text-base w-full border-none border-gray-200 focus:outline-0 hover:shadow-md"
+                                className="input bg-slate-100 h-11 py-2 text-base w-full border-none border-gray-200 focus:outline-0 hover:shadow-md"
                             />
-                            <input
+                            <button
                                 type="submit"
-                                value="Upload"
+                                disabled={resumeLoading}
                                 className='btn btn-accent min-h-0 h-11 px-6 text-base hover:text-white normal-case rounded-l-none rounded-r-md'
-                            />
+                            >
+                                {resumeLoading ? <Spinner></Spinner> : "Upload"}
+                            </button>
                         </div>
                     </form>
             }
