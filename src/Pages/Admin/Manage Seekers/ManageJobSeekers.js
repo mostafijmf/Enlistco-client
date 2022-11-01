@@ -1,35 +1,52 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useGetAllUsers from '../../../hooks/useGetAllUsers';
 import PageTitle from '../../Shared/PageTitle';
 import Spinner from '../../Shared/Spinner';
 import AJobSeeker from './AJobSeeker';
 
 const ManageJobSeekers = () => {
-    const [allUsers] = useGetAllUsers();
+    const [allUsers, loading] = useGetAllUsers();
     const [deleteUData, setDeleteUData] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [dLoading, setDLoading] = useState(false);
     const [userData, setUserData] = useState();
+    const navigate = useNavigate();
+
+    
+    if (loading) {
+        return <div className='w-full h-screen flex items-center justify-center'>
+            <Spinner></Spinner>
+        </div>
+    };
 
     const seeker = allUsers.filter(s => s.seeker);
 
     const handleDelete = async email => {
-        setLoading(true);
-        const url = `https://api.enlistco.co.in/users/${email}`;
-        await axios.delete(url)
+        setDLoading(true);
+        await axios.delete(`https://api.enlistco.co.in/admin_delete/${email}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
             .then(res => {
                 setDeleteUData(!deleteUData);
-                setLoading(false);
+                setDLoading(false);
             })
             .catch(err => {
-                setLoading(false)
+                setDLoading(false);
+                if (err?.response?.data?.logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
     };
 
     return (<>
         <PageTitle title='Manage Seeker - Dashboard'></PageTitle>
         <h1 className='text-2xl text-center my-5 text-accent font-medium'>Manage job seekers</h1>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto mb-10">
             <table className="table w-full" id='exportToxlsx'>
                 <thead>
                     <tr>
@@ -65,10 +82,10 @@ const ManageJobSeekers = () => {
                             </button>
                             <button
                                 onClick={() => handleDelete(userData.email)}
-                                disabled={loading}
+                                disabled={dLoading}
                                 className="btn btn-outline text-white min-h-0 h-10 px-10"
                             >
-                                {loading ? <Spinner></Spinner> : 'Yes'}
+                                {dLoading ? <Spinner></Spinner> : 'Yes'}
                             </button>
 
                         </div>

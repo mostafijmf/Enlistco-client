@@ -1,4 +1,16 @@
-import { AcademicCapIcon, BookOpenIcon, BriefcaseIcon, CheckCircleIcon, ClockIcon, HomeIcon, LocationMarkerIcon, MailIcon, OfficeBuildingIcon, PhoneIcon, PlusIcon } from '@heroicons/react/solid';
+import { 
+    AcademicCapIcon, 
+    BookOpenIcon, 
+    BriefcaseIcon, 
+    CheckCircleIcon, 
+    ClockIcon, 
+    HomeIcon, 
+    LocationMarkerIcon, 
+    MailIcon, 
+    OfficeBuildingIcon, 
+    PhoneIcon, 
+    PlusIcon 
+} from '@heroicons/react/solid';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import CountryList from '../../Shared/CountryList';
@@ -7,8 +19,9 @@ import schoolIcon from '../../../images/icons/school.png';
 import studyingIcon from '../../../images/icons/studying.png';
 import companyIcon from '../../../images/icons/company.png';
 import dutyIcon from '../../../images/icons/duty.png';
+import { useNavigate } from 'react-router-dom';
 
-const SeekerProfile = ({ user }) => {
+const SeekerProfile = ({ usersData }) => {
     const [editPData, setEditPData] = useState(false);
     const [addEduData, setAddEduData] = useState(false);
     const [addJobExp, setAddJobExp] = useState(false);
@@ -20,8 +33,9 @@ const SeekerProfile = ({ user }) => {
     const [eduLoading, setEduLoading] = useState(false);
     const [resumeLoading, setResumeLoading] = useState(false);
     const [successMsg, setSuccessMsg] = useState('');
+    const navigate = useNavigate();
 
-    const { _id,
+    const {
         firstName,
         lastName,
         email,
@@ -34,7 +48,7 @@ const SeekerProfile = ({ user }) => {
         jobExperience,
         resume,
         seekerAbout
-    } = user;
+    } = usersData;
     const exJobTitle = jobExperience && jobExperience[jobExperience.length - 1]?.exJobTitle;
 
     useEffect(() => {
@@ -58,9 +72,16 @@ const SeekerProfile = ({ user }) => {
         const zip = e.target.zip.value;
         const seekerAbout = e.target.about.value;
 
-        await axios.put(`https://api.enlistco.co.in/users-data/${_id}`, {
-            firstName, lastName, phone, address, state, country, zip, seekerAbout
-        })
+        await axios.put('https://api.enlistco.co.in/seeker_data/update',
+            {
+                firstName, lastName, phone, address, state, country, zip, seekerAbout
+            },
+            {
+                method: 'PUT',
+                headers: {
+                    'Authorization': localStorage.getItem('user_token')
+                }
+            })
             .then((res) => {
                 if (res) {
                     setSuccessMsg('Data update successfully.')
@@ -68,7 +89,16 @@ const SeekerProfile = ({ user }) => {
                     setEditPData(!editPData);
                 }
             })
-            .catch(err => { setPersonalLoading(false) });
+            .catch(err => {
+                const { logout, message } = err.response.data;
+                setPersonalLoading(false);
+                setSuccessMsg(message);
+                if (logout) {
+                    setLoading(false);
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
+            });
     };
 
     // Add new education
@@ -92,33 +122,57 @@ const SeekerProfile = ({ user }) => {
         };
         const education = { degree, institution, edugroup, eduStartDate, eduEndDate, eduStudying };
 
-        await axios.put(`https://api.enlistco.co.in/add-edu/${_id}`, education)
+        await axios.put('https://api.enlistco.co.in/seeker/add-education', education, {
+            method: 'PUT',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
             .then(res => {
                 setEduLoading(false);
                 setAddEduData(!addEduData);
                 setSuccessMsg('Education add successfully.')
             })
             .catch(err => {
+                const { logout, message } = err.response.data;
                 setEduLoading(false);
+                setSuccessMsg(message);
+                if (logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
     };
 
     // Delete an education
     const handleDeleteEdu = async edu => {
         setLoading(true);
-        await axios.patch(`https://api.enlistco.co.in/delete-edu/${_id}`, { edu })
+        await axios.patch('https://api.enlistco.co.in/seeker/delete-education', { edu },
+            {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': localStorage.getItem('user_token')
+                }
+            })
             .then(res => {
                 setLoading(false);
                 setSuccessMsg('Education remove successfully.');
             })
             .catch(err => {
+                const { logout, message } = err.response.data;
                 setLoading(false);
+                setSuccessMsg(message);
+                if (logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
     };
 
     // Add new Job experience
     const handleAddJobExp = async e => {
         e.preventDefault();
+        setLoading(true);
         const exJobTitle = e.target.exJobTitle.value;
         const exCompany = e.target.exCompany.value;
         const exStartDate = e.target.exStartDate.value;
@@ -137,27 +191,49 @@ const SeekerProfile = ({ user }) => {
 
         const jobExperience = { exJobTitle, exCompany, exStartDate, exEndDate, exWorking, exResponsibilities };
 
-        await axios.put(`https://api.enlistco.co.in/add-jobexp/${_id}`, jobExperience)
+        await axios.put('https://api.enlistco.co.in/seeker/add-jobExperience', jobExperience, {
+            method: 'PUT',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
             .then(res => {
                 setLoading(false);
                 setAddJobExp(!addJobExp);
                 setSuccessMsg('Job experience add successfully.')
             })
             .catch(err => {
+                const { logout, message } = err.response.data;
                 setLoading(false);
+                setSuccessMsg(message)
+                if (logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
     };
 
     // Delete a Job experience
     const handleDeleteJobExp = async ex => {
         setLoading(true);
-        await axios.patch(`https://api.enlistco.co.in/delete-jobexp/${_id}`, { ex })
+        await axios.patch('https://api.enlistco.co.in/seeker/delete-jobExperience', { ex }, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
             .then(res => {
                 setLoading(false);
                 setSuccessMsg('A job experience remove successfully.');
             })
             .catch(err => {
+                const { logout, message } = err.response.data;
                 setLoading(false);
+                setSuccessMsg(message);
+                if (logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
     };
 
@@ -181,32 +257,45 @@ const SeekerProfile = ({ user }) => {
         const resume = resumeURL.data.secure_url;
 
         // Send data to database
-        await axios.put(`https://api.enlistco.co.in/user-resume/${_id}`, { resume })
+        await axios.put('https://api.enlistco.co.in/seeker/update-resume', { resume }, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
             .then((res) => {
                 if (res) {
                     setResumeLoading(false);
                     setSuccessMsg('Resume upload successfully.');
                 }
             })
-            .catch(err => { setResumeLoading(false) });
+            .catch(err => {
+                const { logout, message } = err.response.data;
+                setResumeLoading(false);
+                setSuccessMsg(message)
+                if (logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
+            });
     };
 
 
     return (
-        <div>
+        <div className='xl:w-9/12 md:w-4/5 sm:w-11/12 w-full mx-auto'>
             <div className={`fixed top-20 ${successMsg ? 'right-10' : '-right-96'} z-10 duration-300 bg-white flex items-center py-3 px-5 border rounded-lg shadow-md`}>
                 <CheckCircleIcon className='w-7 h-7 text-success mr-2'></CheckCircleIcon>
                 <p className='text-success text-base'>{successMsg}</p>
             </div>
             {
                 loading &&
-                <div className='sticky bg-black/20 z-50 top-0 left-0 h-screen w-full flex items-center justify-center'>
+                <div className='fixed bg-black/50 z-50 top-0 left-0 h-screen w-full flex items-center justify-center'>
                     <Spinner></Spinner>
                 </div>
             }
 
             {/* ======================Seeker about====================== */}
-            <div className='bg-white md:w-4/5 sm:w-11/12 w-full mx-auto mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
+            <div className='bg-white w-full mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
                 <div>
                     <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>{firstName} {lastName}</h1>
                     <h2 className='text-center sm:text-xl text-lg'>{exJobTitle}</h2>
@@ -230,7 +319,7 @@ const SeekerProfile = ({ user }) => {
                     {
                         editPData ?
                             <form onSubmit={updatePersonalData}>
-                                <ul>
+                                <ul className='list-none'>
                                     <li className='mt-2 text-base flex'>
                                         <div className='font-medium flex items-center gap-3'>
                                             <MailIcon className='w-6 h-6 text-gray-500'></MailIcon>
@@ -309,7 +398,7 @@ const SeekerProfile = ({ user }) => {
                                 </ul>
                             </form>
                             :
-                            <ul>
+                            <ul className='list-none'>
                                 <li className='mt-2 text-base flex'>
                                     <div className='font-medium flex items-center gap-3'>
                                         <MailIcon className='w-6 h-6 text-gray-500'></MailIcon>
@@ -347,7 +436,7 @@ const SeekerProfile = ({ user }) => {
                                 </li>
                                 <li className='mt-4 text-base flex'>
                                     <div className='font-medium flex items-center gap-3'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-gray-500">
                                             <path d="M19.5 22.5a3 3 0 003-3v-8.174l-6.879 4.022 3.485 1.876a.75.75 0 01-.712 1.321l-5.683-3.06a1.5 1.5 0 00-1.422 0l-5.683 3.06a.75.75 0 01-.712-1.32l3.485-1.877L1.5 11.326V19.5a3 3 0 003 3h15z" />
                                             <path d="M1.5 9.589v-.745a3 3 0 011.578-2.641l7.5-4.039a3 3 0 012.844 0l7.5 4.039A3 3 0 0122.5 8.844v.745l-8.426 4.926-.652-.35a3 3 0 00-2.844 0l-.652.35L1.5 9.59z" />
                                         </svg>
@@ -370,12 +459,12 @@ const SeekerProfile = ({ user }) => {
 
 
             {/* ======================Seeker Education====================== */}
-            <div className='bg-white md:w-4/5 sm:w-11/12 w-full mx-auto mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
+            <div className='bg-white w-full mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
                 <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Education</h1>
                 <div className='mt-5 relative'>
                     {
                         education?.map((edu, index) =>
-                            <ul key={index} className='border-t mb-5 relative'>
+                            <ul key={index} className='list-none border-t mb-5 relative'>
                                 <span
                                     onClick={() => handleDeleteEdu(edu)}
                                     className='absolute top-5 right-0 cursor-pointer text-gray-500 hover:text-red-500 duration-300 hover:before:content-["Remove"] hover:before:text-sm hover:before:bg-slate-200 hover:before:absolute hover:before:-bottom-9 hover:before:-right-5 hover:before:px-2 hover:before:py-1 hover:before:rounded'
@@ -497,12 +586,12 @@ const SeekerProfile = ({ user }) => {
 
 
             {/* ======================Seeker Job Experience====================== */}
-            <div className='bg-white md:w-4/5 sm:w-11/12 w-full mx-auto mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
+            <div className='bg-white w-full mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
                 <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Job Experience</h1>
                 <div className='mt-5 relative'>
                     {jobExperience &&
                         jobExperience.map((ex, index) =>
-                            <ul key={index} className='border-t mb-5 relative'>
+                            <ul key={index} className='list-none border-t mb-5 relative'>
                                 <span
                                     onClick={() => handleDeleteJobExp(ex)}
                                     className='absolute top-5 right-0 cursor-pointer text-gray-500 hover:text-red-500 duration-300 hover:before:content-["Remove"] hover:before:text-sm hover:before:bg-slate-200 hover:before:absolute hover:before:-bottom-9 hover:before:-right-5 hover:before:px-2 hover:before:py-1 hover:before:rounded'
@@ -624,7 +713,7 @@ const SeekerProfile = ({ user }) => {
 
             {/* ======================Seeker Resume====================== */}
             {
-                updateResume && resume ? <div className='bg-white md:w-4/5 sm:w-11/12 w-full mx-auto mb-5 shadow-md border rounded-md relative'>
+                updateResume && resume ? <div className='bg-white w-full mb-5 shadow-md border rounded-md relative'>
                     <span
                         onClick={() => setUpdateResume(!updateResume)}
                         className='absolute top-10 sm:right-10 right-4 text-primary hover:text-accent duration-300 cursor-pointer'
@@ -643,7 +732,7 @@ const SeekerProfile = ({ user }) => {
                 </div> :
                     <form
                         onSubmit={handleResumeUpload}
-                        className='bg-white md:w-4/5 sm:w-11/12 w-full mx-auto sm:p-8 p-4 shadow-md border rounded-md mb-5 relative'>
+                        className='bg-white w-full sm:p-8 p-4 shadow-md border rounded-md mb-5 relative'>
                         {
                             resume && <span
                                 onClick={() => setUpdateResume(!updateResume)}

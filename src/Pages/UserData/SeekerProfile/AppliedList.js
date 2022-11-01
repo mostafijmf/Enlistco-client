@@ -53,7 +53,7 @@ const AppliedList = ({ appliedJob, allPost }) => {
                     </div>
                     : <>
                         <div className='bg-white w-full shadow-md p-5 border mb-3 sm:mx-0 mx-2 relative'>
-                            <ul className='grid sm:grid-cols-2 sm:grid-rows-1 grid-rows-2 items-center'>
+                            <ul className='list-none grid sm:grid-cols-2 sm:grid-rows-1 grid-rows-2 items-center'>
                                 <li>
                                     <h1 className='text-xl text-left font-medium'>{aj.jobTitle}</h1>
                                     <p className='sm:text-lg text-base'>{aj.company}</p>

@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Home from './Pages/Home/Home';
-import Login from './Pages/Login/Login';
-import SignUp from './Pages/Login/SignUp';
-import RequireAuth from './Pages/Login/RequireAuth';
+import Login from './Pages/Auth/Login';
+import SignUp from './Pages/Auth/SignUp';
+import RequireAuth from './Pages/Auth/RequireAuth';
 import UserProfile from './Pages/Dashboard/UserProfile';
 import HelpCenter from './Pages/Shared/HelpCenter';
 import NotFound from './Pages/Shared/NotFound';
@@ -11,34 +11,51 @@ import UserContact from './Pages/UserData/Form/UserContact';
 import UserJobExperience from './Pages/UserData/Form/UserJobExperience';
 import UserEducation from './Pages/UserData/Form/UserEducation';
 import EmployerContact from "./Pages/Employer/Form/EmployerContact";
-import JobDescription from './Pages/Employer/Form/JobDescription';
+import JobDescription from './Pages/Employer/Form/JobDescription/JobDescription';
 import ApplicationOptions from './Pages/Employer/Form/ApplicationOptions';
 import MyApplication from './Pages/Dashboard/MyApplication';
 import Applied from './Pages/UserData/SeekerProfile/Applied';
 import JobPost from './Pages/Employer/JobPost';
-import NewEntry from './Pages/Login/NewEntry';
+import NewEntry from './Pages/Auth/NewEntry';
 import ManageJobPost from './Pages/Admin/Manage Job-post/ManageJobPost';
-import RequireAdmin from './Pages/Login/RequireAdmin';
+import RequireAdmin from './Pages/Auth/RequireAdmin';
 import SeekerApplications from "./Pages/Employer/Candidates/SeekerApplications";
 import Resume from "./Pages/Employer/Candidates/Resume";
-import AdminPost from "./Pages/Admin/AdminPost";
+import AdminPost from "./Pages/Admin/Admin Post/AdminPost";
 import CandidatesProfile from "./Pages/Employer/Candidates/CandidatesProfile";
 import SendOfferLetter from "./Pages/Employer/Candidates/SendOfferLetter";
 import JobDetails from "./Pages/Home/JobDetails";
-import ManageRecruiters from "./Pages/Admin/Manage Recruiters/ManageRecruiters";
 import ManageJobSeekers from "./Pages/Admin/Manage Seekers/ManageJobSeekers";
-import RecruiterDetails from "./Pages/Admin/Manage Recruiters/RecruiterDetails";
 import SeekerDetails from "./Pages/Admin/Manage Seekers/SeekerDetails";
 import ViewApplicants from "./Pages/Admin/Manage Job-post/ViewApplicants";
+import ActivateEmail from "./Pages/Auth/ActivateEmail";
+import ResetPassword from "./Pages/Auth/ResetPassword";
+import RequirePayment from "./Pages/Auth/RequirePayment";
+import PaymentOptions from "./Pages/PaymentOptions/PaymentOptions";
+import ManageEmployers from "./Pages/Admin/Manage Employers/ManageEmployers";
+import EmployerDetails from "./Pages/Admin/Manage Employers/EmployerDetails";
 
 function App() {
   return (
     <div className="bg-slate-100">
       <Routes>
+        {/* ====================
+            Entry point or Home
+        ==================== */}
         <Route path='/' element={<Home></Home>}>
           <Route path='/job/:id' element={<JobDetails></JobDetails>}></Route>
         </Route>
 
+
+        {/* ====================
+            User Authentication
+        ==================== */}
+        <Route path='/login' element={<Login></Login>}></Route>
+        <Route path='/signup' element={<SignUp></SignUp>}></Route>
+        <Route path='/user/activate/:activation_token' element={<ActivateEmail></ActivateEmail>}></Route>
+        <Route path='/user/reset/:reset_token' element={<ResetPassword></ResetPassword>}></Route>
+
+        {/* New register user */}
         <Route path='/new-entry' element={
           <RequireAuth>
             <NewEntry></NewEntry>
@@ -56,14 +73,14 @@ function App() {
           {/* ====================
               Admin Dashboard
           ==================== */}
-          <Route path='/dashboard/manage-recruiters' element={
+          <Route path='/dashboard/manage-employers' element={
             <RequireAdmin>
-              <ManageRecruiters></ManageRecruiters>
+              <ManageEmployers></ManageEmployers>
             </RequireAdmin>
           }></Route>
-          <Route path='/dashboard/manage-recruiters/details' element={
+          <Route path='/dashboard/manage-employers/details' element={
             <RequireAdmin>
-              <RecruiterDetails></RecruiterDetails>
+              <EmployerDetails></EmployerDetails>
             </RequireAdmin>
           }></Route>
           <Route path='/dashboard/manage-seekers' element={
@@ -137,7 +154,7 @@ function App() {
             <Resume></Resume>
           </RequireAuth>
         }></Route>
-        
+
         {/* ====================
               User Form
           ==================== */}
@@ -162,7 +179,9 @@ function App() {
           ==================== */}
         <Route path='/employer-form/contact' element={
           <RequireAuth>
-            <EmployerContact></EmployerContact>
+            <RequirePayment>
+              <EmployerContact></EmployerContact>
+            </RequirePayment>
           </RequireAuth>
         }></Route>
         <Route path='/employer-form/job-description' element={
@@ -176,10 +195,14 @@ function App() {
           </RequireAuth>
         }></Route>
 
+        <Route path='/payment' element={
+          <RequireAuth>
+            <PaymentOptions></PaymentOptions>
+          </RequireAuth>
+        }></Route>
+
 
         <Route path='/help-center' element={<HelpCenter></HelpCenter>}></Route>
-        <Route path='/login' element={<Login></Login>}></Route>
-        <Route path='/signup' element={<SignUp></SignUp>}></Route>
         <Route path='/*' element={<NotFound></NotFound>}></Route>
       </Routes>
     </div>

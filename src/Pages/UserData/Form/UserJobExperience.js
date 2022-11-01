@@ -6,11 +6,11 @@ const UserJobExperience = () => {
     const [currentWork, setCurrentWork] = useState(false);
     const navigate = useNavigate();
 
-    const jobTitleRef = useRef('');
-    const companyRef = useRef('');
-    const startDateRef = useRef('');
-    const workingRef = useRef('');
-    const responsibilitiesRef = useRef('');
+    const jobTitleRef = useRef();
+    const companyRef = useRef();
+    const startDateRef = useRef();
+    const workingRef = useRef();
+    const responsibilitiesRef = useRef();
 
 
     const handleJobExp = event => {

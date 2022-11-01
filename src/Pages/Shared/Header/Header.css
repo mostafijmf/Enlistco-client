@@ -1,0 +1,46 @@
+.dashboard_icon{
+    position: relative;
+}
+.dashboard_icon::after{
+    content: 'Dashboard';
+    position: absolute;
+    z-index: 99;
+    bottom: -34px;
+    right: -19px;
+    font-size: 14px;
+    color: #f1f1f1;
+    background: rgba(0, 0, 0, 0.70);
+    padding: 2px 8px;
+    border-radius: 4px;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s;
+}
+.dashboard_icon:hover::after{
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.notification_icon{
+    position: relative;
+}
+.notification_icon::after{
+    content: 'Notifications';
+    position: absolute;
+    z-index: 99;
+    bottom: -44px;
+    right: -26px;
+    font-size: 14px;
+    color: #f1f1f1;
+    background: rgba(0, 0, 0, 0.70);
+    padding: 2px 8px;
+    border-radius: 4px;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s;
+}
+.notification_icon:hover::after{
+    visibility: visible;
+    opacity: 1;
+}

@@ -1,38 +1,41 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import useAdmin from '../../hooks/useAdmin';
 import useGetPost from '../../hooks/useGetPost';
+import useGetUsers from '../../hooks/useGetUsers';
 import Footer from '../Shared/Footer';
-import Header from '../Shared/Header';
+import Header from '../Shared/Header/Header';
 import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 
 const Dashboard = () => {
-    const [admin, adminLoading] = useAdmin();
+    const [usersData, loading] = useGetUsers();
     const [myPost] = useGetPost(null);
-    const emp = myPost[0];
-    if (adminLoading) {
+    const emp = myPost[0]?.permission;
+    
+    if (loading) {
         return <div className='h-screen w-full flex items-center justify-center'>
             <Spinner></Spinner>
         </div>
     };
+    const { admin } = usersData;
+
     return (<>
         <PageTitle title='Dashboard'></PageTitle>
         <Header></Header>
-        <section className='bg-slate-100 grid grid-cols-4'>
+        <section className='bg-slate-100 grid grid-cols-9'>
             {/* ==============Sidebar============== */}
-            <div className='col-span-1 border-r shadow-lg relative lg:block hidden'>
-                <ul className="h-screen sticky top-14 left-0 pt-2">
+            <div className='lg:col-span-2 border-r shadow-lg relative lg:block hidden'>
+                <ul className="list-none h-screen sticky top-14 left-0 pt-2">
                     {
-                        admin.admin ? <>
+                        admin ? <>
                             <li>
                                 <Link
-                                    className='w-full flex items-center gap-3 py-3 px-10 hover:bg-white hover:text-accent focus:bg-white focus:text-accent' 
-                                    to='/dashboard/manage-recruiters'
+                                    className='w-full flex items-center gap-3 py-3 px-10 hover:bg-white hover:text-accent focus:bg-white focus:text-accent'
+                                    to='/dashboard/manage-employers'
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                                    </svg>Manage Recruiters
+                                    </svg>Manage Employers
                                 </Link>
                             </li>
                             <li>
@@ -93,7 +96,7 @@ const Dashboard = () => {
                             <li>
                                 <Link
                                     className='w-full flex items-center gap-3 py-3 px-10 hover:bg-white hover:text-accent focus:bg-white focus:text-accent'
-                                    to='/dashboard/application/applied'
+                                    to='/dashboard/application/post'
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -120,7 +123,7 @@ const Dashboard = () => {
             </div>
 
             {/* ==============content area============== */}
-            <div className='lg:col-span-3 col-span-4 h-screen overflow-y-auto scrollBar'>
+            <div className='lg:col-span-7 col-span-9 h-screen overflow-y-auto scrollBar'>
                 <Outlet></Outlet>
             </div>
         </section>

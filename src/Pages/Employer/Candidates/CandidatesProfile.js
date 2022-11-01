@@ -15,22 +15,32 @@ const CandidatesProfile = () => {
     const [cdData, setCdData] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+
     useEffect(() => {
         const email = location.state;
         if (email) {
-            axios.get(`https://api.enlistco.co.in/users/${email}`)
+            axios.get(`https://api.enlistco.co.in/users/candidates_data/${email}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': localStorage.getItem('user_token')
+                }
+            })
                 .then(res => {
                     setCdData(res.data);
                     setLoading(false)
                 })
                 .catch(err => {
-                    setLoading(false)
+                    setLoading(false);
+                    if (err?.response?.data?.logout) {
+                        localStorage.removeItem('user_token');
+                        return navigate('/login');
+                    }
                 });
         }
-    }, [location]);
+    }, [cdData, location, navigate]);
 
     if (loading) {
-        return <div className='flex justify-center mt-96'>
+        return <div className='w-full h-screen flex items-center justify-center'>
             <Spinner></Spinner>
         </div>
     };
@@ -59,7 +69,7 @@ const CandidatesProfile = () => {
             <div>
                 <h1 className='text-center text-gray-600 md:text-3xl sm:text-2xl text-xl font-medium'>{firstName} {lastName}</h1>
                 <h2 className='text-center text-gray-600 sm:text-xl text-lg'>{jobExp?.exJobTitle}</h2>
-                <ul className='mt-5'>
+                <ul className='list-none mt-5'>
                     <li className='mt-2 text-base flex'>
                         <div className='font-medium flex items-center gap-3'>
                             <MailIcon className='w-6 h-6 text-gray-500'></MailIcon>
@@ -97,7 +107,7 @@ const CandidatesProfile = () => {
                     </li>
                     <li className='mt-4 text-base flex'>
                         <div className='font-medium flex items-center gap-3'>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-gray-500">
                                 <path d="M19.5 22.5a3 3 0 003-3v-8.174l-6.879 4.022 3.485 1.876a.75.75 0 01-.712 1.321l-5.683-3.06a1.5 1.5 0 00-1.422 0l-5.683 3.06a.75.75 0 01-.712-1.32l3.485-1.877L1.5 11.326V19.5a3 3 0 003 3h15z" />
                                 <path d="M1.5 9.589v-.745a3 3 0 011.578-2.641l7.5-4.039a3 3 0 012.844 0l7.5 4.039A3 3 0 0122.5 8.844v.745l-8.426 4.926-.652-.35a3 3 0 00-2.844 0l-.652.35L1.5 9.59z" />
                             </svg>
@@ -122,7 +132,7 @@ const CandidatesProfile = () => {
                     <h1 className='text-center text-gray-600 md:text-3xl sm:text-2xl text-xl'>Education</h1>
                     <div className='border-t mt-5'>
                         {education?.map((edu, index) =>
-                            <ul key={index} className='my-5 relative'>
+                            <ul key={index} className='list-none my-5 relative'>
                                 <li className='mt-4 text-base flex'>
                                     <div className='font-medium flex items-center gap-3'>
                                         <AcademicCapIcon className='w-6 h-6 text-gray-500'></AcademicCapIcon>
@@ -181,7 +191,7 @@ const CandidatesProfile = () => {
                     <div className='border-t mt-5 relative'>
                         {
                             jobExperience.map((ex, index) =>
-                                <ul key={index} className='my-5 relative'>
+                                <ul key={index} className='list-none my-5 relative'>
                                     <li className='mt-4 text-base flex'>
                                         <div className='font-medium flex items-center gap-3'>
                                             <BriefcaseIcon className='w-6 h-6 text-gray-500'></BriefcaseIcon>

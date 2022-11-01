@@ -2,14 +2,13 @@ import { CheckIcon, ExclamationCircleIcon, PlusIcon, XIcon } from '@heroicons/re
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useRef } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import auth from '../../../firebase.init';
+import useGetUsers from '../../../hooks/useGetUsers';
 import PageTitle from '../../Shared/PageTitle';
 import Spinner from '../../Shared/Spinner';
 
 const ApplicationOptions = () => {
-    const [user] = useAuthState(auth);
+    const [usersData] = useGetUsers();
     const navigate = useNavigate();
     const [openModal, setOpenModal] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -20,10 +19,8 @@ const ApplicationOptions = () => {
     const salaryRef = useRef();
     const upRef = useRef();
 
-
-    // Add skill
+    // ==================Add skill==================
     const [skillTags, setskillTags] = useState([]);
-
     const addskillTags = () => {
         if (skillRef.current.value) {
             setskillTags([...skillTags, skillRef.current.value])
@@ -34,20 +31,17 @@ const ApplicationOptions = () => {
     };
 
 
-    // Add screening questions
+    // ==================Add screening questions==================
     const [addQuestions, setAddQuestions] = useState([]);
-
     const handleQuestion = text => {
         setAddQuestions([...addQuestions, text]);
     };
-
     const removeQuestion = remove => {
         setAddQuestions(addQuestions.filter(q => q !== remove))
     };
 
-    // Add screening Custom Question
+    // ==================Add screening Custom Question==================
     const [addCTQuestion, setAddCTQuestion] = useState([]);
-
     const handleCustomQuestion = text => {
         setAddCTQuestion([...addCTQuestion, text]);
     };
@@ -65,7 +59,7 @@ const ApplicationOptions = () => {
     }
 
 
-    // Handle form
+    // ==================Handle form==================
     const handleApplication = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -73,7 +67,7 @@ const ApplicationOptions = () => {
         const receiveEmail = emailRef.current.value;
         const salary = salaryRef.current.value;
         const postOptions = { receiveEmail, salary, skillTags };
-        const email = user.email;
+        const email = await usersData?.email;
 
         // Add screening questions
         const bgCheck = addQuestions.find(q => q === 'bgCheck') ? {
@@ -163,12 +157,22 @@ const ApplicationOptions = () => {
         if (receiveEmail.includes('@' && '.')) {
             await axios.post('https://api.enlistco.co.in/post', {
                 postOptions, employerContact, jobDescription, terms, email, bgCheck, certification, drivingLicense, drugTest, education, gpa, hybridWork, remoteWork, workExperience, urgentHiring, customQuestion
+            }, {
+                method: 'POST',
+                headers: {
+                    'Authorization': localStorage.getItem('user_token')
+                }
             })
                 .then(res => {
-                    setLoading(false);
+                    res && setLoading(false);
                 })
                 .catch(err => {
                     setLoading(false);
+                    const { logout, message } = err.response.data;
+                    if (logout) {
+                        localStorage.removeItem('user_token');
+                        return navigate('/login');
+                    }
                 });
             setOpenModal(true);
         }
@@ -203,9 +207,9 @@ const ApplicationOptions = () => {
                         <input ref={salaryRef} id='salary' type="text" placeholder="Enter amount as per year/month/day/hours" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                     </div>
                     <div className='mt-5'>
-                        <h1 className='font-medium sm:text-lg text-base'>Add skillTags</h1>
+                        <h1 className='font-medium sm:text-lg text-base'>Add skillTags<span className='ml-1 font-normal'>(optional)</span></h1>
                         <p className='text-gray-600 text-base'>Add skill keywords or tags so your job can reach more accurate candidates.</p>
-                        <ul className='flex items-center flex-wrap gap-1 w-full'>
+                        <ul className='list-none flex items-center flex-wrap gap-1 w-full'>
                             {
                                 skillTags.map((skill, index) =>
                                     <li key={index} className='flex items-center justify-between bg-secondary text-white rounded-md px-1 cursor-pointer' onClick={() => removeskillTags(index)}>
@@ -237,7 +241,7 @@ const ApplicationOptions = () => {
                     ====================*/}
                 <div className='mt-8 pt-5 border-t'>
                     <div className='mb-2'>
-                        <h2 className='font-medium sm:text-lg text-base'>Add screening questions</h2>
+                        <h2 className='font-medium sm:text-lg text-base'>Add screening questions<span className='ml-1 font-normal'>(optional)</span></h2>
                         <p className='text-gray-600 text-base'>Your job post reaches those people who match your requirements.</p>
                     </div>
 
@@ -749,7 +753,7 @@ const ApplicationOptions = () => {
                                 localStorage.removeItem('terms');
                                 navigate('/')
                             }}
-                            className="btn text-white capitalize"
+                            className="btn btn-accent text-lg min-h-0 h-11 text-white normal-case"
                         >Go to home
                         </button>
                     </div>

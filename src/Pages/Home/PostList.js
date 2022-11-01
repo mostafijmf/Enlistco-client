@@ -36,16 +36,29 @@ const PostList = ({ post }) => {
                     <DotsVerticalIcon className='w-6 h-6'></DotsVerticalIcon>
                 </div>
                 {
-                    openClipboard && <div onClick={() => clipboard(_id)}
+                    openClipboard &&
+                    <div
+                        onClick={() => clipboard(_id)}
                         title='copy'
-                        className='absolute right-0 top-9 sm:w-max h-max border hover:border-accent rounded-md shadow-lg bg-white flex justify-between items-center cursor-pointer  text-gray-500 hover:text-accent'>
+                        className='absolute right-0 top-9 sm:w-max h-max border hover:border-accent rounded-md shadow-lg bg-white flex justify-between items-center cursor-pointer  text-gray-500 hover:text-accent'
+                    >
                         <p className='text-sm p-2'>https://enlistco.co.in/job/{_id.slice(5, 20)}</p>
                         <span className='sm:p-2 py-4 px-2 border hover:border-accent rounded-r-md hover'>{
                             copied ?
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                <svg
+                                    className="h-6 w-6 text-success"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" strokeWidth="2"
+                                >
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg> :
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                <svg
+                                    className="h-6 w-6"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" strokeWidth="2"
+                                >
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                 </svg>
                         }

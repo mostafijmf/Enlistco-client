@@ -18,6 +18,9 @@ const UserProfile = () => {
         </div>
     }
 
+    const seeker = usersData.seeker;
+    const employer = myPost.find(e => e !== undefined);
+
     if (!usersData || usersData.length === 0) {
         return <div className='h-96 w-full flex flex-col justify-center gap-5 items-center'>
             <h1 className='text-4xl text-gray-500'>You don't have data</h1>
@@ -25,10 +28,8 @@ const UserProfile = () => {
         </div>
     }
 
-    const seeker = usersData[0].seeker;
-    const employer = myPost.find(e => e !== undefined);
-
-    if ((!employer && usersData[0].employer) || (!usersData[0].employer && !usersData[0].seeker)) {
+    
+    if (!usersData.employer && !usersData.seeker) {
         return <div className='h-96 w-full flex flex-col justify-center gap-5 items-center'>
             <h1 className='text-4xl text-gray-500'>You don't have data</h1>
             <button onClick={() => navigate('/form/user-contact')} className='btn btn-primary hover:text-white min-h-0 sm:h-11 h-10 normal-case text-lg tracking-wide'>Upload your resume</button>
@@ -37,10 +38,10 @@ const UserProfile = () => {
 
     return (<>
         <PageTitle title='Profile - Dashboard'></PageTitle>
-        <section className='relative'>
+        <section className='relative mb-20'>
             <h1 className='text-center sm:text-3xl text-2xl font-medium my-5 text-accent'>Personal Information</h1>
             {seeker &&
-                usersData.map(user => <SeekerProfile key={user._id} user={user}></SeekerProfile>)
+                <SeekerProfile usersData={usersData}></SeekerProfile>
             }
             {
                 employer &&

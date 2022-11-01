@@ -1,23 +1,22 @@
+import { ExclamationIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import auth from '../../../firebase.init';
 import PageTitle from '../../Shared/PageTitle';
 import Spinner from '../../Shared/Spinner';
 
 const UserEducation = () => {
-    const [user] = useAuthState(auth);
     const [studying, setStudying] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const degreeRef = useRef('');
-    const institutionRef = useRef('');
-    const groupRef = useRef('');
-    const startDateRef = useRef('');
-    const studyingRef = useRef('');
-    const resumeRef = useRef('');
+    const degreeRef = useRef();
+    const institutionRef = useRef();
+    const groupRef = useRef();
+    const startDateRef = useRef();
+    const studyingRef = useRef();
+    const resumeRef = useRef();
 
     const hanleEducation = async event => {
         event.preventDefault();
@@ -57,21 +56,32 @@ const UserEducation = () => {
         const jobExp = JSON.parse(localStorage.getItem('jobExp'));
 
         // Send data to database
-        const email = user?.email;
-        const url = `https://api.enlistco.co.in/seeker/${email}`;
-        await fetch(url, {
-            method: 'PUT',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({ userContact, jobExp, education })
-        })
-            .then(res => res.json())
-            .then(data => { });
-        localStorage.removeItem('userContact');
-        localStorage.removeItem('jobExp');
-        navigate('/');
-        setLoading(false)
+        await axios.put('https://api.enlistco.co.in/seeker_data',
+            { userContact, jobExp, education },
+            {
+                method: 'PUT',
+                headers: {
+                    'Authorization': localStorage.getItem('user_token')
+                }
+            })
+            .then(res => {
+                if (res.data) {
+                    setLoading(false);
+                    localStorage.removeItem('userContact');
+                    localStorage.removeItem('jobExp');
+                    navigate('/');
+                }
+            })
+            .catch(err => {
+                const { logout, message } = err.response.data;
+                if (logout) {
+                    setLoading(false);
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
+                setError(message)
+                setLoading(false);
+            });
     };
 
     return (<>
@@ -93,7 +103,13 @@ const UserEducation = () => {
                         </div>
                         <div className='mt-5'>
                             <label htmlFor='institution' className='font-medium sm:text-lg text-base'>Institution<span className='text-orange-600 ml-1'>*</span></label>
-                            <input id='institution' ref={institutionRef} required type="text" placeholder="Ex: Oxford University" className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                            <input
+                                id='institution'
+                                ref={institutionRef}
+                                required type="text"
+                                placeholder="Ex: Oxford University"
+                                className="input h-11 text-base bg-slate-100 w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md"
+                            />
                         </div>
                         <div className='mt-5'>
                             <label htmlFor='group' className='font-medium sm:text-lg text-base'>Subject or Group<span className='text-orange-600 ml-1'>*</span>
@@ -141,6 +157,12 @@ const UserEducation = () => {
                             ></textarea>
                         </div>
                     </div>
+                    {
+                        error && <p className='text-sm text-red-600 mt-3 flex items-center gap-1'>
+                            <ExclamationIcon className='w-4 h-4'></ExclamationIcon>
+                            {error}
+                        </p>
+                    }
                     <div className='mt-6 flex sm:flex-row flex-col-reverse justify-between gap-4'>
                         <button
                             onClick={() => navigate('/')}
@@ -148,6 +170,7 @@ const UserEducation = () => {
                             Later
                         </button>
                         <button
+                            disabled={loading}
                             className='sm:w-max w-full btn btn-primary px-6 normal-case sm:text-lg text-base text-white h-11 min-h-0'
                             type="submit">
                             {

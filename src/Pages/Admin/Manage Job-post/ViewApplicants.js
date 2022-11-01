@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Spinner from '../../Shared/Spinner';
 import ApplicantsList from './ApplicantsList';
 
@@ -9,17 +9,29 @@ const ViewApplicants = () => {
     const appliedID = location?.state;
     const [appliedList, setAppliedList] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const navigate = useNavigate();
     useEffect(() => {
-        axios.get(`https://api.enlistco.co.in/admin-applied-list/${appliedID}`)
+        axios.get(`https://api.enlistco.co.in/admin-applied-list/${appliedID}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
             .then(res => {
+                if (res) {
                 setAppliedList(res.data);
                 setLoading(false)
+                }
             })
             .catch(err => {
-                setLoading(false)
+                setLoading(false);
+                if (err?.response?.data?.logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
-    }, [appliedID]);
+
+    }, [appliedID, navigate]);
 
     if (loading) {
         return <div className='h-screen w-full flex items-center justify-center'>

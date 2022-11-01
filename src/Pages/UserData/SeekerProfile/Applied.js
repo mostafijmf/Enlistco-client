@@ -4,16 +4,23 @@ import useGetApply from '../../../hooks/useGetApply';
 import AppliedList from './AppliedList';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../../Shared/PageTitle';
+import Spinner from '../../Shared/Spinner';
 
 const Applied = () => {
-    const [applied] = useGetApply(null);
+    const [applied, loading] = useGetApply(null);
     const [allPost] = useGetAllPost(null);
     const navigate = useNavigate();
+
+    if(loading){
+        return <div className='w-full h-screen flex items-center justify-center'>
+            <Spinner></Spinner>
+        </div>
+    }
 
     return (<>
         <PageTitle title='Applied - Dashboard'></PageTitle>
         <div className='w-full flex justify-center relative'>
-            <div className='md:w-4/5 sm:w-11/12 w-full mx-auto'>
+            <div className='lg:w-9/12 md:w-4/5 sm:w-11/12 w-full mx-auto'>
                 <h1 className='text-2xl font-medium text-accent sm:text-left text-center mt-5 mb-3'>My applied jobs</h1>
                 {
                     applied.length === 0 ?

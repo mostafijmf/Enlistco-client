@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../Shared/Footer';
-import Header from '../Shared/Header';
+import Header from '../Shared/Header/Header';
 import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
 import JobDetails from './JobDetails';
@@ -28,59 +28,65 @@ const Home = () => {
     const [focusAddress, setFocusAddress] = useState(false);
     const [addressSelect, setAddressSelect] = useState('');
 
-    // search bar
+
+    // ====================Search bar====================
     useEffect(() => {
-        axios.get('https://api.enlistco.co.in/post')
-            .then(res => {
-                setLoading(false)
-                const data = res.data;
-                const titleText = titleValue?.target?.value?.toLowerCase();
-                const addessText = addressValue?.target?.value?.toLowerCase();
+        axios.get('https://api.enlistco.co.in/post', {
+            method: 'GET',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        }).then(res => {
+            setLoading(false)
+            const data = res.data;
+            const titleText = titleValue?.target?.value?.toLowerCase();
+            const addessText = addressValue?.target?.value?.toLowerCase();
 
-                // title bar
-                if (titleText) {
-                    const inputMatch = data.filter(d => d.permission ?
-                        d.jobTitle.toLowerCase().includes(titleText) ||
-                        d.company.toLowerCase().includes(titleText) ||
-                        d.skillTags.some(e => e.toLowerCase().includes(titleText)) ||
-                        d._id.slice(0, 25).toLowerCase().includes(titleText)
-                        : ''
-                    );
+            // title bar
+            if (titleText) {
+                const inputMatch = data.filter(d => d.permission ?
+                    d.jobTitle.toLowerCase().includes(titleText) ||
+                    d.company.toLowerCase().includes(titleText) ||
+                    d.skillTags.some(e => e.toLowerCase().includes(titleText)) ||
+                    d._id.slice(0, 25).toLowerCase().includes(titleText)
+                    : ''
+                );
 
-                    if (inputMatch.length === 0) {
-                        setTitleData([]);
-                        setAllPost(data)
-                    } else {
-                        setTitleData(inputMatch);
-                    }
+                if (inputMatch.length === 0) {
+                    setTitleData([]);
+                    setAllPost(data)
                 } else {
-                    setAllPost(data);
-                    setTitleData(data);
+                    setTitleData(inputMatch);
                 }
+            } else {
+                setAllPost(data);
+                setTitleData(data);
+            }
 
-                // address bar
-                if (addessText) {
-                    const inputMatch = data.filter(d => d.permission ?
-                        d.jobLocation.toLowerCase().includes(addessText) ||
-                        d.workplace.toLowerCase().includes(addessText)
-                        : ''
-                    );
-                    if (inputMatch.length === 0) {
-                        setAddressData([]);
-                        setAllPost(data)
-                    } else {
-                        setAddressData(inputMatch);
-                    }
+            // address bar
+            if (addessText) {
+                const inputMatch = data.filter(d => d.permission ?
+                    d.jobLocation.toLowerCase().includes(addessText) ||
+                    d.workplace.toLowerCase().includes(addessText)
+                    : ''
+                );
+                if (inputMatch.length === 0) {
+                    setAddressData([]);
+                    setAllPost(data)
                 } else {
-                    setAllPost(data);
-                    setAddressData(data);
+                    setAddressData(inputMatch);
                 }
-            })
-            .catch(err => { setLoading(false) });
+            } else {
+                setAllPost(data);
+                setAddressData(data);
+            }
+        }).catch(err => { 
+            setLoading(false) 
+        });
     }, [allPost, titleValue, addressValue]);
 
 
-    // search button
+    // ====================Search button====================
     const handleSearch = (e) => {
         e.preventDefault();
         const titleText = titleValue?.target?.value?.toLowerCase();
@@ -114,13 +120,12 @@ const Home = () => {
             data = titleMatch;
         }
 
-        if (data.length !== 0) {
+        if (data && data.length !== 0) {
             setSearchingPost(data);
         } else {
-            setSearchingPost(titleMatch);
+            setSearchingPost(allPost);
         }
     };
-
 
     const aPost = searchingPost.length === 0 ? allPost.filter(ap => ap.permission) : searchingPost.filter(ap => ap.permission);
 
@@ -153,7 +158,7 @@ const Home = () => {
                             className="input h-11 text-base w-full border border-gray-200 focus:outline-0 focus:shadow-md"
                         />
                         {focusTitle &&
-                            <ul className='absolute z-20 top-10 left-0 w-full h-auto bg-white border border-t-0 rounded-b-md shadow-xl'>
+                            <ul className='list-none absolute z-20 top-10 left-0 w-full h-auto bg-white border border-t-0 rounded-b-md shadow-xl'>
                                 {titleData.length === 0 ? <li className='p-5 text-base text-gray-500'>
                                     Result not found</li>
                                     : titleData.slice(0, 15).map(p => <li key={p._id}
@@ -190,7 +195,7 @@ const Home = () => {
                                     placeholder='City, state, or country'
                                     className="input h-11 text-base w-full border border-gray-200 focus:outline-0 focus:shadow-md"
                                 />
-                                {focusAddress && <ul className='absolute z-10 top-10 left-0 w-full h-auto bg-white border border-t-0 rounded-b-md shadow-xl'>{addressData.length === 0 ? <li className='p-5 text-base text-gray-500'>
+                                {focusAddress && <ul className='list-none absolute z-10 top-10 left-0 w-full h-auto bg-white border border-t-0 rounded-b-md shadow-xl'>{addressData.length === 0 ? <li className='p-5 text-base text-gray-500'>
                                     Result not found
                                 </li>
                                     : addressData.slice(0, 15).map(p => <li key={p._id} onClick={() => setAddressSelect(p.jobLocation)}>

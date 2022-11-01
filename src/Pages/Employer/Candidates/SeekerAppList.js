@@ -14,7 +14,6 @@ const SeekerAppList = ({ items, index, setOpenModal }) => {
         coverLetter,
         subject,
         resume,
-        
         // Screening question
         bgCheck,
         certification,

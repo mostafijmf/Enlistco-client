@@ -15,6 +15,7 @@ const SendOfferLetter = () => {
     const [successMsg, setSuccessMsg] = useState('');
     const editorRef = useRef(null);
 
+
     useEffect(() => {
         if (successMsg) {
             setTimeout(() => {
@@ -23,14 +24,20 @@ const SendOfferLetter = () => {
         };
     }, [successMsg]);
 
+    // ============Offer letter send button============
     const handleOfferLetter = async e => {
         e.preventDefault();
         setLoading(true);
         const subject = e.target.subject.value;
         const offerLetter = editorRef.current.getContent();
 
-        await axios.put(`https://api.enlistco.co.in/apply/${_id}`, {
+        await axios.put(`https://api.enlistco.co.in/apply/offer_letter_send/${_id}`, {
             _id, seekerEmail, seekerName, jobTitle, company, subject, offerLetter
+        }, {
+            method: 'GET',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
         })
             .then(res => {
                 if (res.data) {
@@ -40,12 +47,16 @@ const SendOfferLetter = () => {
             })
             .catch(err => {
                 setLoading(false);
+                if (err?.response?.data?.logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
     };
 
     return (<>
         <PageTitle title='Send Offer Letter - Dashboard'></PageTitle>
-        <div className='top-0 left-0 h-full w-full py-10'>
+        <div className='top-0 left-0 h-full w-full py-7'>
             <div className={`fixed top-20 ${successMsg ? 'right-10' : '-right-96'} z-10 duration-300 bg-white flex items-center py-3 px-5 border rounded-lg shadow-md`}>
                 <CheckCircleIcon className='w-7 h-7 text-success mr-2'></CheckCircleIcon>
                 <p className='text-success text-base'>{successMsg}</p>

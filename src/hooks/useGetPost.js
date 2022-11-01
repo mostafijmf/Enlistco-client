@@ -1,30 +1,27 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import auth from '../firebase.init';
+import { useNavigate } from 'react-router-dom';
 
 const useGetPost = () => {
-    const [user] = useAuthState(auth);
     const [myPost, setMyPost] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const email = user?.email;
-        const url = `https://api.enlistco.co.in/post/${email}`;
-            axios.get(url,{
-                method: 'GET',
-                headers: {
-                    'authorization': `Bearer ${localStorage.getItem('accessToken')}`
-                }
-            })
+        axios.get('https://api.enlistco.co.in/post/get_single_post', {
+            method: 'GET',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
             .then(res => {
                 setMyPost(res.data);
                 setLoading(false)
             })
             .catch(err => {
-                setLoading(false)
+                err && setLoading(false);
             });
-    }, [user, myPost]);
+    }, [myPost, navigate]);
 
     return [myPost, loading];
 };

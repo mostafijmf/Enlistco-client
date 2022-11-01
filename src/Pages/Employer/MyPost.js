@@ -2,12 +2,14 @@ import { ArrowRightIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Spinner from '../Shared/Spinner';
 
 const MyPost = ({ post }) => {
     const [openPost, setOpenPost] = useState(false);
     const [deletePost, setDeletePost] = useState(false);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
     const {
         _id,
         permission,
@@ -24,19 +26,25 @@ const MyPost = ({ post }) => {
         receiveEmail,
         skillTags
     } = post;
-    console.log(post)
 
-    const handleDelete = async id => {
-        setLoading(true)
-        const url = `https://api.enlistco.co.in/post/${id}`;
-
-        await axios.delete(url)
+    const handleDelete = async (id) => {
+        setLoading(true);
+        await axios.delete(`https://api.enlistco.co.in/post/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
             .then(res => {
                 setLoading(false)
                 setDeletePost(!deletePost);
             })
             .then(err => {
-                setLoading(false)
+                setLoading(false);
+                if (err?.response?.data?.logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             })
     };
 
@@ -93,7 +101,7 @@ const MyPost = ({ post }) => {
                     Under review
                 </div>
             }
-            <ul className='grid sm:grid-cols-2 sm:grid-rows-1 grid-rows-2 items-center'>
+            <ul className='list-none grid sm:grid-cols-2 sm:grid-rows-1 grid-rows-2 items-center'>
                 <li>
                     <h1 className='text-xl text-left font-medium'>{jobTitle}</h1>
                     <p className='sm:text-lg text-base'>{company}</p>
