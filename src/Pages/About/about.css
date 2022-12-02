@@ -1,0 +1,18 @@
+.about_banner {
+    position: relative;
+    background-image: url('../../images/banner/about-banner.jpg');
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.about_banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: rgba(0, 0, 0, 0.70);
+}

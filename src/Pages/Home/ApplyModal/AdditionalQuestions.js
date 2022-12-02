@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-const AdditionalQuestions = ({ questions, setProgress }) => {
-
+const AdditionalQuestions = ({ questions, setNextState }) => {
     const {
         bgCheck,
         certification,
@@ -30,6 +29,8 @@ const AdditionalQuestions = ({ questions, setProgress }) => {
     const urgentHiringRef = useRef();
     const customQRef = useRef([]);
 
+
+    // ===================Next Button===================
     const handleNext = event => {
         event.preventDefault();
 
@@ -114,7 +115,6 @@ const AdditionalQuestions = ({ questions, setProgress }) => {
         } else {
             qEducation = {}
         };
-
 
         let qGpa = {};
         if (gpa) {
@@ -396,12 +396,12 @@ const AdditionalQuestions = ({ questions, setProgress }) => {
             qBgCheck, qCertification, qDrivingLicense, qDrugTest, qEducation, qGpa, qHybridWork, qRemoteWork, qWorkExperience, qUrgentHiring, ctQuestion
         }));
 
-        setProgress(50);
+        setNextState(true);
     };
 
     return (
         <div>
-            <h1 className='text-xl sm:px-8 px-5'>Additional Questions</h1>
+            <h1 className='text-xl sm:px-8 px-5 mt-4'>Additional Questions</h1>
             <form onSubmit={handleNext} className='w-full sm:px-8 px-5 my-5'>
                 {
                     bgCheck &&

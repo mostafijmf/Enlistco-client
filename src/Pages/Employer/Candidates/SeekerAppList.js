@@ -73,7 +73,8 @@ const SeekerAppList = ({ items, index, setOpenModal }) => {
                             state:
                                 { resume: resume, seekerName: seekerName }
                         })}
-                        className='btn btn-link pl-2 pr-0 normal-case text-sm'>
+                        className='btn btn-link pl-2 pr-0 normal-case text-sm'
+                    >
                         Resume
                     </button>
                 </td>
@@ -82,7 +83,8 @@ const SeekerAppList = ({ items, index, setOpenModal }) => {
                         onClick={() => navigate('/dashboard/seeker-applications/offer-letter', {
                             state: { _id, seekerEmail, seekerName, jobTitle, company }
                         })}
-                        className='btn btn-link pl-0 pr-2 normal-case text-sm'>
+                        className='btn btn-link pl-0 pr-2 normal-case text-sm'
+                    >
                         Send offer letter
                     </button>
                 </td>

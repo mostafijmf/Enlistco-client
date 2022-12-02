@@ -13,8 +13,9 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
     const [inputErr, setInputErr] = useState(false);
     const [uploadLoading, setUploadLoading] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const editorRef = useRef(null);
-    const [progress, setProgress] = useState(0);
+    const [nextState, setNextState] = useState(false);
     const navigate = useNavigate();
 
     const {
@@ -36,7 +37,7 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
         urgentHiring,
         customQuestion
     } = jobPost;
-    
+
     // Apply job
     const uploadResume = async () => {
         const resumeFile = resumeRef.current.files[0];
@@ -77,11 +78,9 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
     // Apply job
     const handleApply = async (event) => {
         event.preventDefault();
-        setLoading(true);
 
         // screening questions
         const screeningQuestions = JSON.parse(localStorage.getItem('screeningQuestions'));
-        console.log(screeningQuestions)
         const bgCheck = screeningQuestions && screeningQuestions.qBgCheck ?
             screeningQuestions.qBgCheck
             : '';
@@ -118,12 +117,19 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
 
 
         const resume = user?.resume;
-        const subject = event.target.subject.value;
+        if (!resume) return setError('Resume/CV must be needed');
+
         const coverLetter = editorRef.current.getContent();
+        if (!coverLetter) return setError('Please write a cover letter');
+
+        setError('');
+        setLoading(true);
+        const subject = event.target.subject.value;
         const seekerEmail = user?.email;
         const seekerPhone = user?.phone;
         const seekerName = user?.firstName + user?.lastName ? user?.firstName + ' ' + user?.lastName : 'no name';
         const postID = _id;
+
 
         const date = new Date();
         const applied = date.getDate() + '-' + date.toLocaleString('default', { month: 'long' }) + '-' + date.getFullYear();
@@ -153,8 +159,8 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
 
     return (<>
         <PageTitle title={`Apply to ${company}`}></PageTitle>
-        <div className='fixed top-0 left-0 w-full h-full overflow-y-auto scrollBar-sm flex justify-center bg-black/50 z-30'>
-            <div className='mt-8 mb-10 xl:w-1/2 md:w-3/5 sm:w-4/5 w-full h-max bg-white rounded-md shadow-2xl relative'>
+        <div className='fixed top-0 left-0 w-full h-full overflow-y-auto scrollBar-sm flex justify-center bg-black/60 z-30'>
+            <div className='mt-3 mb-10 xl:w-1/2 md:w-3/5 sm:w-4/5 w-full h-max bg-white rounded-md shadow-2xl relative'>
                 <div>
                     <button
                         onClick={() => setModal(false)}
@@ -164,95 +170,97 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
                     <div className='sm:px-8 px-5 py-3 border-b-2'>
                         <h1 className='text-xl font-medium'>Apply to {company}</h1>
                     </div>
-                    {
-                        bgCheck || certification || drivingLicense || drugTest || education || gpa || hybridWork || remoteWork || workExperience || urgentHiring || customQuestion ?
-                            <div className='sm:px-8 px-5 my-2 flex items-center gap-4'>
-                                <progress
-                                    className="progress w-full"
-                                    value={progress}
-                                    max="100"
-                                ></progress>
-                                <div className='text-sm'>{progress}%</div>
-                            </div>
-                            : ''
-                    }
                 </div>
                 <div>
                     {bgCheck || certification || drivingLicense || drugTest || education || gpa || hybridWork || remoteWork || workExperience || urgentHiring || customQuestion ?
-                        progress === 0 ?
+                        !nextState ?
                             <AdditionalQuestions
-                                questions={{ bgCheck, certification, drivingLicense, drugTest, education, gpa, hybridWork, remoteWork, workExperience, urgentHiring, customQuestion }}
-                                setProgress={setProgress}
+                                questions={{
+                                    bgCheck,
+                                    certification,
+                                    drivingLicense,
+                                    drugTest,
+                                    education,
+                                    gpa,
+                                    hybridWork,
+                                    remoteWork,
+                                    workExperience,
+                                    urgentHiring,
+                                    customQuestion
+                                }}
+                                setNextState={setNextState}
                             ></AdditionalQuestions>
                             :
                             <form onSubmit={handleApply} className='pb-5'>
-                                <div>
-                                    <div className='sm:px-8 px-5 py-2'>
-                                        <h2 className='text-lg font-medium'>CV / Resume</h2>{
-                                            user?.resume ?
-                                                <iframe
-                                                    title='Resume'
-                                                    className='mt-2'
-                                                    src={user?.resume}
-                                                ></iframe>
-                                                : <>
-                                                    <div className='text-gray-500'>
-                                                        You don't have a resume.
-                                                        <div
-                                                            onClick={() => {
-                                                                setOpenInput(!openInput);
-                                                                setInputErr(false)
-                                                            }}
-                                                            className='btn btn-link normal-case p-0 ml-2'>
-                                                            {openInput ? 'Cancel' : 'Upload your resume'}
-                                                        </div>
-                                                    </div> {openInput && <div className='flex items-center'>
-                                                        <input
-                                                            id='file'
-                                                            type="file"
-                                                            ref={resumeRef}
-                                                            className={`input rounded-r-none h-10 text-base w-full p-1 border ${inputErr ? 'border-red-600' : 'border-gray-200'} focus:outline-0 focus:shadow-md`} />
-                                                        <div
-                                                            onClick={uploadResume}
-                                                            className='btn btn-primary text-white rounded-l-none w-max min-h-0 h-10 normal-case text-base tracking-wide px-6'>{
-                                                                uploadLoading ? <Spinner></Spinner> : 'Upload'
-                                                            }
-                                                        </div>
-                                                    </div>
+                                <div className='sm:px-8 px-5 py-2'>
+                                    <h2 className='text-lg font-medium'>CV / Resume</h2>
+                                    {user?.resume ?
+                                        <iframe
+                                            title='Resume'
+                                            className='mt-2'
+                                            src={user?.resume}
+                                        ></iframe>
+                                        : <>
+                                            <div className='text-gray-500'>
+                                                You don't have a resume.
+                                                <div
+                                                    onClick={() => {
+                                                        setOpenInput(!openInput);
+                                                        setInputErr(false)
+                                                    }}
+                                                    className='btn btn-link normal-case p-0 ml-2'>
+                                                    {openInput ? 'Cancel' : 'Upload your resume'}
+                                                </div>
+                                            </div> {openInput && <div className='flex items-center'>
+                                                <input
+                                                    id='file'
+                                                    type="file"
+                                                    ref={resumeRef}
+                                                    className={`input rounded-r-none h-10 text-base w-full p-1 border ${inputErr ? 'border-red-600' : 'border-gray-200'} focus:outline-0 focus:shadow-md`} />
+                                                <div
+                                                    onClick={uploadResume}
+                                                    className='btn btn-primary text-white rounded-l-none w-max min-h-0 h-10 normal-case text-base tracking-wide px-6'>{
+                                                        uploadLoading ? <Spinner></Spinner> : 'Upload'
                                                     }
-                                                </>
-                                        }
-                                    </div>
-                                    <div className='sm:px-8 px-5 py-2'>
-                                        <h2 className='text-lg font-medium mb-1'>Add cover letter</h2>
-                                        <input
-                                            type="text"
-                                            placeholder="Subject"
-                                            name='subject'
-                                            className="input h-9 text-base w-full mb-2 border border-gray-200 focus:outline-0 focus:shadow-md"
-                                        />
-                                        <BundledEditor
-                                            onInit={(evt, editor) => editorRef.current = editor}
-                                            initialValue={
-                                                'Write cover letter'
+                                                </div>
+                                            </div>
                                             }
-                                            required
-                                            init={{
-                                                height: 200,
-                                                menubar: false,
-                                                toolbar: false,
-                                                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; letter-spacing: 1px; line-height: 20px; margin-top:0}',
-                                                statusbar: false,
-                                            }}
+                                        </>
+                                    }
+                                </div>
+                                <div className='sm:px-8 px-5 py-2'>
+                                    <h2 className='text-lg font-medium mb-1'>Add cover letter</h2>
+                                    <input
+                                        required
+                                        type="text"
+                                        placeholder="Subject"
+                                        name='subject'
+                                        className="input h-9 text-base w-full mb-2 border border-gray-200 focus:outline-0 focus:shadow-md"
+                                    />
+                                    <BundledEditor
+                                        onInit={(evt, editor) => editorRef.current = editor}
+                                        initialValue={
+                                            'Write cover letter'
+                                        }
+                                        required
+                                        init={{
+                                            height: 200,
+                                            menubar: false,
+                                            toolbar: false,
+                                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; letter-spacing: 1px; line-height: 20px; margin-top:0}',
+                                            statusbar: false,
+                                        }}
 
-                                        />
-                                        <button
-                                            type='submit'
-                                            disabled={openInput || loading}
-                                            className='btn btn-outline btn-primary hover:text-white md:w-max w-full mt-5 min-h-0 h-10 normal-case text-lg px-10'>
-                                            {loading ? <Spinner /> : 'Submit'}
-                                        </button>
-                                    </div>
+                                    />
+                                    {
+                                        error && <p className='text-base text-red-600 mt-3'>{error}</p>
+                                    }
+                                    <button
+                                        type='submit'
+                                        disabled={openInput || loading}
+                                        className='btn btn-outline btn-primary hover:text-white md:w-max w-full mt-5 min-h-0 h-10 normal-case text-lg px-10'>
+                                        {loading ? <Spinner /> : 'Submit'}
+                                    </button>
                                 </div>
                             </form>
                         :
@@ -285,8 +293,10 @@ const ApplyModal = ({ setModal, jobPost, user }) => {
                                                         className={`input rounded-r-none h-10 text-base w-full p-1 border ${inputErr ? 'border-red-600' : 'border-gray-200'} focus:outline-0 focus:shadow-md`} />
                                                     <div
                                                         onClick={uploadResume}
-                                                        className='btn btn-primary text-white rounded-l-none w-max min-h-0 h-10 normal-case text-base tracking-wide px-6'>{
-                                                            uploadLoading ? <Spinner></Spinner> : 'Upload'
+                                                        className='btn btn-primary text-white rounded-l-none w-max min-h-0 h-10 normal-case text-base tracking-wide px-6'
+                                                    >
+                                                        {uploadLoading ?
+                                                            <Spinner></Spinner> : 'Upload'
                                                         }
                                                     </div>
                                                 </div>

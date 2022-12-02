@@ -58,7 +58,7 @@ const Login = () => {
                     setLoading(false);
                     setLoginState({ ...loginState, error: '', success: message });
                     localStorage.setItem('user_token', user_token);
-                    user.newEntry ? navigate('/new-entry') : navigate(from, { replace: true });
+                    user.newEntry ? navigate('/user-information') : navigate(from, { replace: true });
                 }
             })
             .catch(err => {
@@ -86,7 +86,6 @@ const Login = () => {
                 setLoginState({ ...loginState, resetError: '', resetSuccess: message });
             })
             .catch(err => {
-                console.log(err)
                 setResetLoading(false);
                 setLoginState({ ...loginState, resetError: err.response.data.message, resetSuccess: '' });
             })
