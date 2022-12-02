@@ -247,7 +247,8 @@ const SignUp = () => {
                     <div className='w-full flex justify-center'>
                         <CheckIcon className='w-16 h-16 p-3 border-2 rounded-full text-success'></CheckIcon>
                     </div>
-                    <p className='text-base text-gray-500 my-6 text-center'>Register success! Please verify your email.</p>
+                    <p className='text-base text-gray-500 mt-6 mb-2 text-center'>Register success!</p>
+                    <p className='text-base text-gray-500 mb-6 text-center'>Please Check your inbox of registered email.</p>
                     <div className='w-full flex justify-end'>
                         <button
                             onClick={() => setRegisterState(

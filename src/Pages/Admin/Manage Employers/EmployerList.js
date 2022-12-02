@@ -1,13 +1,15 @@
-import { TrashIcon, XIcon } from '@heroicons/react/solid';
+import { XIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useGetAllPost from '../../../hooks/useGetAllPost'
 import Spinner from '../../Shared/Spinner';
 
-const EmployerList = ({ emp, index, setDeleteUData, setUserData }) => {
+const EmployerList = ({ emp, index }) => {
     const { _id, firstName, lastName, admin, email, subscription } = emp;
-    console.log(emp);
+    const [openDelete, setOpenDelete] = useState('');
+    const [dLoading, setDLoading] = useState(false);
+
     const [allPost] = useGetAllPost();
     const jobPost = allPost.filter(p => p.employerEmail === email);
     const [getPayments, setGetPayments] = useState([]);
@@ -22,7 +24,7 @@ const EmployerList = ({ emp, index, setDeleteUData, setUserData }) => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    // Get payments
+    // ================Get payments================
     useEffect(() => {
         axios.get('https://api.enlistco.co.in/payment-complete',
             {
@@ -43,12 +45,30 @@ const EmployerList = ({ emp, index, setDeleteUData, setUserData }) => {
             });
     }, [getPayments, navigate]);
 
-    const handleDelete = emp => {
-        setDeleteUData(true);
-        setUserData(emp);
+
+    // ================Delete employer button================
+    const handleDelete = async email => {
+        setDLoading(true);
+        await axios.delete(`https://api.enlistco.co.in/admin_delete/${email}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': localStorage.getItem('user_token')
+            }
+        })
+            .then(res => {
+                setOpenDelete(!openDelete);
+                setDLoading(false);
+            })
+            .catch(err => {
+                setDLoading(false);
+                if (err?.response?.data?.logout) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
+            });
     };
 
-    // Make payment required
+    // ================Make payment required================
     const handlePayment = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -56,7 +76,7 @@ const EmployerList = ({ emp, index, setDeleteUData, setUserData }) => {
         const amount = e.target.amount.value;
         const subscription = 'required';
 
-        // Send data to database
+        // ================Send data to database================
         await axios.put(`https://api.enlistco.co.in/payment_required/${openModal}`,
             { paymentSystem, amount, subscription },
             {
@@ -88,14 +108,14 @@ const EmployerList = ({ emp, index, setDeleteUData, setUserData }) => {
                 <td className='py-2 text-sm'>{index + 1}</td>
                 <td className='py-2 text-sm'>
                     <div className='flex items-center gap-2'>
-                        <h1
+                        <button
                             onClick={() => navigate('/dashboard/manage-employers/details', {
                                 state: { emp, company }
                             })}
-                            className='text-base text-primary font-medium cursor-pointer hover:text-emerald-600'
+                            className='text-base text-primary font-medium hover:text-emerald-600'
                         >
                             {firstName} {lastName}
-                        </h1>
+                        </button>
                     </div>
                     <p className='text-gray-500'>{email}</p>
                 </td>
@@ -105,17 +125,17 @@ const EmployerList = ({ emp, index, setDeleteUData, setUserData }) => {
                 <td className='py-2 text-sm'>{totalAmount}</td>
                 <td className='py-2 text-sm'>{
                     !admin && <>{
-                        (subscription === 'required') || 
-                        (subscription === 'paid') || (subscription === 'per_post') ?
+                        (subscription === 'required') ||
+                            (subscription === 'paid') || (subscription === 'per_post') ?
                             <button
                                 onClick={() => setOpenModal(_id)}
-                                className='btn btn-accent btn-outline normal-case text-base font-medium min-h-0 h-9 px-3 hover:text-white/95'
+                                className='btn btn-accent btn-outline normal-case text-base font-medium min-h-0 h-9 px-3 hover:text-white/95 rounded'
                             >Edit payment
                             </button>
                             :
                             <button
                                 onClick={() => setOpenModal(_id)}
-                                className='btn btn-accent normal-case text-base font-medium min-h-0 h-9 px-3 text-white/95'
+                                className='btn btn-accent normal-case text-base font-medium min-h-0 h-9 px-3 text-white/95 rounded'
                             >Make required
                             </button>
                     }</>
@@ -124,7 +144,7 @@ const EmployerList = ({ emp, index, setDeleteUData, setUserData }) => {
                     {
                         !admin &&
                         <svg
-                            onClick={() => handleDelete(emp)}
+                            onClick={() => setOpenDelete(email)}
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 24 24"
                             strokeWidth="2" stroke="currentColor"
@@ -136,6 +156,8 @@ const EmployerList = ({ emp, index, setDeleteUData, setUserData }) => {
                 </td>
             </tr>
         </tbody >
+
+        {/* ====================Payment Modal==================== */}
         {
             openModal && <div className='fixed top-0 left-0 z-30 w-full h-screen bg-black/60 flex items-center justify-center'>
                 <form
@@ -194,6 +216,32 @@ const EmployerList = ({ emp, index, setDeleteUData, setUserData }) => {
                         </button>
                     </div>
                 </form>
+            </div>
+        }
+
+        {/* ====================Delete User Modal==================== */}
+        {
+            openDelete &&
+            <div className="fixed w-screen h-screen bg-black/60 top-0 left-0 z-30 flex items-center justify-center">
+                <div className="modal-box text-center bg-secondary">
+                    <h3 className="font-medium text-2xl text-white">Are you sure!</h3>
+                    <p className="text-lg py-4 text-gray-300">Do you want to delete it?</p>
+                    <div className="flex justify-center gap-10 mt-5">
+                        <button
+                            onClick={() => setOpenDelete('')}
+                            className="btn btn-primary text-white min-h-0 h-10 px-10"
+                        >
+                            No
+                        </button>
+
+                        <button onClick={() => handleDelete(openDelete)}
+                            disabled={dLoading}
+                            className="btn btn-outline text-white hover:text-secondary border-white hover:bg-white min-h-0 h-10 px-10 ">
+                            {dLoading ? <Spinner></Spinner> : 'Yes'}
+                        </button>
+
+                    </div>
+                </div>
             </div>
         }
     </>

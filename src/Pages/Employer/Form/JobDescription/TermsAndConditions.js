@@ -2,13 +2,14 @@ import { PlusIcon, XIcon } from '@heroicons/react/solid';
 import React, { useEffect, useRef, useState } from 'react';
 import BundledEditor from '../../../../BundledEditor';
 
-const TermsAndConditions = ({ setTerms }) => {
+const TermsAndConditions = ({ setTerms, termsData }) => {
     const editorRef = useRef(null);
     const [openTerms, setOpenTerms] = useState(false);
 
     useEffect(() => {
-        setTerms(editorRef)
-    }, [setTerms]);
+        setTerms(editorRef);
+        termsData && setOpenTerms(true);
+    }, [setTerms, termsData]);
 
     return (
         <div>
@@ -31,11 +32,9 @@ const TermsAndConditions = ({ setTerms }) => {
                 openTerms &&
                 <BundledEditor
                     onInit={(evt, editor) => editorRef.current = editor}
-                    initialValue={
-                        ''
-                    }
+                    initialValue={termsData}
                     init={{
-                        height: 300,
+                        height: 350,
                         menubar: false,
                         plugins: ['lists', 'searchreplace', 'table', 'wordcount'],
                         toolbar: 'styles | bold italic underline | bullist numlist | fontfamily | fontsize',

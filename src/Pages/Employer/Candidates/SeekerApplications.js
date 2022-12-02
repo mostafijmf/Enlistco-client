@@ -3,7 +3,7 @@ import axios from 'axios';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 import PageTitle from '../../Shared/PageTitle';
 import Spinner from '../../Shared/Spinner';
@@ -11,13 +11,15 @@ import SeekerAppList from './SeekerAppList';
 
 const SeekerApplications = () => {
     const [seekerApplyList, setSeekerApplyList] = useState([]);
+    console.log(seekerApplyList);
     const [loading, setLoading] = useState(true);
     const [openModal, setOpenModal] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
 
     // ===============Fetch seeker applications===============
     useEffect(() => {
-        axios.get('https://api.enlistco.co.in/apply/seeker_applications', {
+        axios.get(`https://api.enlistco.co.in/apply/seeker_applications${location?.search}`, {
             method: 'GET',
             headers: {
                 'Authorization': localStorage.getItem('user_token')
@@ -34,7 +36,7 @@ const SeekerApplications = () => {
                     return navigate('/login');
                 }
             });
-    }, [seekerApplyList, navigate]);
+    }, [location, seekerApplyList, navigate]);
 
     if (loading) {
         return <div className='h-screen w-full flex items-center justify-center'>
@@ -51,7 +53,7 @@ const SeekerApplications = () => {
     // ===============Download XLSX button===============
     const handleExport = () => {
         const table = document.getElementById("exportToxlsx");
-
+        console.log(table);
         const wb = XLSX.utils.table_to_book(table);
         XLSX.writeFile(wb, 'SeekerData.xlsx');
     };
@@ -228,7 +230,8 @@ const SeekerApplications = () => {
                                     </tr>
                                 </thead>
                                 {
-                                    seekerApplyList.map((items, index) => <SeekerAppList
+                                    seekerApplyList.map((items, index) => 
+                                    <SeekerAppList
                                         key={items._id} items={items}
                                         index={index}
                                         setOpenModal={setOpenModal}>

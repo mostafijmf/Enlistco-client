@@ -1,15 +1,15 @@
-import { 
-    AcademicCapIcon, 
-    BookOpenIcon, 
-    BriefcaseIcon, 
-    CheckCircleIcon, 
-    ClockIcon, 
-    HomeIcon, 
-    LocationMarkerIcon, 
-    MailIcon, 
-    OfficeBuildingIcon, 
-    PhoneIcon, 
-    PlusIcon 
+import {
+    AcademicCapIcon,
+    BookOpenIcon,
+    BriefcaseIcon,
+    CheckCircleIcon,
+    ClockIcon,
+    HomeIcon,
+    LocationMarkerIcon,
+    MailIcon,
+    OfficeBuildingIcon,
+    PhoneIcon,
+    PlusIcon
 } from '@heroicons/react/solid';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
@@ -36,8 +36,11 @@ const SeekerProfile = ({ usersData }) => {
     const navigate = useNavigate();
 
     const {
+        seeker,
+        employer,
         firstName,
         lastName,
+        seekerTitle,
         email,
         phone,
         address,
@@ -294,22 +297,34 @@ const SeekerProfile = ({ usersData }) => {
                 </div>
             }
 
-            {/* ======================Seeker about====================== */}
+            {/* ======================User Data====================== */}
             <div className='bg-white w-full mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
                 <div>
-                    <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>{firstName} {lastName}</h1>
-                    <h2 className='text-center sm:text-xl text-lg'>{exJobTitle}</h2>
+                    <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>
+                        {firstName} {lastName}
+                    </h1>
+                    <h2 className='text-center sm:text-xl text-lg'>
+                        {seekerTitle || exJobTitle}
+                    </h2>
                 </div>
                 <div className='w-full mt-5 relative'>
-                    <div onClick={() => setEditPData(!editPData)} className='absolute cursor-pointer hover:text-accent duration-300 sm:top-0 -top-6  right-0 flex items-center text-lg text-primary w-max px-2'>
+                    <div
+                        onClick={() => setEditPData(!editPData)}
+                        className='absolute cursor-pointer hover:text-accent duration-300 sm:top-0 -top-6  right-0 flex items-center text-lg text-primary w-max px-2'
+                    >
                         {
                             editPData ?
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                                 :
-                                <><span className='mr-2'>Edit</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <>
+                                    <span className='mr-2'>Edit</span>
+                                    <svg
+                                        className="h-5 w-5"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20" fill="currentColor"
+                                    >
                                         <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                         <path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
                                     </svg>
@@ -459,310 +474,313 @@ const SeekerProfile = ({ usersData }) => {
 
 
             {/* ======================Seeker Education====================== */}
-            <div className='bg-white w-full mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
-                <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Education</h1>
-                <div className='mt-5 relative'>
-                    {
-                        education?.map((edu, index) =>
-                            <ul key={index} className='list-none border-t mb-5 relative'>
-                                <span
-                                    onClick={() => handleDeleteEdu(edu)}
-                                    className='absolute top-5 right-0 cursor-pointer text-gray-500 hover:text-red-500 duration-300 hover:before:content-["Remove"] hover:before:text-sm hover:before:bg-slate-200 hover:before:absolute hover:before:-bottom-9 hover:before:-right-5 hover:before:px-2 hover:before:py-1 hover:before:rounded'
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </span>
-                                <li className='mt-4 text-base flex'>
-                                    <div className='font-medium flex items-center gap-3'>
-                                        <AcademicCapIcon className='w-6 h-6 text-gray-500'></AcademicCapIcon>
-                                        Degree :
-                                    </div>
-                                    <span className='ml-2'>{edu.degree}</span>
-                                </li>
-                                <li className='mt-4 text-base flex'>
-                                    <div className='font-medium flex items-center gap-3'>
-                                        <img className='w-6 h-6' src={schoolIcon} alt="school icon" />
-                                        Institution :
-                                    </div>
-                                    <span className='ml-2'>{edu.institution}</span>
-                                </li>
-                                <li className='mt-4 text-base flex'>
-                                    <div className='font-medium flex items-center gap-3'>
-                                        <BookOpenIcon className='w-6 h-6 text-gray-500'></BookOpenIcon>
-                                        Subject/Group :
-                                    </div>
-                                    <span className='ml-2'>{edu.edugroup}</span>
-                                </li>
-                                <li className='mt-4 text-base flex'>
-                                    <div className='font-medium flex items-center gap-3'>
-                                        <ClockIcon className='w-6 h-6 text-gray-500'></ClockIcon>
-                                        Start Date :
-                                    </div>
-                                    <span className='ml-2'>{edu.eduStartDate}</span>
-                                </li>
-                                {
-                                    edu.eduEndDate ?
+            {
+                seeker && <>
+                    <div className='bg-white w-full mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
+                        <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Education</h1>
+                        <div className='mt-5 relative'>
+                            {
+                                education?.map((edu, index) =>
+                                    <ul key={index} className='list-none border-t mb-5 relative'>
+                                        <span
+                                            onClick={() => handleDeleteEdu(edu)}
+                                            className='absolute top-5 right-0 cursor-pointer text-gray-500 hover:text-red-500 duration-300 hover:before:content-["Remove"] hover:before:text-sm hover:before:bg-slate-200 hover:before:absolute hover:before:-bottom-9 hover:before:-right-5 hover:before:px-2 hover:before:py-1 hover:before:rounded'
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </span>
                                         <li className='mt-4 text-base flex'>
                                             <div className='font-medium flex items-center gap-3'>
-                                                <CheckCircleIcon className='w-6 h-6 text-gray-500'></CheckCircleIcon>
-                                                End Date :
+                                                <AcademicCapIcon className='w-6 h-6 text-gray-500'></AcademicCapIcon>
+                                                Degree :
                                             </div>
-                                            <span className='ml-2'>{edu.eduEndDate}</span>
+                                            <span className='ml-2'>{edu.degree}</span>
                                         </li>
-                                        :
                                         <li className='mt-4 text-base flex'>
                                             <div className='font-medium flex items-center gap-3'>
-                                                <img className='w-6 h-6' src={studyingIcon} alt="studying icon" />
-                                                {edu.eduStudying}
+                                                <img className='w-6 h-6' src={schoolIcon} alt="school icon" />
+                                                Institution :
                                             </div>
+                                            <span className='ml-2'>{edu.institution}</span>
                                         </li>
-                                }
-                            </ul>)
-                    }
-                    {
-                        !addEduData &&
-                        <div className='w-full'>
-                            <button onClick={() => setAddEduData(!addEduData)} className='btn btn-link text-accent normal-case text-lg px-0 tracking-wide'>
-                                <PlusIcon className='w-6 h-6 mr-2'></PlusIcon>
-                                Add new Education</button>
-                        </div>
-                    }
-                    {
-                        addEduData &&
-                        <div className='xl:w-4/6 lg:w-9/12 md:w-4/5 w-full mx-auto bg-white h-max mt-10 pt-5 rounded-xl border-t'>
-                            <h1 className='text-center text-2xl font-semibold mb-5'>Add another Education</h1>
-                            <form onSubmit={handleAddEdu}>
-                                <div>
-                                    <label htmlFor='degree' className='font-medium text-base'>Degree<span className='text-orange-600 ml-1'>*</span></label>
-                                    <input id='degree' required type="text" placeholder="Enter your degree" className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
-                                </div>
-                                <div className='mt-5'>
-                                    <label htmlFor='institution' className='font-medium text-base'>Institution<span className='text-orange-600 ml-1'>*</span></label>
-                                    <input id='institution' required type="text" placeholder="Enter your institution name" className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
-                                </div>
-                                <div className='mt-5'>
-                                    <label htmlFor='group' className='font-medium text-base'>Subject/Group<span className='text-orange-600 ml-1'>*</span></label>
-                                    <input id='group' required type="text" placeholder="Enter your subject / group?" className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
-                                </div>
-                                <div className='flex sm:justify-between sm:gap-5 sm:flex-row flex-col'>
-                                    <div className='mt-5'>
-                                        <label htmlFor='eduStartDate' className='font-medium text-base'>Start date<span className='text-orange-600 ml-1'>*</span></label>
-                                        <input id='eduStartDate' required type="date" className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
-                                    </div>
-                                    {
-                                        !studying &&
-                                        <div className='mt-5'>
-                                            <label htmlFor='eduEndDate' className='font-medium text-base'>End date<span className='text-orange-600 ml-1'>*</span></label>
-                                            <input id='eduEndDate' required type='date' className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
-                                        </div>
-                                    }
-                                </div>
-                                <div className='md:mt-5 mt-3 flex items-center'>
-                                    <input id='checkbox' onChange={() => setStudying(!studying)} type="checkbox" className="checkbox bg-slate-100" />
-                                    <label className='text-base ml-3 cursor-pointer' htmlFor="checkbox">Currently Studying</label>
-                                </div>
-                                <div className='mt-6 flex sm:flex-row flex-col justify-between gap-4'>
-                                    <button
-                                        type="submit"
-                                        disabled={eduLoading}
-                                        className='sm:w-max w-full btn btn-outline btn-accent normal-case text-base  sm:px-16 px-10 min-h-0 h-11'
-                                    >
+                                        <li className='mt-4 text-base flex'>
+                                            <div className='font-medium flex items-center gap-3'>
+                                                <BookOpenIcon className='w-6 h-6 text-gray-500'></BookOpenIcon>
+                                                Subject/Group :
+                                            </div>
+                                            <span className='ml-2'>{edu.edugroup}</span>
+                                        </li>
+                                        <li className='mt-4 text-base flex'>
+                                            <div className='font-medium flex items-center gap-3'>
+                                                <ClockIcon className='w-6 h-6 text-gray-500'></ClockIcon>
+                                                Start Date :
+                                            </div>
+                                            <span className='ml-2'>{edu.eduStartDate}</span>
+                                        </li>
                                         {
-                                            eduLoading ? <Spinner></Spinner> : 'Save'
+                                            edu.eduEndDate ?
+                                                <li className='mt-4 text-base flex'>
+                                                    <div className='font-medium flex items-center gap-3'>
+                                                        <CheckCircleIcon className='w-6 h-6 text-gray-500'></CheckCircleIcon>
+                                                        End Date :
+                                                    </div>
+                                                    <span className='ml-2'>{edu.eduEndDate}</span>
+                                                </li>
+                                                :
+                                                <li className='mt-4 text-base flex'>
+                                                    <div className='font-medium flex items-center gap-3'>
+                                                        <img className='w-6 h-6' src={studyingIcon} alt="studying icon" />
+                                                        {edu.eduStudying}
+                                                    </div>
+                                                </li>
                                         }
-                                    </button>
-                                    <button
-                                        onClick={() => setAddEduData(!addEduData)}
-                                        className='sm:w-max w-full btn btn-link sm:px-10 capitalize text-base text-accent hover:text-primary h-11 min-h-0'>
-                                        Cancel
-                                    </button>
+                                    </ul>)
+                            }
+                            {
+                                !addEduData &&
+                                <div className='w-full'>
+                                    <button onClick={() => setAddEduData(!addEduData)} className='btn btn-link text-accent normal-case text-lg px-0 tracking-wide'>
+                                        <PlusIcon className='w-6 h-6 mr-2'></PlusIcon>
+                                        Add new Education</button>
                                 </div>
-                            </form>
-                        </div>
-                    }
-                </div>
-            </div>
-
-
-            {/* ======================Seeker Job Experience====================== */}
-            <div className='bg-white w-full mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
-                <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Job Experience</h1>
-                <div className='mt-5 relative'>
-                    {jobExperience &&
-                        jobExperience.map((ex, index) =>
-                            <ul key={index} className='list-none border-t mb-5 relative'>
-                                <span
-                                    onClick={() => handleDeleteJobExp(ex)}
-                                    className='absolute top-5 right-0 cursor-pointer text-gray-500 hover:text-red-500 duration-300 hover:before:content-["Remove"] hover:before:text-sm hover:before:bg-slate-200 hover:before:absolute hover:before:-bottom-9 hover:before:-right-5 hover:before:px-2 hover:before:py-1 hover:before:rounded'
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </span>
-                                <li className='mt-4 text-base flex'>
-                                    <div className='font-medium flex items-center gap-3'>
-                                        <BriefcaseIcon className='w-6 h-6 text-gray-500'></BriefcaseIcon>
-                                        Job Title :
-                                    </div>
-                                    <span className='ml-2'>{ex.exJobTitle}</span>
-                                </li>
-                                <li className='mt-4 text-base flex'>
-                                    <div className='font-medium flex items-center gap-3'>
-                                        <img className='w-6 h-6' src={companyIcon} alt="company icon" />
-                                        Company :
-                                    </div>
-                                    <span className='ml-2'>{ex.exCompany}</span>
-                                </li>
-                                <li className='mt-4 text-base flex'>
-                                    <div className='font-medium flex items-center gap-3'>
-                                        <ClockIcon className='w-6 h-6 text-gray-500'></ClockIcon>
-                                        Start Date :
-                                    </div>
-                                    <span className='ml-2'>{ex.exStartDate}</span>
-                                </li>
-                                {
-                                    ex.exEndDate ?
-                                        <li className='mt-4 text-base flex'>
-                                            <div className='font-medium flex items-center gap-3'>
-                                                <CheckCircleIcon className='w-6 h-6 text-gray-500'></CheckCircleIcon>
-                                                End Date :
+                            }
+                            {
+                                addEduData &&
+                                <div className='xl:w-4/6 lg:w-9/12 md:w-4/5 w-full mx-auto bg-white h-max mt-10 pt-5 rounded-xl border-t'>
+                                    <h1 className='text-center text-2xl font-semibold mb-5'>Add another Education</h1>
+                                    <form onSubmit={handleAddEdu}>
+                                        <div>
+                                            <label htmlFor='degree' className='font-medium text-base'>Degree<span className='text-orange-600 ml-1'>*</span></label>
+                                            <input id='degree' required type="text" placeholder="Enter your degree" className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                        </div>
+                                        <div className='mt-5'>
+                                            <label htmlFor='institution' className='font-medium text-base'>Institution<span className='text-orange-600 ml-1'>*</span></label>
+                                            <input id='institution' required type="text" placeholder="Enter your institution name" className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                        </div>
+                                        <div className='mt-5'>
+                                            <label htmlFor='group' className='font-medium text-base'>Subject/Group<span className='text-orange-600 ml-1'>*</span></label>
+                                            <input id='group' required type="text" placeholder="Enter your subject / group?" className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                        </div>
+                                        <div className='flex sm:justify-between sm:gap-5 sm:flex-row flex-col'>
+                                            <div className='mt-5'>
+                                                <label htmlFor='eduStartDate' className='font-medium text-base'>Start date<span className='text-orange-600 ml-1'>*</span></label>
+                                                <input id='eduStartDate' required type="date" className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                                             </div>
-                                            <span className='ml-2'>{ex.exEndDate}</span>
-                                        </li>
-                                        :
+                                            {
+                                                !studying &&
+                                                <div className='mt-5'>
+                                                    <label htmlFor='eduEndDate' className='font-medium text-base'>End date<span className='text-orange-600 ml-1'>*</span></label>
+                                                    <input id='eduEndDate' required type='date' className="input bg-slate-100 h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                                </div>
+                                            }
+                                        </div>
+                                        <div className='md:mt-5 mt-3 flex items-center'>
+                                            <input id='checkbox' onChange={() => setStudying(!studying)} type="checkbox" className="checkbox bg-slate-100" />
+                                            <label className='text-base ml-3 cursor-pointer' htmlFor="checkbox">Currently Studying</label>
+                                        </div>
+                                        <div className='mt-6 flex sm:flex-row flex-col justify-between gap-4'>
+                                            <button
+                                                type="submit"
+                                                disabled={eduLoading}
+                                                className='sm:w-max w-full btn btn-outline btn-accent normal-case text-base  sm:px-16 px-10 min-h-0 h-11'
+                                            >
+                                                {
+                                                    eduLoading ? <Spinner></Spinner> : 'Save'
+                                                }
+                                            </button>
+                                            <button
+                                                onClick={() => setAddEduData(!addEduData)}
+                                                className='sm:w-max w-full btn btn-link sm:px-10 capitalize text-base text-accent hover:text-primary h-11 min-h-0'>
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+
+                    {/* ======================Seeker Job Experience====================== */}
+                    <div className='bg-white w-full mb-5 sm:p-8 p-4 shadow-md border rounded-md'>
+                        <h1 className='text-center md:text-3xl sm:text-2xl text-xl font-medium'>Job Experience</h1>
+                        <div className='mt-5 relative'>
+                            {jobExperience &&
+                                jobExperience.map((ex, index) =>
+                                    <ul key={index} className='list-none border-t mb-5 relative'>
+                                        <span
+                                            onClick={() => handleDeleteJobExp(ex)}
+                                            className='absolute top-5 right-0 cursor-pointer text-gray-500 hover:text-red-500 duration-300 hover:before:content-["Remove"] hover:before:text-sm hover:before:bg-slate-200 hover:before:absolute hover:before:-bottom-9 hover:before:-right-5 hover:before:px-2 hover:before:py-1 hover:before:rounded'
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </span>
                                         <li className='mt-4 text-base flex'>
                                             <div className='font-medium flex items-center gap-3'>
                                                 <BriefcaseIcon className='w-6 h-6 text-gray-500'></BriefcaseIcon>
-                                                {ex.exWorking}
+                                                Job Title :
+                                            </div>
+                                            <span className='ml-2'>{ex.exJobTitle}</span>
+                                        </li>
+                                        <li className='mt-4 text-base flex'>
+                                            <div className='font-medium flex items-center gap-3'>
+                                                <img className='w-6 h-6' src={companyIcon} alt="company icon" />
+                                                Company :
+                                            </div>
+                                            <span className='ml-2'>{ex.exCompany}</span>
+                                        </li>
+                                        <li className='mt-4 text-base flex'>
+                                            <div className='font-medium flex items-center gap-3'>
+                                                <ClockIcon className='w-6 h-6 text-gray-500'></ClockIcon>
+                                                Start Date :
+                                            </div>
+                                            <span className='ml-2'>{ex.exStartDate}</span>
+                                        </li>
+                                        {
+                                            ex.exEndDate ?
+                                                <li className='mt-4 text-base flex'>
+                                                    <div className='font-medium flex items-center gap-3'>
+                                                        <CheckCircleIcon className='w-6 h-6 text-gray-500'></CheckCircleIcon>
+                                                        End Date :
+                                                    </div>
+                                                    <span className='ml-2'>{ex.exEndDate}</span>
+                                                </li>
+                                                :
+                                                <li className='mt-4 text-base flex'>
+                                                    <div className='font-medium flex items-center gap-3'>
+                                                        <BriefcaseIcon className='w-6 h-6 text-gray-500'></BriefcaseIcon>
+                                                        {ex.exWorking}
+                                                    </div>
+                                                </li>
+                                        }
+                                        <li className='mt-4 text-base flex'>
+                                            <div className='flex items-start gap-3'>
+                                                <img className='w-6 h-6' src={dutyIcon} alt="company icon" />
+                                                <div>
+                                                    <h3 className='font-medium'>Responsibilities :</h3>
+                                                    <span>{ex.exResponsibilities}</span>
+                                                </div>
                                             </div>
                                         </li>
-                                }
-                                <li className='mt-4 text-base flex'>
-                                    <div className='flex items-start gap-3'>
-                                        <img className='w-6 h-6' src={dutyIcon} alt="company icon" />
+                                    </ul>
+                                )
+                            }
+                            {
+                                !addJobExp &&
+                                <div className='w-full'>
+                                    <button onClick={() => setAddJobExp(!addJobExp)} className='btn btn-link text-accent normal-case text-lg px-0 tracking-wide'>
+                                        <PlusIcon className='w-6 h-6 mr-2'></PlusIcon>
+                                        Add new experience</button>
+                                </div>
+                            }
+                            {
+                                addJobExp &&
+                                <div className='xl:w-4/6 lg:w-9/12 md:w-4/5 w-full mx-auto bg-white h-max mt-10 pt-5 rounded-xl border-t'>
+                                    <h1 className='text-center text-2xl font-semibold mb-5'>Add another job experience</h1>
+                                    <form onSubmit={handleAddJobExp}>
                                         <div>
-                                            <h3 className='font-medium'>Responsibilities :</h3>
-                                            <span>{ex.exResponsibilities}</span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        )
-                    }
-                    {
-                        !addJobExp &&
-                        <div className='w-full'>
-                            <button onClick={() => setAddJobExp(!addJobExp)} className='btn btn-link text-accent normal-case text-lg px-0 tracking-wide'>
-                                <PlusIcon className='w-6 h-6 mr-2'></PlusIcon>
-                                Add new experience</button>
-                        </div>
-                    }
-                    {
-                        addJobExp &&
-                        <div className='xl:w-4/6 lg:w-9/12 md:w-4/5 w-full mx-auto bg-white h-max mt-10 pt-5 rounded-xl border-t'>
-                            <h1 className='text-center text-2xl font-semibold mb-5'>Add another job experience</h1>
-                            <form onSubmit={handleAddJobExp}>
-                                <div>
-                                    <div>
-                                        <label htmlFor='exJobTitle' className='font-medium text-base'>Job title<span className='text-orange-600 ml-1'>*</span></label>
-                                        <input id='exJobTitle' required type="text" placeholder="Enter your Job title" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
-                                    </div>
-                                    <div className='mt-5'>
-                                        <label htmlFor='exCompany' className='font-medium text-base'>Company name<span className='text-orange-600 ml-1'>*</span></label>
-                                        <input id='exCompany' required type="text" placeholder="Enter company name" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
-                                    </div>
-                                    <div className='flex sm:justify-between sm:gap-5 sm:flex-row flex-col'>
-                                        <div className='mt-5'>
-                                            <label htmlFor='exStartDate' className='font-medium text-base'>Start date<span className='text-orange-600 ml-1'>*</span></label>
-                                            <input id='exStartDate' required type="date" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
-                                        </div>
-                                        {
-                                            currentWork ? '' :
+                                            <div>
+                                                <label htmlFor='exJobTitle' className='font-medium text-base'>Job title<span className='text-orange-600 ml-1'>*</span></label>
+                                                <input id='exJobTitle' required type="text" placeholder="Enter your Job title" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                            </div>
+                                            <div className='mt-5'>
+                                                <label htmlFor='exCompany' className='font-medium text-base'>Company name<span className='text-orange-600 ml-1'>*</span></label>
+                                                <input id='exCompany' required type="text" placeholder="Enter company name" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                            </div>
+                                            <div className='flex sm:justify-between sm:gap-5 sm:flex-row flex-col'>
                                                 <div className='mt-5'>
-                                                    <label htmlFor='exEndDate' className='font-medium text-base'>End date<span className='text-orange-600 ml-1'>*</span></label>
-                                                    <input id='exEndDate' required type='date' className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                                    <label htmlFor='exStartDate' className='font-medium text-base'>Start date<span className='text-orange-600 ml-1'>*</span></label>
+                                                    <input id='exStartDate' required type="date" className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
                                                 </div>
-                                        }
-                                    </div>
-                                    <div className='md:mt-5 mt-3 flex items-center'>
-                                        <input id='checkbox' onChange={() => setCurrentWork(!currentWork)} type="checkbox" className="checkbox bg-white" />
-                                        <label className='text-base ml-3 cursor-pointer' htmlFor="checkbox">Currently Working</label>
-                                    </div>
-                                    <div className='mt-5'>
-                                        <label htmlFor='exResponsibilities' className='font-medium text-base'>Responsibilities</label>
-                                        <textarea id='exResponsibilities' rows="3" type="text" placeholder="Describe your responsibilities" className="textarea text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
-                                    </div>
+                                                {
+                                                    currentWork ? '' :
+                                                        <div className='mt-5'>
+                                                            <label htmlFor='exEndDate' className='font-medium text-base'>End date<span className='text-orange-600 ml-1'>*</span></label>
+                                                            <input id='exEndDate' required type='date' className="input h-11 text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                                        </div>
+                                                }
+                                            </div>
+                                            <div className='md:mt-5 mt-3 flex items-center'>
+                                                <input id='checkbox' onChange={() => setCurrentWork(!currentWork)} type="checkbox" className="checkbox bg-white" />
+                                                <label className='text-base ml-3 cursor-pointer' htmlFor="checkbox">Currently Working</label>
+                                            </div>
+                                            <div className='mt-5'>
+                                                <label htmlFor='exResponsibilities' className='font-medium text-base'>Responsibilities</label>
+                                                <textarea id='exResponsibilities' rows="3" type="text" placeholder="Describe your responsibilities" className="textarea text-base w-full mt-2 border border-gray-200 focus:outline-0 focus:shadow-md" />
+                                            </div>
+                                        </div>
+                                        <div className='mt-6 flex sm:flex-row flex-col justify-between gap-4'>
+                                            <button
+                                                className='btn btn-outline btn-accent normal-case text-base  px-16 min-h-0 h-11 sm:w-max w-full' type="submit">
+                                                Save
+                                            </button>
+                                            <button
+                                                onClick={() => setAddJobExp(!addJobExp)}
+                                                className='sm:w-max w-full btn btn-link sm:px-10 capitalize text-base text-accent hover:text-primary min-h-0 h-11'>
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div className='mt-6 flex sm:flex-row flex-col justify-between gap-4'>
-                                    <button
-                                        className='btn btn-outline btn-accent normal-case text-base  px-16 min-h-0 h-11 sm:w-max w-full' type="submit">
-                                        Save
-                                    </button>
-                                    <button
-                                        onClick={() => setAddJobExp(!addJobExp)}
-                                        className='sm:w-max w-full btn btn-link sm:px-10 capitalize text-base text-accent hover:text-primary min-h-0 h-11'>
-                                        Cancel
-                                    </button>
-                                </div>
-                            </form>
+                            }
                         </div>
-                    }
-                </div>
-            </div>
-
-            {/* ======================Seeker Resume====================== */}
-            {
-                updateResume && resume ? <div className='bg-white w-full mb-5 shadow-md border rounded-md relative'>
-                    <span
-                        onClick={() => setUpdateResume(!updateResume)}
-                        className='absolute top-10 sm:right-10 right-4 text-primary hover:text-accent duration-300 cursor-pointer'
-                        title='Update resume'>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                            <path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
-                        </svg>
-                    </span>
-                    <div className='lg:w-4/5 sm:w-11/12 w-full mx-auto mb-10 overflow-y-auto'>
-                        <h1 className='text-center my-8 md:text-3xl sm:text-2xl text-xl font-medium'>
-                            CV / Resume
-                        </h1>
-                        <iframe title='Resume' className='w-full h-screen' src={resume}></iframe>
                     </div>
-                </div> :
-                    <form
-                        onSubmit={handleResumeUpload}
-                        className='bg-white w-full sm:p-8 p-4 shadow-md border rounded-md mb-5 relative'>
-                        {
-                            resume && <span
+
+                    {/* ======================Seeker Resume====================== */}
+                    {
+                        updateResume && resume ? <div className='bg-white w-full mb-5 shadow-md border rounded-md relative'>
+                            <span
                                 onClick={() => setUpdateResume(!updateResume)}
                                 className='absolute top-10 sm:right-10 right-4 text-primary hover:text-accent duration-300 cursor-pointer'
                                 title='Update resume'>
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                    <path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
                                 </svg>
                             </span>
-                        }
-                        <h1 className='text-center mb-10 md:text-3xl sm:text-2xl text-xl font-medium'>
-                            Upload your CV / Resume
-                        </h1>
-                        <div className='flex items-center justify-between w-full border rounded-md '>
-                            <input
-                                id='resume'
-                                required
-                                type="file"
-                                className="input bg-slate-100 h-11 py-2 text-base w-full border-none border-gray-200 focus:outline-0 hover:shadow-md"
-                            />
-                            <button
-                                type="submit"
-                                disabled={resumeLoading}
-                                className='btn btn-accent min-h-0 h-11 px-6 text-base hover:text-white normal-case rounded-l-none rounded-r-md'
-                            >
-                                {resumeLoading ? <Spinner></Spinner> : "Upload"}
-                            </button>
-                        </div>
-                    </form>
-            }
+                            <div className='lg:w-4/5 sm:w-11/12 w-full mx-auto mb-10 overflow-y-auto'>
+                                <h1 className='text-center my-8 md:text-3xl sm:text-2xl text-xl font-medium'>
+                                    CV / Resume
+                                </h1>
+                                <iframe title='Resume' className='w-full h-screen' src={resume}></iframe>
+                            </div>
+                        </div> :
+                            <form
+                                onSubmit={handleResumeUpload}
+                                className='bg-white w-full sm:p-8 p-4 shadow-md border rounded-md mb-5 relative'>
+                                {
+                                    resume && <span
+                                        onClick={() => setUpdateResume(!updateResume)}
+                                        className='absolute top-10 sm:right-10 right-4 text-primary hover:text-accent duration-300 cursor-pointer'
+                                        title='Update resume'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </span>
+                                }
+                                <h1 className='text-center mb-10 md:text-3xl sm:text-2xl text-xl font-medium'>
+                                    Upload your CV / Resume
+                                </h1>
+                                <div className='flex items-center justify-between w-full border rounded-md '>
+                                    <input
+                                        id='resume'
+                                        required
+                                        type="file"
+                                        className="input bg-slate-100 h-11 py-2 text-base w-full border-none border-gray-200 focus:outline-0 hover:shadow-md"
+                                    />
+                                    <button
+                                        type="submit"
+                                        disabled={resumeLoading}
+                                        className='btn btn-accent min-h-0 h-11 px-6 text-base hover:text-white normal-case rounded-l-none rounded-r-md'
+                                    >
+                                        {resumeLoading ? <Spinner></Spinner> : "Upload"}
+                                    </button>
+                                </div>
+                            </form>
+                    }
+                </>}
         </div>
     );
 };

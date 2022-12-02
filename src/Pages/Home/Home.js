@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Footer from '../Shared/Footer';
+import Footer from '../Shared/Footer/Footer';
 import Header from '../Shared/Header/Header';
 import PageTitle from '../Shared/PageTitle';
 import Spinner from '../Shared/Spinner';
@@ -38,7 +38,7 @@ const Home = () => {
             }
         }).then(res => {
             setLoading(false)
-            const data = res.data;
+            const data = res.data.filter(d => (d.jobStatus !== 'Paused' && d.permission));
             const titleText = titleValue?.target?.value?.toLowerCase();
             const addessText = addressValue?.target?.value?.toLowerCase();
 
@@ -48,7 +48,7 @@ const Home = () => {
                     d.jobTitle.toLowerCase().includes(titleText) ||
                     d.company.toLowerCase().includes(titleText) ||
                     d.skillTags.some(e => e.toLowerCase().includes(titleText)) ||
-                    d._id.slice(0, 25).toLowerCase().includes(titleText)
+                    d._id.toLowerCase().includes(titleText)
                     : ''
                 );
 
@@ -80,8 +80,8 @@ const Home = () => {
                 setAllPost(data);
                 setAddressData(data);
             }
-        }).catch(err => { 
-            setLoading(false) 
+        }).catch(err => {
+            setLoading(false)
         });
     }, [allPost, titleValue, addressValue]);
 
@@ -96,7 +96,7 @@ const Home = () => {
             d.jobTitle.toLowerCase().includes(titleText) ||
             d.company.toLowerCase().includes(titleText) ||
             d.skillTags.some(e => e.toLowerCase().includes(titleText)) ||
-            d._id.slice(0, 25).toLowerCase().includes(titleText)
+            d._id.toLowerCase().includes(titleText)
             : ''
         );
         const addressMatch = addessText && allPost.filter(d => d.permission ?
@@ -127,8 +127,9 @@ const Home = () => {
         }
     };
 
-    const aPost = searchingPost.length === 0 ? allPost.filter(ap => ap.permission) : searchingPost.filter(ap => ap.permission);
-
+    const aPost = searchingPost.length === 0 ?
+        allPost.filter(ap => ap.permission) :
+        searchingPost.filter(ap => ap.permission);
 
 
     return (<>
@@ -195,17 +196,29 @@ const Home = () => {
                                     placeholder='City, state, or country'
                                     className="input h-11 text-base w-full border border-gray-200 focus:outline-0 focus:shadow-md"
                                 />
-                                {focusAddress && <ul className='list-none absolute z-10 top-10 left-0 w-full h-auto bg-white border border-t-0 rounded-b-md shadow-xl'>{addressData.length === 0 ? <li className='p-5 text-base text-gray-500'>
-                                    Result not found
-                                </li>
-                                    : addressData.slice(0, 15).map(p => <li key={p._id} onClick={() => setAddressSelect(p.jobLocation)}>
-                                        <div className='px-5 py-2 hover:bg-slate-100 duration-300'>
-                                            <p className='text-base leading-none'>{p.jobLocation}</p>
-                                        </div>
-                                    </li>)
-                                }
-
-                                </ul>
+                                {
+                                    focusAddress && <ul
+                                        className='list-none absolute z-10 top-10 left-0 w-full h-auto bg-white border border-t-0 rounded-b-md shadow-xl'
+                                    >
+                                        {addressData.length === 0 ?
+                                            <li className='p-5 text-base text-gray-500'>
+                                                Result not found
+                                            </li>
+                                            :
+                                            addressData.slice(0, 15).map(p =>
+                                                <li key={p._id}
+                                                    onClick={() =>
+                                                        setAddressSelect(p.jobLocation)
+                                                    }
+                                                >
+                                                    <div className='px-5 py-2 hover:bg-slate-100 duration-300'>
+                                                        <p className='text-base leading-none'>
+                                                            {p.jobLocation}
+                                                        </p>
+                                                    </div>
+                                                </li>
+                                            )}
+                                    </ul>
                                 }
                             </>}
                         <div className='md:mt-5 mt-3 absolute top-12 flex items-center'>
@@ -215,7 +228,12 @@ const Home = () => {
                                 type="checkbox"
                                 className="checkbox bg-white"
                             />
-                            <label className='text-base ml-3 cursor-pointer' htmlFor="checkbox">Work from home / Remote</label>
+                            <label
+                                className='text-base ml-3 cursor-pointer'
+                                htmlFor="checkbox"
+                            >
+                                Work from home / Remote
+                            </label>
                         </div>
                     </div>
                     <button
@@ -234,7 +252,7 @@ const Home = () => {
                     <Spinner></Spinner>
                 </div>
                 :
-                !allPost[0]?.permission || allPost.length === 0 ?
+                allPost.length === 0 ?
                     <div className='w-full h-60 flex items-center justify-center'>
                         <h1 className='sm:text-3xl text-2xl text-gray-500'>No jobs posted yet.</h1>
                     </div>
@@ -243,7 +261,7 @@ const Home = () => {
                         <h1 className='text-center md:text-5xl sm:text-4xl text-3xl my-10 relative'>All Jobs
                             <span className='sm:text-base text-sm bg-accent text-white md:px-2 px-1 md:py-1 absolute top-3 ml-3 rounded-md'>{aPost.length}</span>
                         </h1>
-                        <div className='md:w-4/5 sm:w-10/12 w-11/12 mx-auto flex justify-between gap-5 pb-10'>
+                        <div className='md:w-4/5 sm:w-10/12 w-full sm:mx-auto mx-1 flex justify-between gap-5 pb-10'>
                             <div className={`lg:block w-full ${pathname !== '/' ? 'hidden' : 'block'}`}>
                                 {
                                     aPost?.map(post => <PostList key={post._id} post={post}></PostList>)
@@ -252,10 +270,18 @@ const Home = () => {
                             <div className={`w-full lg:block ${pathname !== '/' ? 'block' : 'hidden'} relative`}>
                                 <button
                                     onClick={() => navigate(-1)}
-                                    className='btn btn-outline h-8 min-h-0 rounded-md absolute -top-16 left-0 lg:hidden'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    className='absolute -top-[4.4rem] left-0 lg:hidden flex items-center text-lg hover:bg-gray-300 duration-300 px-3 py-1 rounded-md'
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-5 w-5 mr-2"
+                                        fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                    >
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                                     </svg>
+                                    Back
                                 </button>
                                 <JobDetails open={aPost[0]}></JobDetails>
                             </div>

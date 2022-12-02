@@ -14,6 +14,7 @@ const SeekerDetails = () => {
     const {
         firstName,
         lastName,
+        seekerTitle,
         email,
         phone,
         address,
@@ -39,8 +40,12 @@ const SeekerDetails = () => {
             {seeker && <>
                 <div>
                     <div className='border-b pb-2'>
-                        <h1 className='text-center text-gray-600 md:text-3xl sm:text-2xl text-xl font-medium'>{firstName} {lastName}</h1>
-                        <h2 className='text-center text-gray-600 sm:text-xl text-lg'>{jobExp?.exJobTitle}</h2>
+                        <h1 className='text-center text-gray-600 md:text-3xl sm:text-2xl text-xl font-medium'>
+                            {firstName} {lastName}
+                        </h1>
+                        <h2 className='text-center text-gray-600 sm:text-xl text-lg'>
+                            {seekerTitle || jobExp?.exJobTitle}
+                        </h2>
                     </div>
                     <ul className='list-none mt-5'>
                         <li className='mt-2 text-base flex'>
@@ -66,14 +71,14 @@ const SeekerDetails = () => {
                         </li>
                         <li className='mt-4 text-base flex'>
                             <div className='font-medium flex items-center gap-3'>
-                                <OfficeBuildingIcon className='w-6 h-6 text-gray-500'></OfficeBuildingIcon>
+                                <OfficeBuildingIcon className='w-6 h-6 text-gray-500' />
                                 City/State :
                             </div>
                             <span className='ml-2'>{state}</span>
                         </li>
                         <li className='mt-4 text-base flex'>
                             <div className='font-medium flex items-center gap-3'>
-                                <LocationMarkerIcon className='w-6 h-6 text-gray-500'></LocationMarkerIcon>
+                                <LocationMarkerIcon className='w-6 h-6 text-gray-500' />
                                 Country :
                             </div>
                             <span className='ml-2'>{country}</span>
@@ -90,8 +95,8 @@ const SeekerDetails = () => {
                         </li>
                         {
                             seekerAbout &&
-                            <li className='mt-2'>
-                                <h2 className='text-center font-medium sm:text-xl text-lg my-2'>About You</h2>
+                            <li className='mt-4'>
+                                <h2 className='text-left font-medium sm:text-xl text-lg my-2'>About</h2>
                                 <hr />
                                 <p className='p-3'>{seekerAbout}</p>
                             </li>

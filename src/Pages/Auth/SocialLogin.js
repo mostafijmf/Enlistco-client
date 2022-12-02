@@ -42,7 +42,7 @@ const SocialLogin = () => {
                     loading: false
                 });
                 localStorage.setItem('user_token', user_token);
-                newEntry ? navigate('/new-entry') : navigate(from, { replace: true });
+                newEntry ? navigate('/user-information') : navigate(from, { replace: true });
             })
             .catch(err => {
                 setSocialState({

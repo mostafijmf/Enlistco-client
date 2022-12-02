@@ -10,10 +10,10 @@ const ManageJobSeekers = () => {
     const [allUsers, loading] = useGetAllUsers();
     const [deleteUData, setDeleteUData] = useState(false);
     const [dLoading, setDLoading] = useState(false);
-    const [userData, setUserData] = useState();
+    const [userData, setUserData] = useState('');
     const navigate = useNavigate();
 
-    
+
     if (loading) {
         return <div className='w-full h-screen flex items-center justify-center'>
             <Spinner></Spinner>
@@ -31,8 +31,10 @@ const ManageJobSeekers = () => {
             }
         })
             .then(res => {
-                setDeleteUData(!deleteUData);
-                setDLoading(false);
+                if (res) {
+                    setDeleteUData(!deleteUData);
+                    setDLoading(false);
+                }
             })
             .catch(err => {
                 setDLoading(false);
@@ -46,15 +48,17 @@ const ManageJobSeekers = () => {
     return (<>
         <PageTitle title='Manage Seeker - Dashboard'></PageTitle>
         <h1 className='text-2xl text-center my-5 text-accent font-medium'>Manage job seekers</h1>
-        <div className="overflow-x-auto mb-10">
+        <div className="overflow-x-auto mb-10 w-auto mx-2">
             <table className="table w-full" id='exportToxlsx'>
                 <thead>
                     <tr>
-                        <th className='py-3 rounded-l-none normal-case text-base font-medium'>No.</th>
+                        <th className='py-3 normal-case text-base font-medium'>
+                            ({seeker.length})
+                        </th>
                         <th className='py-3 normal-case text-base font-medium'>Name</th>
                         <th className='py-3 normal-case text-base font-medium'>Email</th>
                         <th className='py-3 normal-case text-base font-medium'>Phone number</th>
-                        <th className='py-3 rounded-r-none normal-case text-base font-medium'></th>
+                        <th className='py-3 normal-case text-base text-center font-medium'>Delete user</th>
                     </tr>
                 </thead>
                 {seeker.map((user, index) =>
@@ -83,7 +87,7 @@ const ManageJobSeekers = () => {
                             <button
                                 onClick={() => handleDelete(userData.email)}
                                 disabled={dLoading}
-                                className="btn btn-outline text-white min-h-0 h-10 px-10"
+                                className="btn btn-outline text-white hover:text-secondary hover:bg-white hover:border-white min-h-0 h-10 px-10"
                             >
                                 {dLoading ? <Spinner></Spinner> : 'Yes'}
                             </button>

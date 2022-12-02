@@ -19,6 +19,10 @@ const useGetUsers = () => {
             })
             .catch(err => {
                 setLoading(false);
+                if (err?.response?.data?.notExist) {
+                    localStorage.removeItem('user_token');
+                    return navigate('/login');
+                }
             });
     }, [usersData, navigate]);
 
